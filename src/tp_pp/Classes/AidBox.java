@@ -32,6 +32,7 @@ public class AidBox implements com.estg.core.AidBox {
         this.longitude = longitude;
         this.containers = new Container[4];
         this.numberContainers = 0;
+        //testando se o git funciona
     }
 
     @Override
