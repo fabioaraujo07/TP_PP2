@@ -20,6 +20,10 @@ public class Clothing extends Container {
     private ItemType itemType;
     private Measurement[] measurements;
     private int countMeasurements;
+
+    public Clothing(String code, double capacity, ItemType itemType) {
+        super(code, capacity, itemType);
+    }
     
     
     

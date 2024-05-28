@@ -15,6 +15,10 @@ import java.time.LocalDate;
  */
 public class PerishableFood extends Container {
 
+    public PerishableFood(String code, double capacity, ItemType itemType) {
+        super(code, capacity, itemType);
+    }
+
     @Override
     public boolean addMeasurement(Measurement msrmnt) throws MeasurementException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
