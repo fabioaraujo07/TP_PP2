@@ -19,8 +19,7 @@ public class AidBox implements com.estg.core.AidBox {
     private String code;
     private String zone;
     private String refLocal;
-    private double latitude;
-    private double longitude;
+    private GetCoordinates coordinates;
     private Container[] containers;
     private int numberContainers;
 
@@ -28,8 +27,7 @@ public class AidBox implements com.estg.core.AidBox {
         this.code = code;
         this.zone = zone;
         this.refLocal = refLocal;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.coordinates = new GetCoordinates(latitude,longitude); 
         this.containers = new Container[4];
         this.numberContainers = 0;
         //testando se o git funciona
@@ -47,7 +45,7 @@ public class AidBox implements com.estg.core.AidBox {
 
     @Override
     public GeographicCoordinates getCoordinates() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       return this.coordinates;
     }
 
     public int findContainer(Container cntnr) {
@@ -118,11 +116,11 @@ public class AidBox implements com.estg.core.AidBox {
     }
 
     public double getLatitude() {
-        return latitude;
+        return coordinates.getLatitude();
     }
 
     public double getLongitude() {
-        return longitude;
+        return coordinates.getLongitude();
     }
 
 }
