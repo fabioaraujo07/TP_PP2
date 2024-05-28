@@ -14,34 +14,67 @@ import java.time.LocalDate;
  * @author Roger Nakauchi
  */
 public abstract class Container implements com.estg.core.Container {
-    
+
     private String code;
     private double capacity;
     private ItemType itemType;
+    private Measurement[] measurements;
+    private int numberMeasurements;
 
     public Container(String code, double capacity, ItemType itemType) {
         this.code = code;
         this.capacity = capacity;
         this.itemType = itemType;
+        this.measurements = new Measurement[10];
+        this.numberMeasurements = 0;
+    }
+    
+    @Override
+    public String getCode() {
+        return this.code;
     }
 
     @Override
-    public abstract boolean addMeasurement(Measurement msrmnt) throws MeasurementException;
+    public double getCapacity() {
+        return this.capacity;
+    }
 
     @Override
-    public abstract Measurement[] getMeasurements(LocalDate ld);
+    public ItemType getType() {
+        return this.itemType;
+    }
 
     @Override
-    public abstract Measurement[] getMeasurements();
+    public Measurement[] getMeasurements() { //Confirmar se ta certo
+        Measurement[] copyMeasurements = new Measurement[numberMeasurements];
+        for (int i = 0; i < numberMeasurements; i++) {
+            if(measurements[i] != null){
+                copyMeasurements[i] = this.measurements[i];
+            }
+        }
+        return copyMeasurements;
+    }
 
     @Override
-    public abstract ItemType getType();
+    public Measurement[] getMeasurements(LocalDate ld) {
+        for(Measurement m : measurements) {
+            if(m != null && m.getDate().equals(ld)) {
+                return m; //Ainda vou corrigir essa merda
+            }
+        }    
+    }
 
     @Override
-    public abstract double getCapacity();
-
-    @Override
-    public abstract String getCode();
+    public boolean addMeasurement(Measurement msrmnt) throws MeasurementException {
+        if(msrmnt == null) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+        if(numberMeasurements == measurements.length) {
+            this.measurements = new Measurement[numberMeasurements * 2];
+        }
+        measurements[numberMeasurements++] = msrmnt;
+        return true;        
+    }
     
     @Override
     public boolean equals(Object obj){
@@ -54,7 +87,5 @@ public abstract class Container implements com.estg.core.Container {
         Container cntnr = (Container) obj;
         return this.code == cntnr.code;
     }
-    
-    
     
 }

@@ -78,7 +78,6 @@ public class AidBox implements com.estg.core.AidBox {
                 return c;
             }
         }
-
         return null;
     }
 
