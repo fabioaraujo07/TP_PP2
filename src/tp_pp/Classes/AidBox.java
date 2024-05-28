@@ -123,4 +123,12 @@ public class AidBox implements com.estg.core.AidBox {
         return coordinates.getLongitude();
     }
 
+    @Override
+    public String toString() {
+         return "Code: " + code + "\nZone: " + zone + "\nLatitude: " + coordinates.getLatitude() 
+                 + "\nLongitude: " + coordinates.getLongitude();
+    }
+    
+   
+
 }
