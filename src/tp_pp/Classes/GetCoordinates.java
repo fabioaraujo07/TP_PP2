@@ -8,6 +8,24 @@ package tp_pp.Classes;
  *
  * @author fabio
  */
-public class GetCoordinates implements {
+public class GetCoordinates implements com.estg.core.GeographicCoordinates{
+  
+    private double latitude;
+    private double longitude;
+
+    public GetCoordinates(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    
+    @Override
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    @Override
+    public double getLongitude() {
+        return this.longitude;
+    }
     
 }
