@@ -18,7 +18,6 @@ public abstract class Container implements com.estg.core.Container {
     private String code;
     private double capacity;
     private ItemType itemType;
-    //private Measurement[] measurements;
 
     public Container(String code, double capacity, ItemType itemType) {
         this.code = code;

@@ -53,7 +53,7 @@ public class AidBox implements com.estg.core.AidBox {
                 return i;
             }
         }
-        return -1;
+        return -1;//Criar uma exceção para este método
     }
 
     @Override
