@@ -45,7 +45,7 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements() { //Confirmar se ta certo
+    public Measurement[] getMeasurements() { //Confirmar
         Measurement[] copyMeasurements = new Measurement[numberMeasurements];
         for (int i = 0; i < numberMeasurements; i++) {
             if(measurements[i] != null){
@@ -56,12 +56,16 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements(LocalDate ld) {
-        for(Measurement m : measurements) {
-            if(m != null && m.getDate().equals(ld)) {
-                return m; //Ainda vou corrigir essa merda
+    public Measurement[] getMeasurements(LocalDate ld) { //Confirmar
+        Measurement[] copyMeasurements = new Measurement[numberMeasurements];
+        int count = 0;
+        
+        for(int i = 0; i < numberMeasurements; i++) {
+            if(measurements[i].getDate().toLocalDate().equals(ld)) {
+                copyMeasurements[count++] = measurements[i];
             }
-        }    
+        }
+        return copyMeasurements;
     }
 
     @Override
