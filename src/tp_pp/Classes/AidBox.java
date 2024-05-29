@@ -103,18 +103,18 @@ public class AidBox implements com.estg.core.AidBox {
     @Override
     public boolean addContainer(Container cntnr) throws ContainerException {// Já está pronto não mexa no meu código
         if (cntnr == null) {
-            throw new ContainerException("Conteiner não pode ser nulo");
+            throw new ContainerException("Conteiner can't be null");
         }
         if (findContainer(cntnr) != -1) {
             return false;
         }
         if (this.numberContainers == this.containers.length) {
-            throw new ContainerException("Capacidade máxima atingida");
+            throw new ContainerException("Max capacity hitted");
         }
         
         for(int i = 0; 1 < numberContainers; i++){
             if(containers[i].getType().equals(cntnr.getType())){
-                throw new ContainerException("Já existe conteiner do mesmo tipo");
+                throw new ContainerException("AidBox already have a container from a given type");
             }
         }
         

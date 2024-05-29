@@ -45,7 +45,7 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements() { //Esse está certo
+    public Measurement[] getMeasurements() { 
         Measurement[] copyMeasurements = new Measurement[numberMeasurements];
         for (int i = 0; i < numberMeasurements; i++) {
             if(measurements[i] != null){
@@ -56,7 +56,7 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements(LocalDate ld) { //Por mim parece que está certo
+    public Measurement[] getMeasurements(LocalDate ld) { 
         Measurement[] copyMeasurementsDate = new Measurement[numberMeasurements];
         int count = 0;
         
@@ -71,11 +71,31 @@ public abstract class Container implements com.estg.core.Container {
     @Override
     public boolean addMeasurement(Measurement msrmnt) throws MeasurementException {
         if(msrmnt == null) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            throw new MeasurementException("Measurement can't be null"); 
         }
+        if(msrmnt.getValue() < 0) {
+            throw new MeasurementException("Measurement value is lower than zero");
+        }
+        if(msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
+            throw new MeasurementException("Measurement date is before than the last Measurement date");
+        }
+        
+        for(int i = 0; i < numberMeasurements; i++) {
+            if(msrmnt.getDate().equals(measurements[i].getDate())) {
+                if(msrmnt.getValue() != measurements[i].getValue()) {
+                    throw new MeasurementException();
+                }
+                return false;
+            }
+        }
+        // if the for a given date the measurement already exists but the values are different
+        // Travei nesse if - throw new MeasurementException()
+        // return false no ultimo if
+        // Checkar se ta certo / O pai ta iluminado
         if(numberMeasurements == measurements.length) {
-            this.measurements = new Measurement[numberMeasurements * 2];
+            throw new MeasurementException("Max capacity hitted");
         }
+        
         measurements[numberMeasurements++] = msrmnt;
         return true;        
     }
