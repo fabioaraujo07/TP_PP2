@@ -9,6 +9,7 @@ import com.estg.core.GeographicCoordinates;
 import com.estg.core.ItemType;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
+import java.math.MathContext;
 
 /**
  *
@@ -48,6 +49,21 @@ public class AidBox implements com.estg.core.AidBox {
         
         double lat2 = aidbox.getCoordinates().getLatitude();
         double long2 = aidbox.getCoordinates().getLongitude();
+        
+        //Raio da Terra em KM
+        final int R = 6371;
+        
+        //Por enquanto vamos deixar assim, confirmar com o professor, porque tudo que aparece é com esta fórmula
+        
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(long2 - long1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c;
+        
+        return distance;
     }
 
     @Override
