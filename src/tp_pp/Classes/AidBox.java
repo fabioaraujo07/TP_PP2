@@ -16,6 +16,8 @@ import java.math.MathContext;
  * @author Fábio da Cunha, Roger Nakauchi
  */
 public class AidBox implements com.estg.core.AidBox {
+    
+    private final double AVERAGE = 60;
 
     private String code;
     private String zone;
@@ -68,7 +70,20 @@ public class AidBox implements com.estg.core.AidBox {
 
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(aidbox == null){
+            throw new AidBoxException("O aidbox não existe");
+        }
+        
+        //Calcular a distância 
+        double distance = this.getDistance(aidbox);
+        
+        //Calcular a duração
+        double duration = distance / AVERAGE;// duração em horas 
+        
+        //Duração em segundos
+        duration *= 3600;
+        
+        return duration;
     }
 
     @Override
