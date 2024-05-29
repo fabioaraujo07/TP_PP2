@@ -45,7 +45,7 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements() { //Confirmar
+    public Measurement[] getMeasurements() { //Esse está certo
         Measurement[] copyMeasurements = new Measurement[numberMeasurements];
         for (int i = 0; i < numberMeasurements; i++) {
             if(measurements[i] != null){
@@ -56,7 +56,7 @@ public abstract class Container implements com.estg.core.Container {
     }
 
     @Override
-    public Measurement[] getMeasurements(LocalDate ld) { //Confirmar
+    public Measurement[] getMeasurements(LocalDate ld) { //Por mim parece que está certo
         Measurement[] copyMeasurements = new Measurement[numberMeasurements];
         int count = 0;
         
