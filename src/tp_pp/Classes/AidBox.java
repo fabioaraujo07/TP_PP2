@@ -12,7 +12,7 @@ import com.estg.core.exceptions.ContainerException;
 
 /**
  *
- * @author Roger Nakauchi
+ * @author Fábio da Cunha, Roger Nakauchi
  */
 public class AidBox implements com.estg.core.AidBox {
 
@@ -34,7 +34,20 @@ public class AidBox implements com.estg.core.AidBox {
 
     @Override
     public double getDistance(com.estg.core.AidBox aidbox) throws AidBoxException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(aidbox == null){
+            throw new AidBoxException("O aidbox não existe");
+        }
+        
+        //Supostamente tirando as coordenas de cada Aidbox
+        
+        //Current AidBox
+        double lat1 = this.getLatitude();
+        double long1 = this.getLongitude();
+        
+        //Parameter AidBox
+        
+        double lat2 = aidbox.getCoordinates().getLatitude();
+        double long2 = aidbox.getCoordinates().getLongitude();
     }
 
     @Override
@@ -57,7 +70,7 @@ public class AidBox implements com.estg.core.AidBox {
     }
 
     @Override
-    public boolean addContainer(Container cntnr) throws ContainerException {
+    public boolean addContainer(Container cntnr) throws ContainerException {// Já está pronto não mexa no meu código
         if (cntnr == null) {
             throw new ContainerException("Conteiner não pode ser nulo");
         }
