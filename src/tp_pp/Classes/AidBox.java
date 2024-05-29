@@ -62,11 +62,18 @@ public class AidBox implements com.estg.core.AidBox {
             throw new ContainerException("Conteiner não pode ser nulo");
         }
         if (findContainer(cntnr) != -1) {
-            throw new ContainerException("Container já se encontra atribuído");
+            return false;
         }
         if (this.numberContainers == this.containers.length) {
             throw new ContainerException("Capacidade máxima atingida");
         }
+        
+        for(int i = 0; 1 < numberContainers; i++){
+            if(containers[i].getType().equals(cntnr.getType())){
+                throw new ContainerException("Já existe conteiner do mesmo tipo");
+            }
+        }
+        
         this.containers[numberContainers++] = cntnr;
         return true;
     }

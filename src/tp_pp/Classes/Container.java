@@ -57,15 +57,15 @@ public abstract class Container implements com.estg.core.Container {
 
     @Override
     public Measurement[] getMeasurements(LocalDate ld) { //Por mim parece que está certo
-        Measurement[] copyMeasurements = new Measurement[numberMeasurements];
+        Measurement[] copyMeasurementsDate = new Measurement[numberMeasurements];
         int count = 0;
         
         for(int i = 0; i < numberMeasurements; i++) {
             if(measurements[i].getDate().toLocalDate().equals(ld)) {
-                copyMeasurements[count++] = measurements[i];
+                copyMeasurementsDate[count++] = measurements[i];
             }
         }
-        return copyMeasurements;
+        return copyMeasurementsDate;
     }
 
     @Override
