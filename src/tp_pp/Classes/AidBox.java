@@ -17,7 +17,7 @@ import java.math.MathContext;
  */
 public class AidBox implements com.estg.core.AidBox {
     
-    private final double AVERAGE = 60;
+    private final double AVERAGE = 60; // suponhamos que seja a velocidade média para cada veículo
 
     private String code;
     private String zone;
