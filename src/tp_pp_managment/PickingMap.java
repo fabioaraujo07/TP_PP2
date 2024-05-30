@@ -2,21 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tp_pp.Classes;
+package tp_pp_managment;
 
+import com.estg.pickingManagement.Route;
 import java.time.LocalDateTime;
 
 /**
  *
- * @author Roger Nakauchi
+ * @author fabio
  */
-public class Measurement implements com.estg.core.Measurement {
+public class PickingMap implements com.estg.pickingManagement.PickingMap{
+    
     private LocalDateTime date;
-    private double value;
+    
+    private Route[] routes;
 
-    public Measurement(LocalDateTime date, double value) {
+    public PickingMap(LocalDateTime date, Route[] routes) {
         this.date = date;
-        this.value = value;
+        this.routes = routes;
     }
     
     @Override
@@ -25,7 +28,8 @@ public class Measurement implements com.estg.core.Measurement {
     }
 
     @Override
-    public double getValue() {
-        return this.value;
+    public Route[] getRoutes() {
+        return this.routes;
     }
+    
 }

@@ -17,13 +17,16 @@ import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
 import java.time.LocalDateTime;
 
+
 /**
  *
  * @author Roger Nakauchi
  */
-public class Institution implements com.estg.core.Institution { 
+public class InstitutionImp implements com.estg.core.Institution { 
     
-    private String name;    
+    private String name;
+    private AidBox[] aidbox ;
+    private Measurement[] measurements;
 
     @Override
     public String getName() {

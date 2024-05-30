@@ -13,7 +13,7 @@ import java.time.LocalDate;
  *
  * @author Roger Nakauchi
  */
-public abstract class Container implements com.estg.core.Container {
+public class ContainerImp implements com.estg.core.Container {
 
     private String code;
     private double capacity;
@@ -21,7 +21,7 @@ public abstract class Container implements com.estg.core.Container {
     private Measurement[] measurements;
     private int numberMeasurements;
 
-    public Container(String code, double capacity, ItemType itemType) {
+    public ContainerImp(String code, double capacity, ItemType itemType) {
         this.code = code;
         this.capacity = capacity;
         this.itemType = itemType;
@@ -105,10 +105,10 @@ public abstract class Container implements com.estg.core.Container {
         if(this == obj){
             return true;
         }
-        if(obj == null || !(obj instanceof Container)){
+        if(obj == null || !(obj instanceof ContainerImp)){
             return false;
         }
-        Container cntnr = (Container) obj;
+        ContainerImp cntnr = (ContainerImp) obj;
         return this.code == cntnr.code;
     }
     

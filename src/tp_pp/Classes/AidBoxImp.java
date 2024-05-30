@@ -15,22 +15,22 @@ import java.math.MathContext;
  *
  * @author Fábio da Cunha, Roger Nakauchi
  */
-public class AidBox implements com.estg.core.AidBox {
+public class AidBoxImp implements com.estg.core.AidBox {
     
     private final double AVERAGE = 60; // suponhamos que seja a velocidade média para cada veículo
 
     private String code;
     private String zone;
     private String refLocal;
-    private GetCoordinates coordinates;
+    private GeographicCoordinates coordinates;
     private Container[] containers;
     private int numberContainers;
 
-    public AidBox(String code, String zone, String refLocal, double latitude, double longitude) {
+    public AidBoxImp(String code, String zone, String refLocal, double latitude, double longitude) {
         this.code = code;
         this.zone = zone;
         this.refLocal = refLocal;
-        this.coordinates = new GetCoordinates(latitude, longitude);
+        this.coordinates = new GetCoordinatesImp(latitude, longitude);
         this.containers = new Container[4];
         this.numberContainers = 0;
     }
@@ -162,10 +162,10 @@ public class AidBox implements com.estg.core.AidBox {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof AidBox)) {
+        if (obj == null || !(obj instanceof AidBoxImp)) {
             return false;
         }
-        AidBox aidbox = (AidBox) obj;
+        AidBoxImp aidbox = (AidBoxImp) obj;
         return this.code == aidbox.code;
     }
 
