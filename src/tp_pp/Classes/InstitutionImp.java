@@ -16,6 +16,9 @@ import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import tp_pp_exceptions.FindException;
 import tp_pp_managment.VehicleImp;
 
 /**
@@ -96,7 +99,13 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public AidBox[] getAidBoxes() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        AidBox[] copy = new AidBoxImp[nAidbox];
+        for(int i = 0; i < nAidbox; i++){
+            if(aidbox[i] != null){
+                copy[i] = aidbox[i];
+            }
+        }
+        return copy;
     }
 
     @Override
@@ -106,13 +115,40 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public Vehicle[] getVehicles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Vehicle[] copy = new VehicleImp[nVehicles];
+        for(int i = 0; i < nVehicles; i++){
+            if(vehicles[i] != null){
+                copy[i] = vehicles[i];
+            }
+        }
+        return copy;
+    }
+    
+    public int findVehicle(Vehicle vhcl) throws FindException{
+        for(int i = 0; i < nVehicles; i++){
+            if(this.vehicles[i].equals(vhcl)){
+                return i;
+            }
+        }
+        throw new FindException("Vehicle not found");
     }
 
     @Override
     public boolean addVehicle(Vehicle vhcl) throws VehicleException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(vhcl == null){
+            throw new VehicleException("Vehicle can´t be null");
+        }
+        try {
+            if(findVehicle(vhcl) != -1){
+                return false;
+            }
+        } catch (FindException ex) {
+            System.out.println("Vehicle already exists");
+        }
+        this.vehicles[nVehicles++] = vhcl;
+        return true;
     }
+    
 
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {

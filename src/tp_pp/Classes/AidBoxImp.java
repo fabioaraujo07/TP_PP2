@@ -148,7 +148,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     public Container[] getContainers() {
-        Container[] copyContainers = new Container[numberContainers];
+        Container[] copyContainers = new ContainerImp[numberContainers];
         for (int i = 0; i < numberContainers; i++) {
             if (containers[i] != null) {
                 copyContainers[i] = this.containers[i];
