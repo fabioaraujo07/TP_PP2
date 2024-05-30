@@ -132,21 +132,25 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         throw new FindException("Vehicle not found");
     }
-
-    @Override
+    
+       @Override
     public boolean addVehicle(Vehicle vhcl) throws VehicleException {
         if(vhcl == null){
             throw new VehicleException("Vehicle can´t be null");
         }
-        try {
-            if(findVehicle(vhcl) != -1){
-                return false;
-            }
+        try { 
+          //tentar encontrar vhcl
+           findVehicle(vhcl) ;
+          //se ainda estiver em execução aqui é porque o vhcl foi encontrado,
+          // nao pode addicionar
+          return false;
+            
         } catch (FindException ex) {
-            System.out.println("Vehicle already exists");
-        }
-        this.vehicles[nVehicles++] = vhcl;
+       //se veiculo nao foi encontrado, pode addicionar
+       this.vehicles[nVehicles++] = vhcl;
         return true;
+        }
+       
     }
     
 
