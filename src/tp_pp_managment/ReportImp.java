@@ -26,7 +26,7 @@ public class ReportImp implements com.estg.pickingManagement.Report {
     }
 
     @Override
-    public int getUsedVehicles() {
+    public int getUsedVehicles() throws IllegalArgumentException {
         if (this.institution instanceof InstitutionImp) {
             InstitutionImp inst = (InstitutionImp) this.institution;
             return inst.getUsedVehicles();
