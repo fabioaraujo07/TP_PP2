@@ -55,7 +55,6 @@ public class InstitutionImp implements com.estg.core.Institution {
     @Override
     public String getName() {
         return this.name;
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody;
     }
 
     public int findAidBox(AidBox aidBox) {
@@ -140,7 +139,6 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         measurements[numberMeasurements++] = (MeasurementImp) msrmnt;
         return true;
-
     }
 
     @Override
@@ -220,7 +218,20 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+        if (vhcl == null) {
+            throw new VehicleException("Vehicle can´t be null");
+        }
+        
+        try {
+            findVehicle(vhcl);
+            if(vehicles[findVehicle(vhcl)].isEnabled()) {
+                throw new VehicleException("Vehicle is already enabled");
+            }
+            vehicles[findVehicle(vhcl)].setEnabled(true);
+        } catch (FindException ex) {
+            throw new VehicleException("Vehicle doens't exist");
+        }    
     }
 
     @Override
