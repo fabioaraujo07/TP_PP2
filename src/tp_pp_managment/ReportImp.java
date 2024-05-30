@@ -37,11 +37,7 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public int getPickedContainers() {
-        if(this.container instanceof AidBoxImp){
-            int count = 0;
-            AidBoxImp aid = (AidBoxImp) this.container;
-            for(int i = 0; i < aid.)
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
