@@ -16,17 +16,25 @@ import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
 import java.time.LocalDateTime;
-
+import tp_pp_managment.VehicleImp;
 
 /**
  *
  * @author Roger Nakauchi
  */
-public class InstitutionImp implements com.estg.core.Institution { 
-    
+public class InstitutionImp implements com.estg.core.Institution {
+
     private String name;
-    private AidBox[] aidbox ;
+    private AidBox[] aidbox;
     private Measurement[] measurements;
+    private Vehicle[] vehicles;
+
+    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles) {
+        this.name = name;
+        this.aidbox = new AidBoxImp[10];
+        this.measurements = new MeasurementImp[10];
+        this.vehicles = new VehicleImp[10];
+    }
 
     @Override
     public String getName() {
@@ -97,6 +105,5 @@ public class InstitutionImp implements com.estg.core.Institution {
     public double getDistance(AidBox aidbox) throws AidBoxException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
+
 }
