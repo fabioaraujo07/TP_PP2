@@ -28,22 +28,65 @@ public class InstitutionImp implements com.estg.core.Institution {
     private AidBox[] aidbox;
     private Measurement[] measurements;
     private Vehicle[] vehicles;
+    private PickingMap[] pickingmaps;
+    private int nAidbox;
+    private int nMeasurements;
+    private int nVehicles;
+    private int nPickingmaps;
 
-    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles) {
+    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
         this.name = name;
         this.aidbox = new AidBoxImp[10];
         this.measurements = new MeasurementImp[10];
         this.vehicles = new VehicleImp[10];
+        this.pickingmaps = new PickingMap[10];
+        this.nAidbox = 0;
+        this.nMeasurements = 0;
+        this.nPickingmaps = 0;
+        this.nVehicles = 0;
     }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.name;
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody;
+    }
+
+    public int findAidBox(AidBox aidBox) {
+        for (int i = 0; i < nAidbox; i++) {
+            if (this.aidbox[i].equals(aidBox)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean hasDuplicateContainers(AidBox aidbox) {
+        Container[] container = aidbox.getContainers();
+        for (int i = 0; i < container.length; i++) {
+            for (int j = i + 1; j < container.length; i++) {
+                if (container[i].getType().equals(container[j].getType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (aidbox == null) {
+            throw new AidBoxException("AidBox can´t be null");
+        }
+        if (findAidBox(aidbox) != -1) {
+            return false;
+        }
+        if(hasDuplicateContainers(aidbox)){
+            throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
+        }
+        this.aidbox[nAidbox++] = aidbox;
+        return true;
+
     }
 
     @Override
