@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tp_pp_exceptions.FindException;
+import tp_pp_managment.PickingMapImp;
 import tp_pp_managment.VehicleImp;
 
 /**
@@ -28,27 +29,27 @@ import tp_pp_managment.VehicleImp;
 public class InstitutionImp implements com.estg.core.Institution {
 
     private String name;
-    private Container[] containers;
-    private AidBox[] aidbox;
-    private Measurement[] measurements;
+    private ContainerImp[] containers;
+    private AidBoxImp[] aidboxes;
+    private MeasurementImp[] measurements;
     private VehicleImp[] vehicles;
-    private PickingMap[] pickingmaps;
-    private int nAidbox;
+    private PickingMapImp[] pickingmaps;
+    private int numberAidbox;
     private int numberMeasurements;
-    private int nVehicles;
-    private int nPickingmaps;
+    private int numberVehicles;
+    private int numberPickingmaps;
     private int numberContainers;
 
-    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
+    public InstitutionImp(String name, AidBoxImp[] aidbox, MeasurementImp[] measurements, VehicleImp[] vehicles, PickingMapImp[] pickingmaps) {
         this.name = name;
-        this.aidbox = new AidBoxImp[10];
+        this.aidboxes = new AidBoxImp[10];
         this.measurements = new MeasurementImp[10];
         this.vehicles = new VehicleImp[10];
-        this.pickingmaps = new PickingMap[10];
-        this.nAidbox = 0;
+        this.pickingmaps = new PickingMapImp[10];
+        this.numberAidbox = 0;
         this.numberMeasurements = 0;
-        this.nPickingmaps = 0;
-        this.nVehicles = 0;
+        this.numberPickingmaps = 0;
+        this.numberVehicles = 0;
     }
 
     @Override
@@ -58,8 +59,8 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     public int findAidBox(AidBox aidBox) {
-        for (int i = 0; i < nAidbox; i++) {
-            if (this.aidbox[i].equals(aidBox)) {
+        for (int i = 0; i < numberAidbox; i++) {
+            if (this.aidboxes[i].equals(aidBox)) {
                 return i;
             }
         }
@@ -90,7 +91,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         if (hasDuplicateContainers(aidbox)) {
             throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
         }
-        this.aidbox[nAidbox++] = aidbox;
+        this.aidboxes[numberAidbox++] = (AidBoxImp) aidbox;
         return true;
 
     }
@@ -137,17 +138,17 @@ public class InstitutionImp implements com.estg.core.Institution {
             }
         }
 
-        measurements[numberMeasurements++] = msrmnt;
+        measurements[numberMeasurements++] = (MeasurementImp) msrmnt;
         return true;
 
     }
 
     @Override
     public AidBox[] getAidBoxes() {
-        AidBox[] copy = new AidBoxImp[nAidbox];
-        for (int i = 0; i < nAidbox; i++) {
-            if (aidbox[i] != null) {
-                copy[i] = aidbox[i];
+        AidBox[] copy = new AidBoxImp[numberAidbox];
+        for (int i = 0; i < numberAidbox; i++) {
+            if (aidboxes[i] != null) {
+                copy[i] = aidboxes[i];
             }
         }
         return copy;
@@ -160,8 +161,8 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public Vehicle[] getVehicles() {
-        Vehicle[] copy = new VehicleImp[nVehicles];
-        for (int i = 0; i < nVehicles; i++) {
+        Vehicle[] copy = new VehicleImp[numberVehicles];
+        for (int i = 0; i < numberVehicles; i++) {
             if (vehicles[i] != null) {
                 copy[i] = vehicles[i];
             }
@@ -170,7 +171,7 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     public int findVehicle(Vehicle vhcl) throws FindException {
-        for (int i = 0; i < nVehicles; i++) {
+        for (int i = 0; i < numberVehicles; i++) {
             if (this.vehicles[i].equals(vhcl)) {
                 return i;
             }
@@ -192,7 +193,7 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         } catch (FindException ex) {
             //se veiculo nao foi encontrado, pode addicionar
-            this.vehicles[nVehicles++] = (VehicleImp) vhcl;
+            this.vehicles[numberVehicles++] = (VehicleImp) vhcl;
             return true;
         }
 
