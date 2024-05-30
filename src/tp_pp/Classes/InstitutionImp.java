@@ -29,23 +29,23 @@ import tp_pp_managment.VehicleImp;
 public class InstitutionImp implements com.estg.core.Institution {
 
     private String name;
-    private ContainerImp[] containers;
-    private AidBoxImp[] aidboxes;
-    private MeasurementImp[] measurements;
-    private VehicleImp[] vehicles;
-    private PickingMapImp[] pickingmaps;
+    private Container[] containers;
+    private AidBox[] aidboxes;
+    private Measurement[] measurements;
+    private Vehicle[] vehicles;
+    private PickingMap[] pickingmaps;
     private int numberAidbox;
     private int numberMeasurements;
     private int numberVehicles;
     private int numberPickingmaps;
     private int numberContainers;
 
-    public InstitutionImp(String name, AidBoxImp[] aidbox, MeasurementImp[] measurements, VehicleImp[] vehicles, PickingMapImp[] pickingmaps) {
+    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
         this.name = name;
-        this.aidboxes = new AidBoxImp[10];
-        this.measurements = new MeasurementImp[10];
-        this.vehicles = new VehicleImp[10];
-        this.pickingmaps = new PickingMapImp[10];
+        this.aidboxes = new AidBox[10];
+        this.measurements = new Measurement[10];
+        this.vehicles = new Vehicle[10];
+        this.pickingmaps = new PickingMap[10];
         this.numberAidbox = 0;
         this.numberMeasurements = 0;
         this.numberPickingmaps = 0;
@@ -90,7 +90,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         if (hasDuplicateContainers(aidbox)) {
             throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
         }
-        this.aidboxes[numberAidbox++] = (AidBoxImp) aidbox;
+        this.aidboxes[numberAidbox++] = aidbox;
         return true;
 
     }
@@ -191,12 +191,13 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         } catch (FindException ex) {
             //se veiculo nao foi encontrado, pode addicionar
-            this.vehicles[numberVehicles++] = (VehicleImp) vhcl;
+            this.vehicles[numberVehicles++] = vhcl;
             return true;
         }
 
     }
 
+    //Confirmar se ta certo, nn tenho ctz do casting
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
     
@@ -206,16 +207,24 @@ public class InstitutionImp implements com.estg.core.Institution {
         
         try {
             findVehicle(vhcl);
-            if(!vehicles[findVehicle(vhcl)].isEnabled()) {
-                throw new VehicleException("Vehicle is already disabled");
+            Vehicle vehicle = vehicles[findVehicle(vhcl)];
+            
+            
+            if(vehicle instanceof VehicleImp) {
+                if(!((VehicleImp) vehicle).isEnabled()) {
+                    throw new VehicleException("Vehicle is already disabled");
+                }
+                ((VehicleImp) vehicle).setEnabled(false);
+            }else {
+                throw new VehicleException("Vehicle instance is not valid");
             }
-            vehicles[findVehicle(vhcl)].setEnabled(false);
             
         } catch (FindException ex) {
             throw new VehicleException("Vehicle doesn't exist");
         }
     }
 
+    //Confirmar se ta certo, nn tenho ctz do casting
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
     
@@ -225,33 +234,88 @@ public class InstitutionImp implements com.estg.core.Institution {
         
         try {
             findVehicle(vhcl);
-            if(vehicles[findVehicle(vhcl)].isEnabled()) {
-                throw new VehicleException("Vehicle is already enabled");
-            }
-            vehicles[findVehicle(vhcl)].setEnabled(true);
+            Vehicle vehicle = vehicles[findVehicle(vhcl)];
+            
+            if(vehicle instanceof VehicleImp) {
+                if(((VehicleImp) vehicle).isEnabled()) {
+                    throw new VehicleException("Vehicle is already enabled");
+                }
+                ((VehicleImp) vehicle).setEnabled(true);
+            } else {
+                throw new VehicleException("Vehicle instance is not valid");
+            }            
+            
         } catch (FindException ex) {
             throw new VehicleException("Vehicle doens't exist");
         }    
-    }
-
+    }    
+    
     @Override
     public PickingMap[] getPickingMaps() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PickingMap[] copy = new PickingMap[numberPickingmaps];
+        for(int i = 0; i < numberPickingmaps; i++) {
+            if(pickingmaps[i] != null) {
+                copy[i] = pickingmaps[i];
+            }
+        }
+        return copy;    
     }
 
     @Override
     public PickingMap[] getPickingMaps(LocalDateTime ldt, LocalDateTime ldt1) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PickingMap[] copy = new PickingMap[numberPickingmaps];
+        int counter = 0;
+        
+        for(int i = 0; i < numberPickingmaps; i++) {
+            LocalDateTime date = pickingmaps[i].getDate();
+            if(date.isAfter(ldt) && date.isBefore(ldt1)) {
+                copy[counter++] = pickingmaps[i];
+            }
+        }
+        return copy;        
     }
 
     @Override
     public PickingMap getCurrentPickingMap() throws PickingMapException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        if(numberPickingmaps == 0) {
+            throw new PickingMapException("There are no picking maps in the institution");
+        }
+        // Chat's help nessa parte
+        PickingMap currentPickingMap = pickingmaps[0];
+        for(int i = 0; i < numberPickingmaps; i++) {
+            if(pickingmaps[i].getDate().isAfter(currentPickingMap.getDate())) {
+                currentPickingMap = pickingmaps[i];
+            }
+        }
+        return currentPickingMap;
     }
-
+    
+    
+    public int findPickingMap(PickingMap pickingMap) throws FindException{
+        for(int i = 0; i < numberPickingmaps; i++) {
+            if(this.pickingmaps[i].equals(pickingMap)) {
+                return i;
+            }
+        }
+        throw new FindException("Picking map not found");
+    }
+    
+    
     @Override
     public boolean addPickingMap(PickingMap pm) throws PickingMapException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        if(pm == null) {
+            throw new PickingMapException("Picking map can't be null");
+        }
+        
+        try {
+            findPickingMap(pm);
+            return false;
+        } catch (FindException ex) {
+            this.pickingmaps[numberPickingmaps++] = pm;
+            return true;
+        }        
     }
 
     @Override
