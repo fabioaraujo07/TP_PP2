@@ -42,10 +42,10 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
         this.name = name;
-        this.aidboxes = new AidBox[10];
-        this.measurements = new Measurement[10];
-        this.vehicles = new Vehicle[10];
-        this.pickingmaps = new PickingMap[10];
+        this.aidboxes = new AidBoxImp[10];
+        this.measurements = new MeasurementImp[10];
+        this.vehicles = new VehicleImp[10];
+        this.pickingmaps = new PickingMapImp[10];
         this.numberAidbox = 0;
         this.numberMeasurements = 0;
         this.numberPickingmaps = 0;
@@ -320,7 +320,11 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        
+        
+        
+        
     }
 
 }
