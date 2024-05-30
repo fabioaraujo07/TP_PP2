@@ -75,6 +75,8 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         return false;
     }
+    
+    // Testando
 
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
