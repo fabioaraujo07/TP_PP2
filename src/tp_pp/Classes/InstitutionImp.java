@@ -6,6 +6,7 @@ package tp_pp.Classes;
 
 import com.estg.core.AidBox;
 import com.estg.core.Container;
+import com.estg.core.GeographicCoordinates;
 import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
@@ -39,8 +40,9 @@ public class InstitutionImp implements com.estg.core.Institution {
     private int numberVehicles;
     private int numberPickingmaps;
     private int numberContainers;
+    private GeographicCoordinates coordinates;
 
-    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
+    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps, GeographicCoordinates coordinates) {
         this.name = name;
         this.aidboxes = new AidBoxImp[10];
         this.measurements = new MeasurementImp[10];
@@ -50,6 +52,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         this.numberMeasurements = 0;
         this.numberPickingmaps = 0;
         this.numberVehicles = 0;
+        this.coordinates = coordinates;
     }
 
     @Override
@@ -95,7 +98,7 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     }
 
-    //gygwefuygyufgweyugfweyugewf8u
+    
     public int findContainer(Container container) {
         for (int i = 0; i < numberContainers; i++) {
             if (this.containers[i].equals(container)) {
@@ -130,11 +133,9 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         for (int i = 0; i < numberMeasurements; i++) {
             if (measurements[i].getDate().equals(msrmnt.getDate())) {
-                if (measurements[i].getValue() != msrmnt.getValue()) {
-                    throw new MeasurementException("Measurement alredy exists for a given date");
-                }
-                return false;
+                throw new MeasurementException("Measurement alredy exists for a given date");
             }
+            return false;
         }
 
         measurements[numberMeasurements++] = (MeasurementImp) msrmnt;
@@ -321,10 +322,42 @@ public class InstitutionImp implements com.estg.core.Institution {
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
         
+        if(aidbox == null) {
+            throw new AidBoxException("AidBox can't be null");
+        }
         
+        // Institution coordinates
+        double latInstitution = this.getLatitude();
+        double lonInstitution = this.getLongitude();
         
+        // AidBox parameter coordinates
+        double latAidbox = aidbox.getCoordinates().getLatitude();
+        double lonAidbox = aidbox.getCoordinates().getLongitude();
         
+        // Raio da Terra em Kms
+        final int R = 6371;
         
+        // Contas malucas
+        double latDistance = Math.toRadians(latAidbox - latInstitution);
+        double lonDistance = Math.toRadians(lonAidbox - lonInstitution);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(latInstitution)) * Math.cos(Math.toRadians(latAidbox))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c;
+        
+        return distance;
     }
+
+    public double getLatitude() {
+        return coordinates.getLatitude();
+    }
+    
+    public double getLongitude() {
+        return coordinates.getLongitude();
+    }
+    
+    
+    
 
 }
