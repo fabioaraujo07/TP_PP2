@@ -357,6 +357,10 @@ public class InstitutionImp implements com.estg.core.Institution {
         return coordinates.getLongitude();
     }
     
+    public int getUsedVehicles(){
+        return this.numberVehicles;
+    }
+    
     
     
 

@@ -15,7 +15,7 @@ import java.math.MathContext;
  *
  * @author Fábio da Cunha, Roger Nakauchi
  */
-public class AidBoxImp implements com.estg.core.AidBox {
+   public class AidBoxImp implements com.estg.core.AidBox {
     
     private final double AVERAGE = 60; // suponhamos que seja a velocidade média para cada veículo
 
