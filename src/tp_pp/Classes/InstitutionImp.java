@@ -28,14 +28,16 @@ import tp_pp_managment.VehicleImp;
 public class InstitutionImp implements com.estg.core.Institution {
 
     private String name;
+    private Container[] containers;
     private AidBox[] aidbox;
     private Measurement[] measurements;
     private Vehicle[] vehicles;
     private PickingMap[] pickingmaps;
     private int nAidbox;
-    private int nMeasurements;
+    private int numberMeasurements;
     private int nVehicles;
     private int nPickingmaps;
+    private int numberContainers;
 
     public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps) {
         this.name = name;
@@ -44,7 +46,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         this.vehicles = new VehicleImp[10];
         this.pickingmaps = new PickingMap[10];
         this.nAidbox = 0;
-        this.nMeasurements = 0;
+        this.numberMeasurements = 0;
         this.nPickingmaps = 0;
         this.nVehicles = 0;
     }
@@ -75,9 +77,8 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         return false;
     }
-    
-    // Testando
 
+    // Testando
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -86,7 +87,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         if (findAidBox(aidbox) != -1) {
             return false;
         }
-        if(hasDuplicateContainers(aidbox)){
+        if (hasDuplicateContainers(aidbox)) {
             throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
         }
         this.aidbox[nAidbox++] = aidbox;
@@ -95,16 +96,58 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     //gygwefuygyufgweyugfweyugewf8u
+    public int findContainer(Container container) {
+        for (int i = 0; i < numberContainers; i++) {
+            if (this.containers[i].equals(container)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public boolean addMeasurement(Measurement msrmnt, Container cntnr) throws ContainerException, MeasurementException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        if (cntnr == null) {
+            throw new ContainerException("Container can't be null");
+        }
+
+        if (msrmnt == null) {
+            throw new MeasurementException("Measurement can't be null");
+        }
+
+        if (msrmnt.getValue() < 0) {
+            throw new MeasurementException("Measurement value can less than zero");
+        }
+
+        if (msrmnt.getValue() > cntnr.getCapacity()) {
+            throw new MeasurementException("Measurement can't be higger than capacity");
+        }
+
+        if (findContainer(cntnr) == -1) {
+            throw new ContainerException("Container could not be found");
+        }
+
+        for (int i = 0; i < numberMeasurements; i++) {
+            if (measurements[i].getDate().equals(msrmnt.getDate())) {
+                if (measurements[i].getValue() != msrmnt.getValue()) {
+                    throw new MeasurementException("Measurement alredy exists for a given date");
+                }
+                return false;
+            }
+        }
+
+        measurements[numberMeasurements++] = msrmnt;
+        return true;
+
     }
+    ﻿
 
     @Override
     public AidBox[] getAidBoxes() {
         AidBox[] copy = new AidBoxImp[nAidbox];
-        for(int i = 0; i < nAidbox; i++){
-            if(aidbox[i] != null){
+        for (int i = 0; i < nAidbox; i++) {
+            if (aidbox[i] != null) {
                 copy[i] = aidbox[i];
             }
         }
@@ -119,43 +162,42 @@ public class InstitutionImp implements com.estg.core.Institution {
     @Override
     public Vehicle[] getVehicles() {
         Vehicle[] copy = new VehicleImp[nVehicles];
-        for(int i = 0; i < nVehicles; i++){
-            if(vehicles[i] != null){
+        for (int i = 0; i < nVehicles; i++) {
+            if (vehicles[i] != null) {
                 copy[i] = vehicles[i];
             }
         }
         return copy;
     }
-    
-    public int findVehicle(Vehicle vhcl) throws FindException{
-        for(int i = 0; i < nVehicles; i++){
-            if(this.vehicles[i].equals(vhcl)){
+
+    public int findVehicle(Vehicle vhcl) throws FindException {
+        for (int i = 0; i < nVehicles; i++) {
+            if (this.vehicles[i].equals(vhcl)) {
                 return i;
             }
         }
         throw new FindException("Vehicle not found");
     }
-    
-       @Override
+
+    @Override
     public boolean addVehicle(Vehicle vhcl) throws VehicleException {
-        if(vhcl == null){
+        if (vhcl == null) {
             throw new VehicleException("Vehicle can´t be null");
         }
-        try { 
-          //tentar encontrar vhcl
-           findVehicle(vhcl) ;
-          //se ainda estiver em execução aqui é porque o vhcl foi encontrado,
-          // nao pode addicionar
-          return false;
-            
+        try {
+            //tentar encontrar vhcl
+            findVehicle(vhcl);
+            //se ainda estiver em execução aqui é porque o vhcl foi encontrado,
+            // nao pode addicionar
+            return false;
+
         } catch (FindException ex) {
-       //se veiculo nao foi encontrado, pode addicionar
-       this.vehicles[nVehicles++] = vhcl;
-        return true;
+            //se veiculo nao foi encontrado, pode addicionar
+            this.vehicles[nVehicles++] = vhcl;
+            return true;
         }
-       
+
     }
-    
 
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
