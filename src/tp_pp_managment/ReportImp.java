@@ -4,50 +4,21 @@
  */
 package tp_pp_managment;
 
-import com.estg.core.AidBox;
-import com.estg.pickingManagement.Vehicle;
-import com.estg.pickingManagement.exceptions.RouteException;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author fabio
  */
-public class Route implements com.estg.pickingManagement.Route{
-    
-    private Route route[];
+public class ReportImp implements com.estg.pickingManagement.Report{
 
     @Override
-    public void addAidBox(AidBox aidbox) throws RouteException {
+    public int getUsedVehicles() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public AidBox removeAidBox(AidBox aidbox) throws RouteException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public boolean containsAidBox(AidBox aidbox) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void replaceAidBox(AidBox aidbox, AidBox aidbox1) throws RouteException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void insertAfter(AidBox aidbox, AidBox aidbox1) throws RouteException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public AidBox[] getRoute() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Vehicle getVehicle() {
+    public int getPickedContainers() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -58,6 +29,21 @@ public class Route implements com.estg.pickingManagement.Route{
 
     @Override
     public double getTotalDuration() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int getNonPickedContainers() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int getNotUsedVehicles() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public LocalDateTime getDate() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

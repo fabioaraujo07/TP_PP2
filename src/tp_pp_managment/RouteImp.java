@@ -4,21 +4,50 @@
  */
 package tp_pp_managment;
 
-import java.time.LocalDateTime;
+import com.estg.core.AidBox;
+import com.estg.pickingManagement.Vehicle;
+import com.estg.pickingManagement.exceptions.RouteException;
 
 /**
  *
  * @author fabio
  */
-public class Report implements com.estg.pickingManagement.Report{
+public class RouteImp implements com.estg.pickingManagement.Route{
+    
+    private RouteImp route[];
 
     @Override
-    public int getUsedVehicles() {
+    public void addAidBox(AidBox aidbox) throws RouteException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public int getPickedContainers() {
+    public AidBox removeAidBox(AidBox aidbox) throws RouteException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean containsAidBox(AidBox aidbox) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void replaceAidBox(AidBox aidbox, AidBox aidbox1) throws RouteException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void insertAfter(AidBox aidbox, AidBox aidbox1) throws RouteException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public AidBox[] getRoute() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Vehicle getVehicle() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -29,21 +58,6 @@ public class Report implements com.estg.pickingManagement.Report{
 
     @Override
     public double getTotalDuration() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int getNonPickedContainers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int getNotUsedVehicles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public LocalDateTime getDate() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

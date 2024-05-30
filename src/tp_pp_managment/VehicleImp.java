@@ -10,12 +10,12 @@ import com.estg.core.ItemType;
  *
  * @author fabio
  */
-public class Vehicle implements com.estg.pickingManagement.Vehicle{
+public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     
     private double capacity;
     private ItemType supply;
 
-    public Vehicle(double capacity, ItemType supply) {
+    public VehicleImp(double capacity, ItemType supply) {
         this.capacity = capacity;
         this.supply = supply;
     }

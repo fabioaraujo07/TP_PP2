@@ -31,7 +31,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
         this.zone = zone;
         this.refLocal = refLocal;
         this.coordinates = new GetCoordinatesImp(latitude, longitude);
-        this.containers = new Container[4];
+        this.containers = new ContainerImp[4];
         this.numberContainers = 0;
     }
 
