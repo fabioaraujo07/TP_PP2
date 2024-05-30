@@ -141,7 +141,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         return true;
 
     }
-    ﻿
 
     @Override
     public AidBox[] getAidBoxes() {
