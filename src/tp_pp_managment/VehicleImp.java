@@ -14,13 +14,21 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     
     private double capacity;
     private ItemType supply;
+    private boolean enabled;
 
     public VehicleImp(double capacity, ItemType supply) {
         this.capacity = capacity;
         this.supply = supply;
+        this.enabled = true;
     }
     
+    public boolean isEnabled(){
+        return enabled;
+    }
     
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
     public ItemType getSupplyType() {
@@ -31,5 +39,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     public double getMaxCapacity() {
         return this.capacity;
     }
+    
+    
     
 }

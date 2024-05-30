@@ -31,7 +31,7 @@ public class InstitutionImp implements com.estg.core.Institution {
     private Container[] containers;
     private AidBox[] aidbox;
     private Measurement[] measurements;
-    private Vehicle[] vehicles;
+    private VehicleImp[] vehicles;
     private PickingMap[] pickingmaps;
     private int nAidbox;
     private int numberMeasurements;
@@ -192,7 +192,7 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         } catch (FindException ex) {
             //se veiculo nao foi encontrado, pode addicionar
-            this.vehicles[nVehicles++] = vhcl;
+            this.vehicles[nVehicles++] = (VehicleImp) vhcl;
             return true;
         }
 
@@ -200,7 +200,21 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    
+        if (vhcl == null) {
+            throw new VehicleException("Vehicle can´t be null");
+        }
+        
+        try {
+            findVehicle(vhcl);
+            if(!vehicles[findVehicle(vhcl)].isEnabled()) {
+                throw new VehicleException("Vehicle is already disabled");
+            }
+            vehicles[findVehicle(vhcl)].setEnabled(false);
+            
+        } catch (FindException ex) {
+            throw new VehicleException("Vehicle doesn't exist");
+        }
     }
 
     @Override
