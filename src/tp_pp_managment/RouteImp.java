@@ -8,6 +8,7 @@ import com.estg.core.AidBox;
 import com.estg.core.ItemType;
 import com.estg.pickingManagement.Vehicle;
 import com.estg.pickingManagement.exceptions.RouteException;
+import tp_pp_exceptions.FindException;
 
 /**
  *
@@ -15,19 +16,19 @@ import com.estg.pickingManagement.exceptions.RouteException;
  */
 public class RouteImp implements com.estg.pickingManagement.Route{
     
-    private AidBox route[];
+    private AidBox[] routes;
     private int numberAidboxes;
     private Vehicle vehicle;
 
     public RouteImp(AidBox[] route, int numberAidboxes) {
-        this.route = new AidBox[10];
+        this.routes = new AidBox[10];
         this.numberAidboxes = 0;
     }
     
     
-    public boolean hasAidBox(AidBox aidbox) {
+    public boolean findAidBox(AidBox aidbox) {
         for(int i = 0; i < numberAidboxes; i++) {
-            if(route[i].equals(aidbox)) {
+            if(routes[i].equals(aidbox)) {
                 return true;
             }
         }
@@ -41,7 +42,7 @@ public class RouteImp implements com.estg.pickingManagement.Route{
         if(aidbox == null) {
             throw new RouteException("Aidbox can't be null");
         }
-        if(hasAidBox(aidbox)) {
+        if(findAidBox(aidbox)) {
             throw new RouteException("Aidbox already exists in the route");
         }
         if(vehicle instanceof VehicleImp) {
@@ -58,12 +59,32 @@ public class RouteImp implements com.estg.pickingManagement.Route{
                 throw new RouteException("Vehicle can't transport Perishable food Aidbox type");
             }
         }
-        route[numberAidboxes++] = aidbox;        
+        routes[numberAidboxes++] = aidbox;        
     }
 
     @Override
     public AidBox removeAidBox(AidBox aidbox) throws RouteException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        AidBox removedAidbox = null;
+        
+        if(aidbox == null) {
+            throw new RouteException("Aidbox can't be null");
+        }
+        if(findAidBox(aidbox) == false) {
+            throw new RouteException("Aidbox could not be found");
+        }
+        for(int i = 0; i < numberAidboxes; i++) {
+            if(routes[i].equals(aidbox)) {
+                removedAidbox = routes[i];
+            }
+            
+            for(int j = i; j < numberAidboxes - 1; j++) {
+                routes[j] = routes[j + 1];
+            }
+            routes[numberAidboxes - 1] = null;
+            numberAidboxes--;            
+        }
+        return removedAidbox;
     }
 
     @Override
