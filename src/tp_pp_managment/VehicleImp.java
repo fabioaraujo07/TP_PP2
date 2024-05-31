@@ -40,6 +40,13 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
         return this.capacity;
     }
     
-    
+    public boolean canTransport(ItemType supply) {
+        for(int i = 0; i < capacity; i++) {
+            if(this.supply.equals(supply)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
 }

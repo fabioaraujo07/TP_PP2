@@ -5,6 +5,7 @@
 package tp_pp_managment;
 
 import com.estg.core.AidBox;
+import com.estg.core.ItemType;
 import com.estg.pickingManagement.Vehicle;
 import com.estg.pickingManagement.exceptions.RouteException;
 
@@ -16,6 +17,7 @@ public class RouteImp implements com.estg.pickingManagement.Route{
     
     private AidBox route[];
     private int numberAidboxes;
+    private Vehicle vehicle;
 
     public RouteImp(AidBox[] route, int numberAidboxes) {
         this.route = new AidBox[10];
@@ -42,9 +44,21 @@ public class RouteImp implements com.estg.pickingManagement.Route{
         if(hasAidBox(aidbox)) {
             throw new RouteException("Aidbox already exists in the route");
         }
-        // Continuar com a terceira verificacao
-        
-        
+        if(vehicle instanceof VehicleImp) {
+            if(!((VehicleImp) vehicle).canTransport(ItemType.CLOTHING)) {
+                throw new RouteException("Vehicle can't transport Clothing Aidbox type");
+            }
+            if(!((VehicleImp) vehicle).canTransport(ItemType.MEDICINE)) {
+                throw new RouteException("Vehicle can't transport Medicine Aidbox type");
+            }
+            if(!((VehicleImp) vehicle).canTransport(ItemType.NON_PERISHABLE_FOOD)) {
+                throw new RouteException("Vehicle can't transport Non Perishable Food Aidbox type");
+            }
+            if(!((VehicleImp) vehicle).canTransport(ItemType.PERISHABLE_FOOD)) {
+                throw new RouteException("Vehicle can't transport Perishable food Aidbox type");
+            }
+        }
+        route[numberAidboxes++] = aidbox;        
     }
 
     @Override
