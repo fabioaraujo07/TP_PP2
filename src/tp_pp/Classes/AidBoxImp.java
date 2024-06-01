@@ -147,6 +147,10 @@ public class AidBoxImp implements com.estg.core.AidBox {
     public int getPickedContainers(){
         return this.numberContainers;
     }
+    
+    public int getNonPickedContainers(){
+        return containers.length - this.numberContainers;
+    }
 
     public Container[] getContainers() {
         Container[] copyContainers = new ContainerImp[numberContainers];

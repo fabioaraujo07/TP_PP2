@@ -50,44 +50,61 @@ public class ReportImp implements com.estg.pickingManagement.Report {
             AidBoxImp aid = (AidBoxImp) this.container;
             return aid.getPickedContainers();
         } else {
-            throw new IllegalArgumentException("Container is not of type RouteImp");
+            throw new IllegalArgumentException("Container is not of type AidboxImp");
         }
     }
 
     @Override
     public double getTotalDistance() {
-        if(this.distance == null){
+        if (this.distance == null) {
             throw new IllegalArgumentException("Distance can't be null");
         }
-        if(this.distance instanceof RouteImp){
+        if (this.distance instanceof RouteImp) {
             RouteImp dist = (RouteImp) this.distance;
             return this.getTotalDistance();
-        }else{
+        } else {
             throw new IllegalArgumentException("Distance is not of type RouteImp");
         }
     }
 
     @Override
     public double getTotalDuration() {
-        if (this.duration == null){
+        if (this.duration == null) {
             throw new IllegalArgumentException("Duration can't be null");
         }
-        if (this.duration instanceof RouteImp){
+        if (this.duration instanceof RouteImp) {
             RouteImp dur = (RouteImp) this.duration;
             return dur.getTotalDuration();
-        }else{
+        } else {
             throw new IllegalArgumentException("Container is not of type AidboxImp");
         }
     }
 
     @Override
     public int getNonPickedContainers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.container == null) {
+            return -1;
+        }
+        if (this.container instanceof AidBoxImp) {
+            AidBoxImp cntnr = (AidBoxImp) this.container;
+            return cntnr.getNonPickedContainers();
+        } else {
+            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        }
     }
 
     @Override
     public int getNotUsedVehicles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.institution == null) {
+            return -1;
+        }
+        if (this.institution instanceof InstitutionImp) {
+            InstitutionImp vhcl = (InstitutionImp) this.institution;
+            return vhcl.getNotUsedVehicles();
+        } else {
+            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        }
+
     }
 
     @Override

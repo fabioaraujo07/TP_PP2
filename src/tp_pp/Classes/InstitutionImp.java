@@ -361,6 +361,10 @@ public class InstitutionImp implements com.estg.core.Institution {
         return this.numberVehicles;
     }
     
+    public int getNotUsedVehicles(){
+        return this.vehicles.length - this.numberVehicles;
+    }
+    
     
     
 
