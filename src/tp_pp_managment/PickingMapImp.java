@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
  */
 public class PickingMapImp implements com.estg.pickingManagement.PickingMap{
     
-    private LocalDateTime date;
-    
+    private LocalDateTime date;    
     private Route[] routes;
 
     public PickingMapImp(LocalDateTime date, Route[] routes) {

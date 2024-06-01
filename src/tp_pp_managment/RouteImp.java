@@ -19,10 +19,14 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private AidBox[] routes;
     private int numberAidboxes;
     private Vehicle vehicle;
+    private double totalDistance;
+    private double totalDuration;
 
-    public RouteImp(AidBox[] route, int numberAidboxes) {
+    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, double totalDuration) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
+        this.totalDistance = totalDistance;
+        this.totalDuration = totalDuration;
     }
 
     public boolean findAidBox(AidBox aidbox) {
@@ -172,26 +176,33 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         routes[positionAidBox1 + 1] = aidbox1;
         numberAidboxes++;
 
-    }
+    }    
+    
 
     @Override
     public AidBox[] getRoute() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        AidBox[] copy = new AidBox[numberAidboxes];
+        for(int i = 0; i < numberAidboxes; i++) {
+            if(routes[i] != null) {
+                copy[i] = routes[i];
+            }
+        }
+        return copy;    
     }
 
     @Override
     public Vehicle getVehicle() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.vehicle;        
     }
 
     @Override
     public double getTotalDistance() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.totalDistance;
     }
 
     @Override
     public double getTotalDuration() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.totalDuration;
     }
 
 }
