@@ -8,6 +8,7 @@ import com.estg.core.Institution;
 import java.time.LocalDateTime;
 import tp_pp.Classes.InstitutionImp;
 import com.estg.core.AidBox;
+import com.estg.pickingManagement.Route;
 import tp_pp.Classes.AidBoxImp;
 
 /**
@@ -20,6 +21,8 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     private Institution institution;
     private AidBox container;
+    private Route distance;
+    private Route duration;
 
     public ReportImp(LocalDateTime date) {
         this.date = date;
@@ -27,6 +30,9 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public int getUsedVehicles() throws IllegalArgumentException {
+        if (this.institution == null) {
+            throw new IllegalArgumentException("Institution can't be null");
+        }
         if (this.institution instanceof InstitutionImp) {
             InstitutionImp inst = (InstitutionImp) this.institution;
             return inst.getUsedVehicles();
@@ -37,17 +43,41 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public int getPickedContainers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.container == null) {
+            throw new IllegalArgumentException("Container can't be null");
+        }
+        if (this.container instanceof AidBoxImp) {
+            AidBoxImp aid = (AidBoxImp) this.container;
+            return aid.getPickedContainers();
+        } else {
+            throw new IllegalArgumentException("Container is not of type RouteImp");
+        }
     }
 
     @Override
     public double getTotalDistance() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(this.distance == null){
+            throw new IllegalArgumentException("Distance can't be null");
+        }
+        if(this.distance instanceof RouteImp){
+            RouteImp dist = (RouteImp) this.distance;
+            return this.getTotalDistance();
+        }else{
+            throw new IllegalArgumentException("Distance is not of type RouteImp");
+        }
     }
 
     @Override
     public double getTotalDuration() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.duration == null){
+            throw new IllegalArgumentException("Duration can't be null");
+        }
+        if (this.duration instanceof RouteImp){
+            RouteImp dur = (RouteImp) this.duration;
+            return dur.getTotalDuration();
+        }else{
+            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        }
     }
 
     @Override
@@ -62,7 +92,7 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public LocalDateTime getDate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.date;
     }
 
 }

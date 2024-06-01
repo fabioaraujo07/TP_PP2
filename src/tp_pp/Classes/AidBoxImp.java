@@ -15,8 +15,8 @@ import java.math.MathContext;
  *
  * @author Fábio da Cunha, Roger Nakauchi
  */
-   public class AidBoxImp implements com.estg.core.AidBox {
-    
+public class AidBoxImp implements com.estg.core.AidBox {
+
     private final double AVERAGE = 60; // suponhamos que seja a velocidade média para cada veículo
 
     private String code;
@@ -37,26 +37,23 @@ import java.math.MathContext;
 
     @Override
     public double getDistance(com.estg.core.AidBox aidbox) throws AidBoxException {
-        if(aidbox == null){
+        if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
-        
+
         //Supostamente tirando as coordenas de cada Aidbox
-        
         //Current AidBox
         double lat1 = this.getLatitude();
         double long1 = this.getLongitude();
-        
+
         //Parameter AidBox
-        
         double lat2 = aidbox.getCoordinates().getLatitude();
         double long2 = aidbox.getCoordinates().getLongitude();
-        
+
         //Raio da Terra em KM
         final int R = 6371;
-        
+
         //Por enquanto vamos deixar assim, confirmar com o professor, porque tudo que aparece é com esta fórmula
-        
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(long2 - long1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -64,25 +61,25 @@ import java.math.MathContext;
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c;
-        
+
         return distance;
     }
 
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
-        if(aidbox == null){
+        if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
-        
+
         //Calcular a distância 
         double distance = this.getDistance(aidbox);
-        
+
         //Calcular a duração
         double duration = distance / AVERAGE;// duração em horas 
-        
+
         //Duração em segundos
         duration *= 3600;
-        
+
         return duration;
     }
 
@@ -111,13 +108,13 @@ import java.math.MathContext;
         if (this.numberContainers == this.containers.length) {
             throw new ContainerException("Max capacity hitted");
         }
-        
-        for(int i = 0; 1 < numberContainers; i++){
-            if(containers[i].getType().equals(cntnr.getType())){
+
+        for (int i = 0; 1 < numberContainers; i++) {
+            if (containers[i].getType().equals(cntnr.getType())) {
                 throw new ContainerException("AidBox already have a container from a given type");
             }
         }
-        
+
         this.containers[numberContainers++] = cntnr;
         return true;
     }
@@ -145,6 +142,10 @@ import java.math.MathContext;
     @Override
     public String getRefLocal() {
         return this.refLocal;
+    }
+    
+    public int getPickedContainers(){
+        return this.numberContainers;
     }
 
     public Container[] getContainers() {
