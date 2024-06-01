@@ -6,8 +6,11 @@ package tp_pp_managment;
 
 import com.estg.core.AidBox;
 import com.estg.core.ItemType;
+import com.estg.core.exceptions.AidBoxException;
 import com.estg.pickingManagement.Vehicle;
 import com.estg.pickingManagement.exceptions.RouteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tp_pp_exceptions.FindException;
 
 /**
@@ -21,12 +24,14 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private Vehicle vehicle;
     private double totalDistance;
     private double totalDuration;
+    private RouteValidatorImp validator;
 
-    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, double totalDuration) {
+    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, double totalDuration, RouteValidatorImp validator) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
         this.totalDistance = totalDistance;
         this.totalDuration = totalDuration;
+        this.validator = new RouteValidatorImp();
     }
 
     public boolean findAidBox(AidBox aidbox) {
@@ -203,7 +208,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         
         double totalDistance = 0;
         for(int i = 0; i < numberAidboxes; i++) {
-            totalDistance += this.totalDistance;
+            AidBox current = routes[i];
+            AidBox next = routes[i + 1];
+            try {
+                totalDistance += current.getDistance(next);
+            } catch (AidBoxException ex) {
+                System.out.println("Error during the calculation");
+            }
         }
         return totalDistance;
     }
@@ -216,7 +227,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         double totalDuration = 0;
         
         for(int i = 0; i < numberAidboxes; i++) {
-            totalDuration += this.totalDuration;
+            AidBox current = routes[i];
+            AidBox next = routes[i + 1];
+            try {
+                totalDuration += current.getDuration(next);
+            } catch (AidBoxException ex) {
+                System.out.println("Error during the calculation");
+            }
         }
         return totalDuration;
     }
