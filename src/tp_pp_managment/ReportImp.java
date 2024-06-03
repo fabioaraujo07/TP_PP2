@@ -20,12 +20,14 @@ public class ReportImp implements com.estg.pickingManagement.Report {
     private LocalDateTime date;
 
     private Institution institution;
-    private AidBox container;
+    private AidBox aidbox;
     private Route distance;
     private Route duration;
-
-    public ReportImp(LocalDateTime date) {
+    
+    public ReportImp(LocalDateTime date, Institution institution, AidBox container) {
         this.date = date;
+        this.institution = institution;
+        this.aidbox = container;
     }
 
     @Override
@@ -43,11 +45,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public int getPickedContainers() {
-        if (this.container == null) {
+        if (this.aidbox == null) {
             throw new IllegalArgumentException("Container can't be null");
         }
-        if (this.container instanceof AidBoxImp) {
-            AidBoxImp aid = (AidBoxImp) this.container;
+        if (this.aidbox instanceof AidBoxImp) {
+            AidBoxImp aid = (AidBoxImp) this.aidbox;
             return aid.getPickedContainers();
         } else {
             throw new IllegalArgumentException("Container is not of type AidboxImp");
@@ -82,11 +84,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     @Override
     public int getNonPickedContainers() {
-        if (this.container == null) {
+        if (this.aidbox == null) {
             return -1;
         }
-        if (this.container instanceof AidBoxImp) {
-            AidBoxImp cntnr = (AidBoxImp) this.container;
+        if (this.aidbox instanceof AidBoxImp) {
+            AidBoxImp cntnr = (AidBoxImp) this.aidbox;
             return cntnr.getNonPickedContainers();
         } else {
             throw new IllegalArgumentException("Container is not of type AidboxImp");
