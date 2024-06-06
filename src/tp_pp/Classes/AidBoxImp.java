@@ -11,11 +11,14 @@ import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
-import java.math.MathContext;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
 
 /**
@@ -47,14 +50,30 @@ public class AidBoxImp implements com.estg.core.AidBox {
         if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("Files/Distances.json")) {
+            JSONArray distanceArray = (JSONArray) parser.parse(reader);
 
-        try {
-            FileReader reader = new FileReader("Files/Distances.json");
-            JSONObject distancesObject
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(AidBoxImp.class.getName()).log(Level.SEVERE, null, ex);
+            for (Object o : distanceArray) {
+                JSONObject distancesObject = (JSONObject) o;
+                String from = (String) distancesObject.get("from");
+                if (from.equals(this.code)) {
+                    JSONArray distancesToArray = (JSONArray) distancesObject.get("to");
+                    for (Object AB : distancesToArray) {
+                        JSONObject distancesTO = (JSONObject) AB;
+
+                        String name = (String) distancesTO.get("name");
+                        if (name.equals(aidbox.getCode())) {
+                            return (long) distancesTO.get("distance");
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
         }
-        
+        throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
+
     }
 
     @Override
@@ -62,17 +81,29 @@ public class AidBoxImp implements com.estg.core.AidBox {
         if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("Files/Distances.json")) {
+            JSONArray distanceArray = (JSONArray) parser.parse(reader);
 
-        //Calcular a distância 
-        double distance = this.getDistance(aidbox);
+            for (Object o : distanceArray) {
+                JSONObject distancesObject = (JSONObject) o;
+                String from = (String) distancesObject.get("from");
+                if (from.equals(this.code)) {
+                    JSONArray distancesToArray = (JSONArray) distancesObject.get("to");
+                    for (Object AB : distancesToArray) {
+                        JSONObject distancesTO = (JSONObject) AB;
 
-        //Calcular a duração
-        double duration = distance / AVERAGE;// duração em horas 
-
-        //Duração em segundos
-        duration *= 3600;
-
-        return duration;
+                        String name = (String) distancesTO.get("name");
+                        if (name.equals(aidbox.getCode())) {
+                            return (long) distancesTO.get("duration");
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
     }
 
     @Override
@@ -80,7 +111,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return this.coordinates;
     }
 
-    public int findContainer(Container cntnr) throws FindException{
+    public int findContainer(Container cntnr) throws FindException {
         for (int i = 0; i < this.numberContainers; i++) {
             if (this.containers[i].equals(cntnr)) {
                 return i;
@@ -117,8 +148,8 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     @Override
     public Container getContainer(ItemType it) {
-        for (int i = 0; i < numberContainers; i++){
-            if(containers[i] != null && containers[i].getType().equals(it)){
+        for (int i = 0; i < numberContainers; i++) {
+            if (containers[i] != null && containers[i].getType().equals(it)) {
                 return containers[i];
             }
         }
@@ -180,19 +211,19 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     @Override
     public String toString() {
-    String result = "Code: " + code + "\n" +
-                    "Zone: " + zone + "\n" +
-                    "Latitude: " + coordinates.getLatitude() + "\n" +
-                    "Longitude: " + coordinates.getLongitude() + "\n" +
-                    "Containers:\n";
-    
-    for (int i = 0; i < numberContainers; i++) {
-        if (containers[i] != null) {
-            result += containers[i].toString() + "\n";
+        String result = "Code: " + code + "\n"
+                + "Zone: " + zone + "\n"
+                + "Latitude: " + coordinates.getLatitude() + "\n"
+                + "Longitude: " + coordinates.getLongitude() + "\n"
+                + "Containers:\n";
+
+        for (int i = 0; i < numberContainers; i++) {
+            if (containers[i] != null) {
+                result += containers[i].toString() + "\n";
+            }
         }
+
+        return result;
     }
-    
-    return result;
-}
 
 }
