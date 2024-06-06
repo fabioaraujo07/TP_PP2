@@ -9,6 +9,9 @@ import com.estg.core.GeographicCoordinates;
 import com.estg.core.ItemType;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.math.MathContext;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -45,28 +48,13 @@ public class AidBoxImp implements com.estg.core.AidBox {
             throw new AidBoxException("O aidbox não existe");
         }
 
-        //Supostamente tirando as coordenas de cada Aidbox
-        //Current AidBox
-        double lat1 = this.getLatitude();
-        double long1 = this.getLongitude();
-
-        //Parameter AidBox
-        double lat2 = aidbox.getCoordinates().getLatitude();
-        double long2 = aidbox.getCoordinates().getLongitude();
-
-        //Raio da Terra em KM
-        final int R = 6371;
-
-        //Por enquanto vamos deixar assim, confirmar com o professor, porque tudo que aparece é com esta fórmula
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(long2 - long1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c;
-
-        return distance;
+        try {
+            FileReader reader = new FileReader("Files/Distances.json");
+            JSONObject distancesObject
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AidBoxImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override
