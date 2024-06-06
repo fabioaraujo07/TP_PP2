@@ -107,5 +107,12 @@ public class ContainerImp implements com.estg.core.Container {
         ContainerImp cntnr = (ContainerImp) obj;
         return this.code == cntnr.code;
     }
+
+    @Override
+    public String toString() {
+        return "code=" + code + ", capacity=" + capacity;
+    }
+    
+    
     
 }

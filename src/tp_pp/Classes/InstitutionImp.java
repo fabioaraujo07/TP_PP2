@@ -17,6 +17,7 @@ import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tp_pp_exceptions.FindException;
@@ -60,13 +61,13 @@ public class InstitutionImp implements com.estg.core.Institution {
         return this.name;
     }
 
-    public int findAidBox(AidBox aidBox) {
+    public int findAidBox(AidBox aidBox) throws FindException {
         for (int i = 0; i < numberAidbox; i++) {
             if (this.aidboxes[i].equals(aidBox)) {
                 return i;
             }
         }
-        return -1;
+        throw new FindException("Aidbox not found!");
     }
 
     private boolean hasDuplicateContainers(AidBox aidbox) {
@@ -87,8 +88,12 @@ public class InstitutionImp implements com.estg.core.Institution {
         if (aidbox == null) {
             throw new AidBoxException("AidBox can´t be null");
         }
-        if (findAidBox(aidbox) != -1) {
-            return false;
+        try {
+            if (findAidBox(aidbox) != -1) {
+                return false;
+            }
+        } catch (FindException ex) {
+            Logger.getLogger(InstitutionImp.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (hasDuplicateContainers(aidbox)) {
             throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
@@ -98,14 +103,13 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     }
 
-    
-    public int findContainer(Container container) {
+    public int findContainer(Container container) throws FindException {
         for (int i = 0; i < numberContainers; i++) {
             if (this.containers[i].equals(container)) {
                 return i;
             }
         }
-        return -1;
+        throw new FindException("Container not found!");
     }
 
     @Override
@@ -127,8 +131,12 @@ public class InstitutionImp implements com.estg.core.Institution {
             throw new MeasurementException("Measurement can't be higger than capacity");
         }
 
-        if (findContainer(cntnr) == -1) {
-            throw new ContainerException("Container could not be found");
+        try {
+            if (findContainer(cntnr) == -1) {
+                throw new ContainerException("Container could not be found");
+            }
+        } catch (FindException ex) {
+            Logger.getLogger(InstitutionImp.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         for (int i = 0; i < numberMeasurements; i++) {
@@ -201,25 +209,24 @@ public class InstitutionImp implements com.estg.core.Institution {
     //Confirmar se ta certo, nn tenho ctz do casting
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
-    
+
         if (vhcl == null) {
             throw new VehicleException("Vehicle can´t be null");
         }
-        
+
         try {
             findVehicle(vhcl);
             Vehicle vehicle = vehicles[findVehicle(vhcl)];
-            
-            
-            if(vehicle instanceof VehicleImp) {
-                if(!((VehicleImp) vehicle).isEnabled()) {
+
+            if (vehicle instanceof VehicleImp) {
+                if (!((VehicleImp) vehicle).isEnabled()) {
                     throw new VehicleException("Vehicle is already disabled");
                 }
                 ((VehicleImp) vehicle).setEnabled(false);
-            }else {
+            } else {
                 throw new VehicleException("Vehicle instance is not valid");
             }
-            
+
         } catch (FindException ex) {
             throw new VehicleException("Vehicle doesn't exist");
         }
@@ -228,114 +235,112 @@ public class InstitutionImp implements com.estg.core.Institution {
     //Confirmar se ta certo, nn tenho ctz do casting
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
-    
+
         if (vhcl == null) {
             throw new VehicleException("Vehicle can´t be null");
         }
-        
+
         try {
             findVehicle(vhcl);
             Vehicle vehicle = vehicles[findVehicle(vhcl)];
-            
-            if(vehicle instanceof VehicleImp) {
-                if(((VehicleImp) vehicle).isEnabled()) {
+
+            if (vehicle instanceof VehicleImp) {
+                if (((VehicleImp) vehicle).isEnabled()) {
                     throw new VehicleException("Vehicle is already enabled");
                 }
                 ((VehicleImp) vehicle).setEnabled(true);
             } else {
                 throw new VehicleException("Vehicle instance is not valid");
-            }            
-            
+            }
+
         } catch (FindException ex) {
             throw new VehicleException("Vehicle doens't exist");
-        }    
-    }    
-    
+        }
+    }
+
     @Override
     public PickingMap[] getPickingMaps() {
         PickingMap[] copy = new PickingMap[numberPickingmaps];
-        for(int i = 0; i < numberPickingmaps; i++) {
-            if(pickingmaps[i] != null) {
+        for (int i = 0; i < numberPickingmaps; i++) {
+            if (pickingmaps[i] != null) {
                 copy[i] = pickingmaps[i];
             }
         }
-        return copy;    
+        return copy;
     }
 
     @Override
     public PickingMap[] getPickingMaps(LocalDateTime ldt, LocalDateTime ldt1) {
         PickingMap[] copy = new PickingMap[numberPickingmaps];
         int counter = 0;
-        
-        for(int i = 0; i < numberPickingmaps; i++) {
+
+        for (int i = 0; i < numberPickingmaps; i++) {
             LocalDateTime date = pickingmaps[i].getDate();
-            if(date.isAfter(ldt) && date.isBefore(ldt1)) {
+            if (date.isAfter(ldt) && date.isBefore(ldt1)) {
                 copy[counter++] = pickingmaps[i];
             }
         }
-        return copy;        
+        return copy;
     }
 
     @Override
     public PickingMap getCurrentPickingMap() throws PickingMapException {
-        
-        if(numberPickingmaps == 0) {
+
+        if (numberPickingmaps == 0) {
             throw new PickingMapException("There are no picking maps in the institution");
         }
         PickingMap currentPickingMap = pickingmaps[0];
-        for(int i = 0; i < numberPickingmaps; i++) {
-            if(pickingmaps[i].getDate().isAfter(currentPickingMap.getDate())) {
+        for (int i = 0; i < numberPickingmaps; i++) {
+            if (pickingmaps[i].getDate().isAfter(currentPickingMap.getDate())) {
                 currentPickingMap = pickingmaps[i];
             }
         }
         return currentPickingMap;
     }
-    
-    
-    public int findPickingMap(PickingMap pickingMap) throws FindException{
-        for(int i = 0; i < numberPickingmaps; i++) {
-            if(this.pickingmaps[i].equals(pickingMap)) {
+
+    public int findPickingMap(PickingMap pickingMap) throws FindException {
+        for (int i = 0; i < numberPickingmaps; i++) {
+            if (this.pickingmaps[i].equals(pickingMap)) {
                 return i;
             }
         }
         throw new FindException("Picking map not found");
     }
-    
-    
+
     @Override
     public boolean addPickingMap(PickingMap pm) throws PickingMapException {
-        
-        if(pm == null) {
+
+        if (pm == null) {
             throw new PickingMapException("Picking map can't be null");
         }
-        
+
         try {
             findPickingMap(pm);
             return false;
         } catch (FindException ex) {
             this.pickingmaps[numberPickingmaps++] = pm;
             return true;
-        }        
+        }
     }
 
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
-        
-        if(aidbox == null) {
+
+        if (aidbox == null) {
             throw new AidBoxException("AidBox can't be null");
         }
-        
+
         // Institution coordinates
         double latInstitution = this.getLatitude();
         double lonInstitution = this.getLongitude();
-        
+
         // AidBox parameter coordinates
         double latAidbox = aidbox.getCoordinates().getLatitude();
         double lonAidbox = aidbox.getCoordinates().getLongitude();
-        
+
         // Raio da Terra em Kms
         final int R = 6371;
-        
+
         // Contas malucas
         double latDistance = Math.toRadians(latAidbox - latInstitution);
         double lonDistance = Math.toRadians(lonAidbox - lonInstitution);
@@ -344,27 +349,36 @@ public class InstitutionImp implements com.estg.core.Institution {
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c;
-        
+
         return distance;
     }
 
     public double getLatitude() {
         return coordinates.getLatitude();
     }
-    
+
     public double getLongitude() {
         return coordinates.getLongitude();
     }
-    
-    public int getUsedVehicles(){
+
+    public int getUsedVehicles() {
         return this.numberVehicles;
     }
-    
-    public int getNotUsedVehicles(){
+
+    public int getNotUsedVehicles() {
         return this.vehicles.length - this.numberVehicles;
     }
-    
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof InstitutionImp)) {
+            return false;
+        }
+        InstitutionImp inst = (InstitutionImp) obj;
+        return this.name == inst.name;
+    }
 
 }

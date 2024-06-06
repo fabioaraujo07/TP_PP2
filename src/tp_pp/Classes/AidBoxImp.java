@@ -10,6 +10,10 @@ import com.estg.core.ItemType;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
 import java.math.MathContext;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import tp_pp_exceptions.FindException;
 
 /**
  *
@@ -88,13 +92,13 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return this.coordinates;
     }
 
-    public int findContainer(Container cntnr) {
+    public int findContainer(Container cntnr) throws FindException{
         for (int i = 0; i < this.numberContainers; i++) {
             if (this.containers[i].equals(cntnr)) {
                 return i;
             }
         }
-        return -1;//Criar uma exceção para este método
+        throw new FindException("Container not found");
     }
 
     @Override
@@ -102,8 +106,12 @@ public class AidBoxImp implements com.estg.core.AidBox {
         if (cntnr == null) {
             throw new ContainerException("Conteiner can't be null");
         }
-        if (findContainer(cntnr) != -1) {
-            return false;
+        try {
+            if (findContainer(cntnr) != -1) {
+                return false;
+            }
+        } catch (FindException ex) {
+            Logger.getLogger(AidBoxImp.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (this.numberContainers == this.containers.length) {
             throw new ContainerException("Max capacity hitted");
@@ -121,9 +129,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     @Override
     public Container getContainer(ItemType it) {
-        for (Container c : containers) {
-            if (c != null && c.getType().equals(it)) {
-                return c;
+        for (int i = 0; i < numberContainers; i++){
+            if(containers[i] != null && containers[i].getType().equals(it)){
+                return containers[i];
             }
         }
         return null;
@@ -143,12 +151,12 @@ public class AidBoxImp implements com.estg.core.AidBox {
     public String getRefLocal() {
         return this.refLocal;
     }
-    
-    public int getPickedContainers(){
+
+    public int getPickedContainers() {
         return this.numberContainers;
     }
-    
-    public int getNonPickedContainers(){
+
+    public int getNonPickedContainers() {
         return containers.length - this.numberContainers;
     }
 
@@ -184,8 +192,20 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     @Override
     public String toString() {
-        return "Code: " + code + "\nZone: " + zone + "\nLatitude: " + coordinates.getLatitude()
-                + "\nLongitude: " + coordinates.getLongitude();
+    String result = "Code: " + code + "\n" +
+                    "Zone: " + zone + "\n" +
+                    "Latitude: " + coordinates.getLatitude() + "\n" +
+                    "Longitude: " + coordinates.getLongitude() + "\n" +
+                    "Containers:\n";
+    
+    for (int i = 0; i < numberContainers; i++) {
+        if (containers[i] != null) {
+            result += containers[i].toString() + "\n";
+        }
     }
+    
+    return result;
+}
+
 
 }

@@ -29,6 +29,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, double totalDuration, RouteValidatorImp validator) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
+        this.vehicle = vehicle;
         this.totalDistance = totalDistance;
         this.totalDuration = totalDuration;
         this.validator = new RouteValidatorImp();
@@ -96,10 +97,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     @Override
     public boolean containsAidBox(AidBox aidbox) {
-        if (findAidBox(aidbox)) {
-            return true;
-        }
-        return false;
+        return findAidBox(aidbox);
     }
 
     @Override
@@ -219,7 +217,6 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     
     @Override
     public double getTotalDuration() {
-        
         double totalDuration = 0;
         
         for(int i = 0; i < numberAidboxes; i++) {
@@ -233,5 +230,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         }
         return totalDuration;
     }
+    
+    
 
 }
