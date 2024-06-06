@@ -163,7 +163,20 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public Container getContainer(AidBox aidbox, ItemType it) throws ContainerException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(aidbox == null){
+            throw new ContainerException("Aidbox doesn´t exist.");
+        }
+        
+        Container[] containers = aidbox.getContainers();
+        
+        for(int i = 0; i < containers.length; i++){
+            if(containers[i] != null && containers[i].getType().equals(it)){
+                return containers[i];
+            }
+        }
+        
+        throw new ContainerException("Container with the given item type doesn't exist.");
+        
     }
 
     @Override
