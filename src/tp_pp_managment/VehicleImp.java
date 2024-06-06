@@ -16,12 +16,14 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     private ItemType supply;
     private boolean enabled;
     private boolean isUsed;
+    private int numberVehicles;
 
     public VehicleImp(double capacity, ItemType supply) {
         this.capacity = capacity;
         this.supply = supply;
         this.enabled = true;
         this.isUsed = false;
+        this.numberVehicles = 0;
     }
     
     public VehicleImp(double capacity){
@@ -29,7 +31,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
         this.supply = ItemType.PERISHABLE_FOOD;
         this.enabled = true;
         this.isUsed = false;
-        
+        this.numberVehicles = 0;
     }
     
     // Fazer um construtor especifico para veiculos refrigerados
@@ -53,7 +55,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     }
     
     public boolean canTransport(ItemType supply) {
-        for(int i = 0; i < capacity; i++) {
+        for(int i = 0; i < numberVehicles; i++) {
             if(this.supply.equals(supply)) {
                 return true;
             }

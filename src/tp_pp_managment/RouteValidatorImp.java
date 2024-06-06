@@ -17,18 +17,16 @@ import tp_pp.Classes.AidBoxImp;
  */
 public class RouteValidatorImp implements RouteValidator {
     
-    private AidBox[] aidbox;
     private Route[] routes;
     private int numberRoutes;
+    private int kmsForPerishableFood;
 
     
-    /*
-    public RouteValidatorImp(AidBox[] aidbox, Route[] routes, int numberRoutes) {
-        this.aidbox = new AidBox[10];
+    public RouteValidatorImp(int kmsForPerishableFood) {
         this.routes = new Route[10];
         this.numberRoutes = 0;
+        this.kmsForPerishableFood = kmsForPerishableFood;
     }
-    */
     
     public boolean hasRoute(Route route) {
         for(int i = 0; i < numberRoutes; i++) {
@@ -38,10 +36,8 @@ public class RouteValidatorImp implements RouteValidator {
         }
         return false;
     }
-    
-    //Testing
 
-    //Verificar se está certo
+    
     @Override
     public boolean validate(Route route, AidBox aidbox) {
         
@@ -54,17 +50,17 @@ public class RouteValidatorImp implements RouteValidator {
         if(route.getVehicle() != null) {
             return false;
         }
+        
         if(route.getVehicle() instanceof VehicleImp) {
             VehicleImp vehicle = (VehicleImp) route.getVehicle();
-            if(!vehicle.canTransport(ItemType.CLOTHING)) {
+            
+            for(int i = 0; i < aidbox.getContainers().length; i++) {
+            if(aidbox.getContainers()[i] != null && !vehicle.canTransport(aidbox.getContainers()[i].getType())) {
                 return false;
-            } else if(!vehicle.canTransport(ItemType.CLOTHING)) {
-                return false;
-            } else if(!vehicle.canTransport(ItemType.MEDICINE)) {
-                return false;
-            } else if(!vehicle.canTransport(ItemType.NON_PERISHABLE_FOOD)) {
-                return false;
-            } else if(!vehicle.canTransport(ItemType.PERISHABLE_FOOD)) {
+                }
+            }
+            
+            if(vehicle.canTransport(ItemType.PERISHABLE_FOOD) && route.getTotalDistance() > kmsForPerishableFood) {
                 return false;
             }
         }
