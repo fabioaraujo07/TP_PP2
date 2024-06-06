@@ -200,11 +200,8 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return this.vehicle;        
     }
  
-    
-    //Verificar se é a distancia de 1 rota ou a soma de todas as rotas
     @Override
     public double getTotalDistance() {
-        //return this.totalDistance; Se for só de 1 rota
         
         double totalDistance = 0;
         for(int i = 0; i < numberAidboxes; i++) {
@@ -219,10 +216,9 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return totalDistance;
     }
 
-    //Verificar se é a duração de 1 rota ou a soma de todas as rotas
+    
     @Override
     public double getTotalDuration() {
-        //return this.totalDuration; se for só de 1 rota
         
         double totalDuration = 0;
         

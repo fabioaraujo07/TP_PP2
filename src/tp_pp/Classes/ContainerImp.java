@@ -88,10 +88,6 @@ public class ContainerImp implements com.estg.core.Container {
                 return false;
             }
         }
-        // if the for a given date the measurement already exists but the values are different
-        // Travei nesse if - throw new MeasurementException()
-        // return false no ultimo if
-        // Checkar se ta certo / O pai ta iluminado
         if(numberMeasurements == measurements.length) {
             throw new MeasurementException("Max capacity hitted");
         }

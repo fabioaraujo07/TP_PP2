@@ -282,7 +282,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         if(numberPickingmaps == 0) {
             throw new PickingMapException("There are no picking maps in the institution");
         }
-        // Chat's help nessa parte
         PickingMap currentPickingMap = pickingmaps[0];
         for(int i = 0; i < numberPickingmaps; i++) {
             if(pickingmaps[i].getDate().isAfter(currentPickingMap.getDate())) {

@@ -22,6 +22,8 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
         this.enabled = true;
     }
     
+    // Fazer um construtor especifico para veiculos refrigerados
+    
     public boolean isEnabled(){
         return enabled;
     }
