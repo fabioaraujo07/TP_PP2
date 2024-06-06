@@ -26,13 +26,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private double totalDuration;
     private RouteValidatorImp validator;
 
-    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, double totalDuration, RouteValidatorImp validator) {
+    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, Vehicle vehicle, double totalDuration) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
         this.vehicle = vehicle;
         this.totalDistance = totalDistance;
         this.totalDuration = totalDuration;
-        this.validator = new RouteValidatorImp();
     }
 
     public boolean findAidBox(AidBox aidbox) {
@@ -54,17 +53,10 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("Aidbox already exists in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            if (!((VehicleImp) vehicle).canTransport(ItemType.CLOTHING)) {
-                throw new RouteException("Vehicle can't transport Clothing Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.MEDICINE)) {
-                throw new RouteException("Vehicle can't transport Medicine Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.NON_PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Non Perishable Food Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Perishable food Aidbox type");
+            for(int i = 0; i < aidbox.getContainers().length; i++) {
+                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                    throw new RouteException("Vehicle can't transport container type");
+                }
             }
         }
         routes[numberAidboxes++] = aidbox;
@@ -116,17 +108,10 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("AidBox to insert is already in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            if (!((VehicleImp) vehicle).canTransport(ItemType.CLOTHING)) {
-                throw new RouteException("Vehicle can't transport Clothing Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.MEDICINE)) {
-                throw new RouteException("Vehicle can't transport Medicine Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.NON_PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Non Perishable Food Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Perishable food Aidbox type");
+            for(int i = 0; i < aidbox.getContainers().length; i++) {
+                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                    throw new RouteException("Vehicle can't transport container type");
+                }
             }
         }
 
@@ -151,17 +136,10 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("AidBox is already in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            if (!((VehicleImp) vehicle).canTransport(ItemType.CLOTHING)) {
-                throw new RouteException("Vehicle can't transport Clothing Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.MEDICINE)) {
-                throw new RouteException("Vehicle can't transport Medicine Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.NON_PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Non Perishable Food Aidbox type");
-            }
-            if (!((VehicleImp) vehicle).canTransport(ItemType.PERISHABLE_FOOD)) {
-                throw new RouteException("Vehicle can't transport Perishable food Aidbox type");
+            for(int i = 0; i < aidbox.getContainers().length; i++) {
+                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                    throw new RouteException("Vehicle can't transport container type");
+                }
             }
         }
 
