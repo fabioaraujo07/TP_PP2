@@ -9,6 +9,7 @@ import com.estg.core.GeographicCoordinates;
 import com.estg.core.ItemType;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
+import http.HttpProviderImp;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
                         String name = (String) distancesTO.get("name");
                         if (name.equals(aidbox.getCode())) {
-                            return (long) distancesTO.get("distance");
+                            return (long)distancesTO.get("distance");
                         }
                     }
                 }
@@ -78,7 +79,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
-        if (aidbox == null) {
+       if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
         JSONParser parser = new JSONParser();
@@ -95,7 +96,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
                         String name = (String) distancesTO.get("name");
                         if (name.equals(aidbox.getCode())) {
-                            return (long) distancesTO.get("duration");
+                            return (long)distancesTO.get("duration");
                         }
                     }
                 }

@@ -40,7 +40,7 @@ public class HttpProviderImp {
     }
     
     
-    public String getDistances(String codigoOrigem, String codigoDestino) throws IOException, ParseException {
+    public String getDistancesAidbox(String codigoOrigem, String codigoDestino) throws IOException, ParseException {
         String url = "https://data.mongodb-api.com/app/data-docuz/endpoint/distances?from=" + codigoOrigem + "&to=" + codigoDestino;
         String jsonResponse = httpProvider.getFromURL(url);
         JSONParser parser = new JSONParser();
@@ -56,4 +56,11 @@ public class HttpProviderImp {
         return readings.toJSONString();
     }
     
+        public String getDistances(String codigoOrigem) throws IOException, ParseException {
+        String url = "https://data.mongodb-api.com/app/data-docuz/endpoint/distances?from=" + codigoOrigem + "&to=" + "Base";
+        String jsonResponse = httpProvider.getFromURL(url);
+        JSONParser parser = new JSONParser();
+        JSONObject distances = (JSONObject) parser.parse(jsonResponse);
+        return distances.toJSONString();
+    }
 }

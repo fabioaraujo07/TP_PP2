@@ -16,10 +16,16 @@ import com.estg.core.exceptions.PickingMapException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
 import tp_pp_managment.PickingMapImp;
 import tp_pp_managment.VehicleImp;
@@ -41,9 +47,8 @@ public class InstitutionImp implements com.estg.core.Institution {
     private int numberVehicles;
     private int numberPickingmaps;
     private int numberContainers;
-    private GeographicCoordinates coordinates;
 
-    public InstitutionImp(String name, AidBox[] aidbox, Measurement[] measurements, Vehicle[] vehicles, PickingMap[] pickingmaps, GeographicCoordinates coordinates) {
+    public InstitutionImp(String name) {
         this.name = name;
         this.aidboxes = new AidBoxImp[10];
         this.measurements = new MeasurementImp[10];
@@ -53,7 +58,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         this.numberMeasurements = 0;
         this.numberPickingmaps = 0;
         this.numberVehicles = 0;
-        this.coordinates = coordinates;
     }
 
     @Override
@@ -338,40 +342,31 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
-
-        if (aidbox == null) {
-            throw new AidBoxException("AidBox can't be null");
+       if (aidbox == null) {
+            throw new AidBoxException("O aidbox não existe");
         }
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("Files/Distances.json")) {
+            JSONArray distanceArray = (JSONArray) parser.parse(reader);
 
-        // Institution coordinates
-        double latInstitution = this.getLatitude();
-        double lonInstitution = this.getLongitude();
-
-        // AidBox parameter coordinates
-        double latAidbox = aidbox.getCoordinates().getLatitude();
-        double lonAidbox = aidbox.getCoordinates().getLongitude();
-
-        // Raio da Terra em Kms
-        final int R = 6371;
-
-        // Contas malucas
-        double latDistance = Math.toRadians(latAidbox - latInstitution);
-        double lonDistance = Math.toRadians(lonAidbox - lonInstitution);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(latInstitution)) * Math.cos(Math.toRadians(latAidbox))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c;
-
-        return distance;
-    }
-
-    public double getLatitude() {
-        return coordinates.getLatitude();
-    }
-
-    public double getLongitude() {
-        return coordinates.getLongitude();
+            for (Object o : distanceArray) {
+                JSONObject distancesObject = (JSONObject) o;
+                String from = (String) distancesObject.get("from");
+                if (from.equals(aidbox.getCode())) {
+                    JSONArray distancesToArray = (JSONArray) distancesObject.get("to");
+                    for (Object AB : distancesToArray) {
+                        JSONObject distancesTO = (JSONObject) AB;
+                        String name = (String) distancesTO.get("name");
+                        if (name.equals("Base")) {
+                            return (long)distancesTO.get("distance");
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
     }
 
     public int getUsedVehicles() {
