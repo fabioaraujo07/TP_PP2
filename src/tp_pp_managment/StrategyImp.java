@@ -25,15 +25,19 @@ public class StrategyImp implements Strategy {
         
         Vehicle[] vehicles = instn.getVehicles();
         AidBox[] aidboxes = instn.getAidBoxes();
+        
+        // Cada veículo vai ter uma rota correspondente
         Route[] routes = new Route[vehicles.length];
         
         for(int i = 0; i < vehicles.length; i++) {
             if(((VehicleImp) vehicles[i]).isEnabled() == false) {
-                continue;
+                continue; //ignora os veículos desabilitados
             }
             
+            // Se o veículo tiver ativo, uma nova rota é criada para ele
             RouteImp route = new RouteImp(new AidBox[10], 0, 0.0, vehicles[i], 0.0);
             
+            //Tenta add um aidbox para uma rota
             for(int j = 0; j < aidboxes.length; j++) {
                 try {
                     route.addAidBox(aidboxes[j]);
