@@ -17,6 +17,8 @@ import com.estg.pickingManagement.exceptions.RouteException;
  * @author Roger Nakauchi
  */
 public class StrategyImp implements Strategy {
+    
+    // ERRADO
 
     @Override
     public Route[] generate(Institution instn, RouteValidator rv) {

@@ -10,34 +10,31 @@ import com.estg.core.ItemType;
  *
  * @author fabio
  */
-public class VehicleImp implements com.estg.pickingManagement.Vehicle{
-    
+public class VehicleImp implements com.estg.pickingManagement.Vehicle {
+
     private double capacity;
     private ItemType supply;
     private boolean enabled;
     private boolean isUsed;
-    private int numberVehicles;
 
     public VehicleImp(double capacity, ItemType supply) {
         this.capacity = capacity;
         this.supply = supply;
         this.enabled = true;
         this.isUsed = false;
-        this.numberVehicles = 0;
     }
-    
-    public VehicleImp(double capacity){
-        this.capacity  = capacity;
+
+    public VehicleImp(double capacity) {
+        this.capacity = capacity;
         this.supply = ItemType.PERISHABLE_FOOD;
         this.enabled = true;
         this.isUsed = false;
-        this.numberVehicles = 0;
     }
-    
-    public boolean isEnabled(){
+
+    public boolean isEnabled() {
         return enabled;
     }
-    
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -51,22 +48,21 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle{
     public double getMaxCapacity() {
         return this.capacity;
     }
-    
+
     public boolean canTransport(ItemType supply) {
-        for(int i = 0; i < numberVehicles; i++) {
-            if(this.supply.equals(supply)) {
-                return true;
-            }
+        if (this.supply.equals(supply)) {
+            return true;
         }
         return false;
     }
-    
-     public boolean isUsed() {
+     
+
+    public boolean isUsed() {
         return isUsed;
     }
 
     public void setUsed(boolean isUsed) {
         this.isUsed = isUsed;
     }
-    
+
 }
