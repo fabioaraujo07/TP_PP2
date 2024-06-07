@@ -31,7 +31,7 @@ public class HttpProviderImp {
         return aidboxes.toJSONString();
     }
     
-    public String getAidBoxesId(String codigo) throws IOException, ParseException{
+    public String getAidBoxesCode(String codigo) throws IOException, ParseException{
         String url = "https://data.mongodb-api.com/app/data-docuz/endpoint/aidboxesbyid?codigo=" + codigo;
         String jsonResponse = httpProvider.getFromURL(url);
         JSONParser parser = new JSONParser();

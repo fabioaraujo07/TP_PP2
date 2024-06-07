@@ -87,7 +87,7 @@ public class Menu {
                         listAidBox();
                         break;
                     case 2:
-                        //viewAidBoxById();
+                        viewAidBoxByCode();
                         break;
                     case 3:
                         //viewDistances;
@@ -107,8 +107,8 @@ public class Menu {
             }
         }
     }
-    
-    private static void listAidBox() {
+
+    private void listAidBox() {
         try {
             String jsonResponse = httpProvider.getAidBoxes();
             JSONParser parser = new JSONParser();
@@ -135,8 +135,36 @@ public class Menu {
             System.err.println("Error fetching aid boxes: " + e.getMessage());
         }
     }
-    
-    
+
+    private void viewAidBoxByCode() throws IOException {
+        System.out.print("Enter the Aid Box code: ");
+        String code = reader.readLine();
+        try {
+            String jsonResponse = httpProvider.getAidBoxesCode(code);
+            JSONParser parser = new JSONParser();
+            JSONObject aidBox = (JSONObject) parser.parse(jsonResponse);
+
+            System.out.println("ID: " + aidBox.get("_id"));
+            System.out.println("Codigo: " + aidBox.get("Codigo"));
+            System.out.println("Zona: " + aidBox.get("Zona"));
+            System.out.println("Latitude: " + aidBox.get("Latitude"));
+            System.out.println("Longitude: " + aidBox.get("Longitude"));
+
+            JSONArray contentores = (JSONArray) aidBox.get("Contentores");
+            System.out.println("Contentores:");
+            for (Object contentorObject : contentores) {
+                JSONObject contentor = (JSONObject) contentorObject;
+                System.out.println("\tCodigo: " + contentor.get("codigo"));
+                System.out.println("\tCapacidade: " + contentor.get("capacidade"));
+            }
+            System.out.println("-----------------------------");
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching aid boxes: " + e.getMessage());
+        } catch (ClassCastException e) {
+            System.err.println("Error casting JSON object: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Menu menu = new Menu();
         menu.start();
