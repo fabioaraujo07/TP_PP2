@@ -117,8 +117,8 @@ public class Menu {
             for (Object aidBoxObject : aidBoxesArray) {
                 JSONObject aidBox = (JSONObject) aidBoxObject;
                 System.out.println("ID: " + aidBox.get("_id"));
-                System.out.println("Codigo: " + aidBox.get("Codigo"));
-                System.out.println("Zona: " + aidBox.get("Zona"));
+                System.out.println("Code: " + aidBox.get("Codigo"));
+                System.out.println("Zone: " + aidBox.get("Zona"));
                 System.out.println("Latitude: " + aidBox.get("Latitude"));
                 System.out.println("Longitude: " + aidBox.get("Longitude"));
 
@@ -126,8 +126,8 @@ public class Menu {
                 System.out.println("Contentores:");
                 for (Object contentorObject : contentores) {
                     JSONObject contentor = (JSONObject) contentorObject;
-                    System.out.println("\tCodigo: " + contentor.get("codigo"));
-                    System.out.println("\tCapacidade: " + contentor.get("capacidade"));
+                    System.out.println("\tCode: " + contentor.get("codigo"));
+                    System.out.println("\tCapacity: " + contentor.get("capacidade"));
                 }
                 System.out.println("-----------------------------");
             }
@@ -145,17 +145,17 @@ public class Menu {
             JSONObject aidBox = (JSONObject) parser.parse(jsonResponse);
 
             System.out.println("ID: " + aidBox.get("_id"));
-            System.out.println("Codigo: " + aidBox.get("Codigo"));
-            System.out.println("Zona: " + aidBox.get("Zona"));
+            System.out.println("Code: " + aidBox.get("Codigo"));
+            System.out.println("Zone: " + aidBox.get("Zona"));
             System.out.println("Latitude: " + aidBox.get("Latitude"));
             System.out.println("Longitude: " + aidBox.get("Longitude"));
 
             JSONArray contentores = (JSONArray) aidBox.get("Contentores");
-            System.out.println("Contentores:");
+            System.out.println("Containers:");
             for (Object contentorObject : contentores) {
                 JSONObject contentor = (JSONObject) contentorObject;
-                System.out.println("\tCodigo: " + contentor.get("codigo"));
-                System.out.println("\tCapacidade: " + contentor.get("capacidade"));
+                System.out.println("\tCode: " + contentor.get("codigo"));
+                System.out.println("\tCapacity: " + contentor.get("capacidade"));
             }
             System.out.println("-----------------------------");
         } catch (IOException | ParseException e) {
