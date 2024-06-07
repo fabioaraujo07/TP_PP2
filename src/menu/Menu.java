@@ -4,10 +4,13 @@
  */
 package menu;
 
+import com.estg.core.exceptions.AidBoxException;
 import http.HttpProviderImp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,10 +36,11 @@ public class Menu {
             System.out.println("=== Menu ===");
             System.out.println("1. AidBox");
             System.out.println("2. Containers");
-            System.out.println("3. Institution");
-            System.out.println("4. Routes");
+            System.out.println("3. Vehicles");
+            System.out.println("4. Institution");
+            System.out.println("5. Routes");
 
-            System.out.println("5. Exit");
+            System.out.println("6. Exit");
             System.out.println("Option: ");
             try {
                 option = Integer.parseInt(reader.readLine());
@@ -56,6 +60,8 @@ public class Menu {
                         break;
                     case 5:
                         break;
+                    case 6:
+                        break;
                     default:
                         System.out.println("Invalid option!");
                         start();
@@ -66,7 +72,7 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
-        } while (option != 5);
+        } while (option != 6);
     }
 
     public void showAidBoxMenu() {
@@ -76,7 +82,8 @@ public class Menu {
             System.out.println("1. List all Aid box");
             System.out.println("2. View Aid box by ID");
             System.out.println("3. View distances between Aid boxes");
-            System.out.println("4. Exit");
+            System.out.println("4. View duration between Aid boxes");
+            System.out.println("5. Exit");
             System.out.println("Select option: ");
 
             try {
@@ -90,9 +97,12 @@ public class Menu {
                         viewAidBoxByCode();
                         break;
                     case 3:
-                        //viewDistances;
+                        viewDistances();
                         break;
                     case 4:
+                        viewDuration();
+                        break;
+                    case 5:
                         exit = true;
                         break;
                     default:
@@ -136,10 +146,11 @@ public class Menu {
         }
     }
 
-    private void viewAidBoxByCode() throws IOException {
-        System.out.print("Enter the Aid Box code: ");
-        String code = reader.readLine();
+    private void viewAidBoxByCode() {
         try {
+            System.out.print("Enter the Aid Box code: ");
+            String code = reader.readLine();
+
             String jsonResponse = httpProvider.getAidBoxesCode(code);
             JSONParser parser = new JSONParser();
             JSONObject aidBox = (JSONObject) parser.parse(jsonResponse);
@@ -162,6 +173,59 @@ public class Menu {
             System.err.println("Error fetching aid boxes: " + e.getMessage());
         } catch (ClassCastException e) {
             System.err.println("Error casting JSON object: " + e.getMessage());
+        }
+    }
+
+    private void viewDistances() {
+        try {
+            System.out.println("Enter the Aid Box code: ");
+            String aidbox1 = reader.readLine();
+            System.out.println("Enter the 2nd Aid Box: ");
+            String aidbox2 = reader.readLine();
+
+            String jsonResponse = httpProvider.getDistancesAidbox(aidbox1, aidbox2);
+            JSONParser parser = new JSONParser();
+            JSONObject responseObject = (JSONObject) parser.parse(jsonResponse);
+
+            JSONArray toArray = (JSONArray) responseObject.get("to");
+            for (Object toObj : toArray) {
+                JSONObject toObject = (JSONObject) toObj;
+
+                String name = (String) toObject.get("name");
+                if (name.equals(aidbox2)) {
+                    System.out.println("Distance: " + toObject.get("distance"));
+                }
+            }
+
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching distances: " + e.getMessage());
+        }
+    }
+    
+    
+    private void viewDuration(){
+        try {
+            System.out.println("Enter the Aid Box code: ");
+            String aidbox1 = reader.readLine();
+            System.out.println("Enter the 2nd Aid Box: ");
+            String aidbox2 = reader.readLine();
+
+            String jsonResponse = httpProvider.getDistancesAidbox(aidbox1, aidbox2);
+            JSONParser parser = new JSONParser();
+            JSONObject responseObject = (JSONObject) parser.parse(jsonResponse);
+
+            JSONArray toArray = (JSONArray) responseObject.get("to");
+            for (Object toObj : toArray) {
+                JSONObject toObject = (JSONObject) toObj;
+
+                String name = (String) toObject.get("name");
+                if (name.equals(aidbox2)) {
+                    System.out.println("Duration: " + toObject.get("duration"));
+                }
+            }
+
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching distances: " + e.getMessage());
         }
     }
 
