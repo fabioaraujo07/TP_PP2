@@ -51,6 +51,7 @@ public class Menu {
                         break;
 
                     case 2:
+                        showContainerMenu();
                         break;
                     case 3:
 
@@ -226,6 +227,53 @@ public class Menu {
 
         } catch (IOException | ParseException e) {
             System.err.println("Error fetching distances: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
+     public void showContainerMenu() {
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("=== Container Menu ===");
+            System.out.println("1. List all Containers");
+            System.out.println("2. View Container by ID");
+            System.out.println("3. View Container's capacity");
+            System.out.println("4. View Container's measurements");
+            System.out.println("5. Exit");
+            System.out.println("Select option: ");
+
+            try {
+                int option = Integer.parseInt(reader.readLine());
+
+                switch (option) {
+                    case 1:
+                        //listContainers();
+                        break;
+                    case 2:
+                        //viewContainerByCode();
+                        break;
+                    case 3:
+                        //viewCapacity();
+                        break;
+                    case 4:
+                        //viewMeasurements();
+                        break;
+                    case 5:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid selection. Try again!\n");
+                        break;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.\n\n");
+            } catch (IOException e) {
+                System.out.println("Error reading input.");
+            }
         }
     }
 
