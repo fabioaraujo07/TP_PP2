@@ -17,43 +17,43 @@ import com.estg.pickingManagement.exceptions.RouteException;
  * @author Roger Nakauchi
  */
 public class StrategyImp implements Strategy {
-    
-    // ERRADO
 
+    // ERRADO
     @Override
     public Route[] generate(Institution instn, RouteValidator rv) {
-        
+
+        int count = 0;
         Vehicle[] vehicles = instn.getVehicles();
         AidBox[] aidboxes = instn.getAidBoxes();
-        
+
         // Cada veículo vai ter uma rota correspondente
-        Route[] routes = new Route[vehicles.length];
-        
-        for(int i = 0; i < vehicles.length; i++) {
-            if(((VehicleImp) vehicles[i]).isEnabled() == false) {
-                continue; //ignora os veículos desabilitados
+        for (int i = 0; i < vehicles.length; i++) {
+            if (((VehicleImp) vehicles[i]).isEnabled() == true) {
+                count++;
             }
-            
-            // Se o veículo tiver ativo, uma nova rota é criada para ele
-            RouteImp route = new RouteImp(new AidBox[10], 0, 0.0, vehicles[i], 0.0);
-            
-            //Tenta add um aidbox para uma rota
-            for(int j = 0; j < aidboxes.length; j++) {
-                try {
-                    route.addAidBox(aidboxes[j]);
-                    if(!rv.validate(route, aidboxes[j])) {
-                        route.removeAidBox(aidboxes[j]);
+            if (count > 0) {
+                Route[] routes = new Route[count]; //Numero de rotas é igual ao de veiculos ativos
+
+                // Se o veículo tiver ativo, uma nova rota é criada para ele
+                RouteImp route = new RouteImp(new AidBox[aidboxes.length + 1], vehicles[i]);
+
+                //Tenta add um aidbox para uma rota
+                for (int j = 0; j < aidboxes.length; j++) {
+                    try {
+                        route.addAidBox(aidboxes[j]);
+                        if (!rv.validate(route, aidboxes[j])) {
+                            route.removeAidBox(aidboxes[j]);
+                        }
+                    } catch (RouteException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (RouteException ex) {
-                    ex.printStackTrace();
                 }
+                routes[i] = route;
+                return routes;
             }
-            routes[i] = route;
+
         }
-        
-        return routes;
+        return null;
     }
-    
-    
-    
+
 }

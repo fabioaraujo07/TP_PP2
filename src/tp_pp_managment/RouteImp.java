@@ -45,7 +45,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     if (vehicle instanceof VehicleImp) {
         VehicleImp v = (VehicleImp) vehicle;
         
-        if(v.isEnabled()== false){
+        if(v.isEnabled() == false){
             throw new RouteException("Vehicle is not enabled");
         }
 
