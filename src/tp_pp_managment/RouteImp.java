@@ -24,23 +24,40 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private Vehicle vehicle;
     private double totalDistance;
     private double totalDuration;
+    
 
-    public RouteImp(AidBox[] route, int numberAidboxes, double totalDistance, Vehicle vehicle, double totalDuration) {
+    public RouteImp(AidBox[] route, int numberAidboxes, Vehicle vehicle) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
         this.vehicle = vehicle;
-        this.totalDistance = totalDistance;
-        this.totalDuration = totalDuration;
     }
 
-    public boolean findAidBox(AidBox aidbox) {
+    public int findAidBox(AidBox aidbox) {
         for (int i = 0; i < numberAidboxes; i++) {
             if (routes[i].equals(aidbox)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean canTransport(AidBox aidbox) throws RouteException {
+    if (vehicle instanceof VehicleImp) {
+        VehicleImp v = (VehicleImp) vehicle;
+
+        for (int i = 0; i < aidbox.getContainers().length; i++) {
+            ItemType type = aidbox.getContainers()[i].getType();
+            if (v.getSupplyType().equals(type)) {
+                if (type.equals(ItemType.PERISHABLE_FOOD) && getTotalDistance() > v.getKms()) {
+                    throw new RouteException("Total distance exceeds limit for perishable food");
+                }
                 return true;
             }
         }
-        return false;
     }
+    throw new RouteException("Vehicle can't transport any of these containers");
+}
+
 
     @Override
     public void addAidBox(AidBox aidbox) throws RouteException {
@@ -48,20 +65,14 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         if (aidbox == null) {
             throw new RouteException("Aidbox can't be null");
         }
-        if (findAidBox(aidbox)) {
+        if (findAidBox(aidbox) == -1) {
             throw new RouteException("Aidbox already exists in the route");
         }
-        if (vehicle instanceof VehicleImp) {
-            try {
-                for (int i = 0; i < aidbox.getContainers().length; i++) {
-                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                        throw new RouteException("Vehicle can't transport container type");
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RouteException("Error while checking container types for transport");
-            }
+        try {
+            canTransport(aidbox);
+
+        } catch (RouteException ex) {
+            throw new RouteException("Vehicle can't transport any of these containers");
         }
         routes[numberAidboxes++] = aidbox;
     }
@@ -69,31 +80,29 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     @Override
     public AidBox removeAidBox(AidBox aidbox) throws RouteException {
 
-        AidBox removedAidbox = null;
+        int pos = findAidBox(aidbox);
 
         if (aidbox == null) {
             throw new RouteException("Aidbox can't be null");
         }
-        if (findAidBox(aidbox) == false) {
+        if (pos == -1) {
             throw new RouteException("Aidbox could not be found");
         }
-        for (int i = 0; i < numberAidboxes; i++) {
-            if (routes[i].equals(aidbox)) {
-                removedAidbox = routes[i];
-            }
+        AidBox removedAidBox = this.routes[pos];
+        this.routes[pos] = this.routes[numberAidboxes - 1];
+        this.routes[--numberAidboxes] = null;
 
-            for (int j = i; j < numberAidboxes - 1; j++) {
-                routes[j] = routes[j + 1];
-            }
-            routes[numberAidboxes - 1] = null;
-            numberAidboxes--;
-        }
-        return removedAidbox;
+        return removedAidBox;
     }
 
     @Override
     public boolean containsAidBox(AidBox aidbox) {
-        return findAidBox(aidbox);
+        for (int i = 0; i < numberAidboxes; i++) {
+            if (routes[i].equals(aidbox)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -105,72 +114,50 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         if (aidbox1 == null) {
             throw new RouteException("Any AidBox can´t be null");
         }
-        if (findAidBox(aidbox) == false) {
+        if (!containsAidBox(aidbox)) {
             throw new RouteException("AidBox to replace is not in the route");
         }
-        if (findAidBox(aidbox1) == true) {
+        if (containsAidBox(aidbox1)) {
             throw new RouteException("AidBox to insert is already in the route");
         }
-        if (vehicle instanceof VehicleImp) {
-            try {
-                for (int i = 0; i < aidbox.getContainers().length; i++) {
-                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                        throw new RouteException("Vehicle can't transport container type");
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RouteException("Error while checking container type for transport");
-            }
+        try {
+            canTransport(aidbox);
+        } catch (RouteException e) {
+            throw new RouteException("Vehicle can't transport any of these containers");
         }
-
-        for (int i = 0; i < numberAidboxes; i++) {
-            if (routes[i].equals(aidbox)) {
-                routes[i] = aidbox1;
-            }
-        }
-
+        int pos = findAidBox(aidbox);
+        this.routes[pos] = aidbox1;
     }
 
     @Override
     public void insertAfter(AidBox aidbox, AidBox aidbox1) throws RouteException {
 
         if (aidbox == null) {
-            throw new RouteException("AidBox to insert before can´t be null");
+            throw new RouteException("AidBox can´t be null");
         }
         if (aidbox1 == null) {
-            throw new RouteException("AidBox to insert can´t be null");
+            throw new RouteException("AidBox can´t be null");
         }
-        if (findAidBox(aidbox1) == true) {
-            throw new RouteException("AidBox is already in the route");
+        if (!containsAidBox(aidbox)) {
+            throw new RouteException("AidBox is not in the route");
         }
-        if (vehicle instanceof VehicleImp) {
-            try {
-                for (int i = 0; i < aidbox.getContainers().length; i++) {
-                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                        throw new RouteException("Vehicle can't transport container type");
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RouteException("Error while checking container type for transport");
-            }
+        if (containsAidBox(aidbox1)) {
+            throw new RouteException("AidBox to insert is already in the route");
+        }
+        try {
+            canTransport(aidbox);
+        } catch (RouteException e) {
+            throw new RouteException("Vehicle can't transport any of these containers");
         }
 
-        int positionAidBox1 = -1;
-        for (int i = 0; i < numberAidboxes; i++) {
-            if (routes[i].equals(positionAidBox1)) {
-                positionAidBox1 = i;
-            }
-        }
+        int pos = findAidBox(aidbox);
 
-        for (int i = numberAidboxes; i > positionAidBox1; i--) {
+        for (int i = numberAidboxes; i > pos; i--) {
             routes[i] = routes[i - 1];
         }
 
-        routes[positionAidBox1 + 1] = aidbox1;
+        routes[pos + 1] = aidbox1;
         numberAidboxes++;
-
     }
 
     @Override

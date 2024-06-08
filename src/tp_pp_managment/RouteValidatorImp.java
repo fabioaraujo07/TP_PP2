@@ -19,12 +19,11 @@ public class RouteValidatorImp implements RouteValidator {
 
     private Route[] routes;
     private int numberRoutes;
-    private int kmsForPerishableFood;
+    
 
-    public RouteValidatorImp(int kmsForPerishableFood) {
+    public RouteValidatorImp() {
         this.routes = new Route[10];
         this.numberRoutes = 0;
-        this.kmsForPerishableFood = kmsForPerishableFood;
     }
 
     public boolean hasRoute(Route route) {
@@ -45,21 +44,15 @@ public class RouteValidatorImp implements RouteValidator {
         if (route.containsAidBox(aidbox)) {
             return false;
         }
-        if (route.getVehicle() != null) {
+        if (route.getVehicle() == null) {
             return false;
         }
 
-        if (route.getVehicle() instanceof VehicleImp) {
+        if (route instanceof RouteImp) {
             try {
-                VehicleImp vehicle = (VehicleImp) route.getVehicle();
-
-                for (int i = 0; i < aidbox.getContainers().length; i++) {
-                    if (aidbox.getContainers()[i] != null && !vehicle.canTransport(aidbox.getContainers()[i].getType())) {
-                        return false;
-                    }
-                }
-
-                if (vehicle.canTransport(ItemType.PERISHABLE_FOOD) && route.getTotalDistance() > kmsForPerishableFood) {
+                RouteImp vehicle = (RouteImp) route;
+                
+                if(!vehicle.canTransport(aidbox)){
                     return false;
                 }
             } catch (Exception ex) {

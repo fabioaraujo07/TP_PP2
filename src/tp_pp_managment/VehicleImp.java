@@ -16,6 +16,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     private ItemType supply;
     private boolean enabled;
     private boolean isUsed;
+    private double kmsForPerishableFood;
 
     public VehicleImp(double capacity, ItemType supply) {
         this.capacity = capacity;
@@ -24,8 +25,9 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         this.isUsed = false;
     }
 
-    public VehicleImp(double capacity) {
+    public VehicleImp(double capacity, double kmsForPerishableFood) {
         this.capacity = capacity;
+        this.kmsForPerishableFood = kmsForPerishableFood;
         this.supply = ItemType.PERISHABLE_FOOD;
         this.enabled = true;
         this.isUsed = false;
@@ -49,20 +51,16 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         return this.capacity;
     }
 
-    public boolean canTransport(ItemType supply) {
-        if (this.supply.equals(supply)) {
-            return true;
-        }
-        return false;
-    }
-     
-
     public boolean isUsed() {
         return isUsed;
     }
 
     public void setUsed(boolean isUsed) {
         this.isUsed = isUsed;
+    }
+    
+    public double getKms(){
+        return kmsForPerishableFood;
     }
 
 }
