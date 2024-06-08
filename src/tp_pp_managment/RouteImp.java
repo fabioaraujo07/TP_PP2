@@ -52,10 +52,15 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("Aidbox already exists in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            for(int i = 0; i < aidbox.getContainers().length; i++) {
-                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                    throw new RouteException("Vehicle can't transport container type");
+            try {
+                for (int i = 0; i < aidbox.getContainers().length; i++) {
+                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                        throw new RouteException("Vehicle can't transport container type");
+                    }
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RouteException("Error while checking container types for transport");
             }
         }
         routes[numberAidboxes++] = aidbox;
@@ -107,10 +112,15 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("AidBox to insert is already in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            for(int i = 0; i < aidbox.getContainers().length; i++) {
-                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                    throw new RouteException("Vehicle can't transport container type");
+            try {
+                for (int i = 0; i < aidbox.getContainers().length; i++) {
+                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                        throw new RouteException("Vehicle can't transport container type");
+                    }
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RouteException("Error while checking container type for transport");
             }
         }
 
@@ -135,79 +145,81 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("AidBox is already in the route");
         }
         if (vehicle instanceof VehicleImp) {
-            for(int i = 0; i < aidbox.getContainers().length; i++) {
-                if(!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
-                    throw new RouteException("Vehicle can't transport container type");
+            try {
+                for (int i = 0; i < aidbox.getContainers().length; i++) {
+                    if (!((VehicleImp) vehicle).canTransport(aidbox.getContainers()[i].getType())) {
+                        throw new RouteException("Vehicle can't transport container type");
+                    }
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new RouteException("Error while checking container type for transport");
             }
         }
 
         int positionAidBox1 = -1;
         for (int i = 0; i < numberAidboxes; i++) {
-            if(routes[i].equals(positionAidBox1)) {
+            if (routes[i].equals(positionAidBox1)) {
                 positionAidBox1 = i;
             }
         }
-        
-        for(int i = numberAidboxes; i > positionAidBox1; i--) {
+
+        for (int i = numberAidboxes; i > positionAidBox1; i--) {
             routes[i] = routes[i - 1];
         }
-        
+
         routes[positionAidBox1 + 1] = aidbox1;
         numberAidboxes++;
 
-    }    
-    
+    }
 
     @Override
     public AidBox[] getRoute() {
         AidBox[] copy = new AidBox[numberAidboxes];
-        for(int i = 0; i < numberAidboxes; i++) {
-            if(routes[i] != null) {
+        for (int i = 0; i < numberAidboxes; i++) {
+            if (routes[i] != null) {
                 copy[i] = routes[i];
             }
         }
-        return copy;    
+        return copy;
     }
 
     @Override
     public Vehicle getVehicle() {
-        return this.vehicle;        
+        return this.vehicle;
     }
- 
+
     @Override
     public double getTotalDistance() {
-        
+
         double totalDistance = 0;
-        for(int i = 0; i < numberAidboxes; i++) {
-            AidBox current = routes[i];
-            AidBox next = routes[i + 1];
-            try {
+
+        try {
+            for (int i = 0; i < numberAidboxes; i++) {
+                AidBox current = routes[i];
+                AidBox next = routes[i + 1];
                 totalDistance += current.getDistance(next);
-            } catch (AidBoxException ex) {
-                System.out.println("Error during the calculation");
             }
+        } catch (AidBoxException ex) {
+            System.out.println("Error during the calculation");
         }
         return totalDistance;
     }
 
-    
     @Override
     public double getTotalDuration() {
         double totalDuration = 0;
-        
-        for(int i = 0; i < numberAidboxes; i++) {
-            AidBox current = routes[i];
-            AidBox next = routes[i + 1];
-            try {
+
+        try {
+            for (int i = 0; i < numberAidboxes; i++) {
+                AidBox current = routes[i];
+                AidBox next = routes[i + 1];
                 totalDuration += current.getDuration(next);
-            } catch (AidBoxException ex) {
-                System.out.println("Error during the calculation");
             }
+        } catch (AidBoxException ex) {
+            System.out.println("Error during the calculation");
         }
         return totalDuration;
     }
-    
-    
 
 }

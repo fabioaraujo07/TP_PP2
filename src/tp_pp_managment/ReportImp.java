@@ -23,7 +23,7 @@ public class ReportImp implements com.estg.pickingManagement.Report {
     private AidBox aidbox;
     private Route distance;
     private Route duration;
-    
+
     public ReportImp(LocalDateTime date, Institution institution, AidBox container) {
         this.date = date;
         this.institution = institution;
@@ -35,11 +35,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.institution == null) {
             throw new IllegalArgumentException("Institution can't be null");
         }
-        if (this.institution instanceof InstitutionImp) {
-            InstitutionImp inst = (InstitutionImp) this.institution;
-            return inst.getUsedVehicles();
-        } else {
-            throw new IllegalArgumentException("Institution is not of type InstitutionImp");
+        try {
+            if (this.institution instanceof InstitutionImp) {
+                InstitutionImp inst = (InstitutionImp) this.institution;
+                return inst.getUsedVehicles();
+            } else {
+                throw new IllegalArgumentException("Institution is not of type InstitutionImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting used vehicles");
         }
     }
 
@@ -48,11 +53,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.aidbox == null) {
             throw new IllegalArgumentException("Container can't be null");
         }
-        if (this.aidbox instanceof AidBoxImp) {
-            AidBoxImp aid = (AidBoxImp) this.aidbox;
-            return aid.getPickedContainers();
-        } else {
-            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        try {
+            if (this.aidbox instanceof AidBoxImp) {
+                AidBoxImp aid = (AidBoxImp) this.aidbox;
+                return aid.getPickedContainers();
+            } else {
+                throw new IllegalArgumentException("Container is not of type AidboxImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting picked containers");
         }
     }
 
@@ -61,11 +71,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.distance == null) {
             throw new IllegalArgumentException("Distance can't be null");
         }
-        if (this.distance instanceof RouteImp) {
-            RouteImp dist = (RouteImp) this.distance;
-            return this.getTotalDistance();
-        } else {
-            throw new IllegalArgumentException("Distance is not of type RouteImp");
+        try {
+            if (this.distance instanceof RouteImp) {
+                RouteImp dist = (RouteImp) this.distance;
+                return this.getTotalDistance();
+            } else {
+                throw new IllegalArgumentException("Distance is not of type RouteImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting total distance");
         }
     }
 
@@ -74,11 +89,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.duration == null) {
             throw new IllegalArgumentException("Duration can't be null");
         }
-        if (this.duration instanceof RouteImp) {
-            RouteImp dur = (RouteImp) this.duration;
-            return dur.getTotalDuration();
-        } else {
-            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        try {
+            if (this.duration instanceof RouteImp) {
+                RouteImp dur = (RouteImp) this.duration;
+                return dur.getTotalDuration();
+            } else {
+                throw new IllegalArgumentException("Container is not of type AidboxImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting total duration");
         }
     }
 
@@ -87,11 +107,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.aidbox == null) {
             return -1;
         }
-        if (this.aidbox instanceof AidBoxImp) {
-            AidBoxImp cntnr = (AidBoxImp) this.aidbox;
-            return cntnr.getNonPickedContainers();
-        } else {
-            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        try {
+            if (this.aidbox instanceof AidBoxImp) {
+                AidBoxImp cntnr = (AidBoxImp) this.aidbox;
+                return cntnr.getNonPickedContainers();
+            } else {
+                throw new IllegalArgumentException("Container is not of type AidboxImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting non picked containers");
         }
     }
 
@@ -100,11 +125,16 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         if (this.institution == null) {
             return -1;
         }
-        if (this.institution instanceof InstitutionImp) {
-            InstitutionImp vhcl = (InstitutionImp) this.institution;
-            return vhcl.getNotUsedVehicles();
-        } else {
-            throw new IllegalArgumentException("Container is not of type AidboxImp");
+        try {
+            if (this.institution instanceof InstitutionImp) {
+                InstitutionImp vhcl = (InstitutionImp) this.institution;
+                return vhcl.getNotUsedVehicles();
+            } else {
+                throw new IllegalArgumentException("Container is not of type AidboxImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while getting not used vehicles");
         }
 
     }

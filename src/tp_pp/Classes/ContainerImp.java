@@ -7,7 +7,9 @@ package tp_pp.Classes;
 import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.MeasurementException;
+import java.io.IOException;
 import java.time.LocalDate;
+import tp_pp_exceptions.FindException;
 
 /**
  *
@@ -61,8 +63,12 @@ public class ContainerImp implements com.estg.core.Container {
         int count = 0;
         
         for(int i = 0; i < numberMeasurements; i++) {
-            if(measurements[i].getDate().toLocalDate().equals(ld)) {
-                copyMeasurementsDate[count++] = measurements[i];
+            try {
+                if(measurements[i].getDate().toLocalDate().equals(ld)) {
+                    copyMeasurementsDate[count++] = measurements[i];
+                }
+            } catch(NullPointerException ex) {
+                ex.printStackTrace();
             }
         }
         return copyMeasurementsDate;
@@ -76,16 +82,24 @@ public class ContainerImp implements com.estg.core.Container {
         if(msrmnt.getValue() < 0) {
             throw new MeasurementException("Measurement value is lower than zero");
         }
-        if(msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
-            throw new MeasurementException("Measurement date is before than the last Measurement date");
+        try {
+            if(msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
+                throw new MeasurementException("Measurement date is before than the last Measurement date");
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            ex.printStackTrace();
         }
         
         for(int i = 0; i < numberMeasurements; i++) {
-            if(msrmnt.getDate().equals(measurements[i].getDate())) {
-                if(msrmnt.getValue() != measurements[i].getValue()) {
-                    throw new MeasurementException();
+            try {
+                if(msrmnt.getDate().equals(measurements[i].getDate())) {
+                    if(msrmnt.getValue() != measurements[i].getValue()) {
+                        throw new MeasurementException();
+                    }
+                    return false;
                 }
-                return false;
+            } catch(NullPointerException ex) {
+                ex.printStackTrace();
             }
         }
         if(numberMeasurements == measurements.length) {

@@ -86,7 +86,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
-    // Testando
+    
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -209,21 +209,16 @@ public class InstitutionImp implements com.estg.core.Institution {
             throw new VehicleException("Vehicle can´t be null");
         }
         try {
-            //tentar encontrar vhcl
             findVehicle(vhcl);
-            //se ainda estiver em execução aqui é porque o vhcl foi encontrado,
-            // nao pode addicionar
             return false;
 
         } catch (FindException ex) {
-            //se veiculo nao foi encontrado, pode addicionar
             this.vehicles[numberVehicles++] = vhcl;
             return true;
         }
-
     }
 
-    //Confirmar se ta certo, nn tenho ctz do casting
+    
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
 
@@ -249,7 +244,7 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
-    //Confirmar se ta certo, nn tenho ctz do casting
+    
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
 
