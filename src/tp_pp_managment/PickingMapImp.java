@@ -16,7 +16,7 @@ public class PickingMapImp implements com.estg.pickingManagement.PickingMap{
     private LocalDateTime date;    
     private Route[] routes;
 
-    public PickingMapImp(LocalDateTime date, Route[] routes) {
+    public PickingMapImp(LocalDateTime date) {
         this.date = date;
         this.routes = routes;
     }

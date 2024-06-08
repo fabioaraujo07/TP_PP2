@@ -26,7 +26,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private double totalDuration;
     
 
-    public RouteImp(AidBox[] route, Vehicle vehicle) {
+    public RouteImp(Vehicle vehicle) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
         this.vehicle = vehicle;

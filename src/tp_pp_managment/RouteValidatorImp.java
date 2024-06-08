@@ -31,7 +31,7 @@ public class RouteValidatorImp implements RouteValidator {
             try {
                 route.addAidBox(aidbox);
             } catch (RouteException ex) {
-                Logger.getLogger(RouteValidatorImp.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
         }
         return true;
