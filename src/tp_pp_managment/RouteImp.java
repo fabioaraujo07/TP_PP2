@@ -44,6 +44,10 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     public boolean canTransport(AidBox aidbox) throws RouteException {
     if (vehicle instanceof VehicleImp) {
         VehicleImp v = (VehicleImp) vehicle;
+        
+        if(v.isEnabled()== false){
+            throw new RouteException("Vehicle is not enabled");
+        }
 
         for (int i = 0; i < aidbox.getContainers().length; i++) {
             ItemType type = aidbox.getContainers()[i].getType();
