@@ -9,6 +9,9 @@ import com.estg.core.ItemType;
 import com.estg.pickingManagement.Route;
 import com.estg.pickingManagement.RouteValidator;
 import com.estg.pickingManagement.Vehicle;
+import com.estg.pickingManagement.exceptions.RouteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tp_pp.Classes.AidBoxImp;
 
 /**
@@ -17,47 +20,18 @@ import tp_pp.Classes.AidBoxImp;
  */
 public class RouteValidatorImp implements RouteValidator {
 
-    private Route[] routes;
-    private int numberRoutes;
-    
-
-    public RouteValidatorImp() {
-        this.routes = new Route[10];
-        this.numberRoutes = 0;
-    }
-
-    public boolean hasRoute(Route route) {
-        for (int i = 0; i < numberRoutes; i++) {
-            if (routes[i].equals(route)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean validate(Route route, AidBox aidbox) {
 
-        if (hasRoute(route) == false) {
-            return false;
-        }
-        if (route.containsAidBox(aidbox)) {
-            return false;
-        }
-        if (route.getVehicle() == null) {
+        if (aidbox == null) {
             return false;
         }
 
-        if (route instanceof RouteImp) {
+        if (!route.containsAidBox(aidbox)) {
             try {
-                RouteImp vehicle = (RouteImp) route;
-                
-                if(!vehicle.canTransport(aidbox)){
-                    return false;
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
+                route.addAidBox(aidbox);
+            } catch (RouteException ex) {
+                Logger.getLogger(RouteValidatorImp.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return true;

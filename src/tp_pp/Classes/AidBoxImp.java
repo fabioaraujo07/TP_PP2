@@ -28,8 +28,6 @@ import tp_pp_exceptions.FindException;
  */
 public class AidBoxImp implements com.estg.core.AidBox {
 
-    private final double AVERAGE = 60; // suponhamos que seja a velocidade média para cada veículo
-
     private String code;
     private String zone;
     private String refLocal;
