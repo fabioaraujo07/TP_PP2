@@ -103,4 +103,17 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
         return vehicle;
     }
+
+     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof VehicleImp)) {
+            return false;
+        }
+        VehicleImp v = (VehicleImp) obj;
+        return this.capacity == v.capacity && this.supply == v.supply && this.kmsForPerishableFood == v.kmsForPerishableFood;
+    }
+    
 }
