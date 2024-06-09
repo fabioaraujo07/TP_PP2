@@ -26,11 +26,7 @@ public class RouteGeneratorImp implements RouteGenerator {
     public RouteGeneratorImp() {
         this.generators = new Route[10];
     }
-    
-    
-    
-    
-    
+
     @Override
     public Route[] generateRoutes(Institution instn, Strategy strtg, RouteValidator rv, Report report) throws PickingMapException {
 
@@ -63,20 +59,14 @@ public class RouteGeneratorImp implements RouteGenerator {
 
         //Atualiza o report com os novos dados
         try {
-            /*
-            report.setUsedVehicles(usedVehicles);
-            report.setPickedContainer(pickedContainers);
-            report.setTotalDistance(totalDistance);
-            report.setTotalDuration(totalDuration);
-            */
-            
-            
-            
-            //Pode apagar ate o final do try
-            usedVehicles += report.getUsedVehicles();
-            pickedContainers += report.getPickedContainers();
-            totalDistance += report.getTotalDistance();
-            totalDuration += report.getTotalDuration();
+            if (report instanceof ReportImp) {
+                ReportImp rp = (ReportImp) report;
+                
+                rp.setUsedVehicles(usedVehicles);
+                rp.setPickedContainers(pickedContainers);
+                rp.setTotalDistance(totalDistance);
+                rp.setTotalDuration(totalDuration);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new PickingMapException("Error updating report data");
