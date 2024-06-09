@@ -23,7 +23,7 @@ public class RouteGeneratorImp implements RouteGenerator {
 
     private Route[] generators;
 
-    public RouteGeneratorImp(Route[] generators) {
+    public RouteGeneratorImp() {
         this.generators = new Route[10];
     }
     
