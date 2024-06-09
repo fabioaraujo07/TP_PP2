@@ -4,7 +4,9 @@
  */
 package menu;
 
+import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
+import com.estg.core.exceptions.ContainerException;
 import http.HttpProviderImp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,6 +17,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import tp_pp.Classes.ContainerImp;
 
 /**
  *
@@ -54,7 +57,7 @@ public class Menu {
                         showContainerMenu();
                         break;
                     case 3:
-
+                        showVehiclesMenu();
                         break;
                     case 4:
 
@@ -202,9 +205,8 @@ public class Menu {
             System.err.println("Error fetching distances: " + e.getMessage());
         }
     }
-    
-    
-    private void viewDuration(){
+
+    private void viewDuration() {
         try {
             System.out.println("Enter the Aid Box code: ");
             String aidbox1 = reader.readLine();
@@ -229,20 +231,74 @@ public class Menu {
             System.err.println("Error fetching distances: " + e.getMessage());
         }
     }
-    
-    
-    
-    
-    
-     public void showContainerMenu() {
+
+    public void showContainerMenu() {
         boolean exit = false;
         while (!exit) {
             System.out.println("=== Container Menu ===");
             System.out.println("1. List all Containers");
-            System.out.println("2. View Container by ID");
-            System.out.println("3. View Container's capacity");
-            System.out.println("4. View Container's measurements");
-            System.out.println("5. Exit");
+            System.out.println("2. View Container's measurements");
+            System.out.println("3. Back");
+            System.out.println("Select option: ");
+
+            try {
+                int option = Integer.parseInt(reader.readLine());
+
+                switch (option) {
+                    case 1:
+                        listContainers();
+                        break;
+                    case 2:
+                        //containerMeasurements();
+                        break;
+                    case 3:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid selection. Try again!\n");
+                        break;
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.\n\n");
+            } catch (IOException e) {
+                System.out.println("Error reading input.");
+            }
+        }
+    }
+
+    private void listContainers() {
+        try {
+            String jsonResponse = httpProvider.getAidBoxes();
+            JSONParser parser = new JSONParser();
+            JSONArray aidBoxesArray = (JSONArray) parser.parse(jsonResponse);
+
+            for (Object aidBoxObject : aidBoxesArray) {
+                JSONObject aidBox = (JSONObject) aidBoxObject;
+
+                JSONArray contentores = (JSONArray) aidBox.get("Contentores");
+                System.out.println("Contentores:");
+                for (Object contentorObject : contentores) {
+                    JSONObject contentor = (JSONObject) contentorObject;
+                    System.out.println("\tCode: " + contentor.get("codigo"));
+                    System.out.println("\tCapacity: " + contentor.get("capacidade"));
+                }
+                System.out.println("-----------------------------");
+            }
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching aid boxes: " + e.getMessage());
+        }
+    }
+
+    private void showVehiclesMenu() {
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("=== Vehicle Menu ===");
+            System.out.println("1. Create");
+            System.out.println("2. Remove");
+            System.out.println("3. Update");
+            System.out.println("4. List");
+            System.out.println("5. Back");
             System.out.println("Select option: ");
 
             try {
@@ -253,13 +309,13 @@ public class Menu {
                         //listContainers();
                         break;
                     case 2:
-                        //viewContainerByCode();
+                        //containerMeasurements();
                         break;
                     case 3:
-                        //viewCapacity();
+                        //containerMeasurements();
                         break;
                     case 4:
-                        //viewMeasurements();
+                        //containerMeasurements();
                         break;
                     case 5:
                         exit = true;
