@@ -63,11 +63,16 @@ public class RouteGeneratorImp implements RouteGenerator {
 
         //Atualiza o report com os novos dados
         try {
+            /*
+            report.setUsedVehicles(usedVehicles);
+            report.setPickedContainer(pickedContainers);
+            report.setTotalDistance(totalDistance);
+            report.setTotalDuration(totalDuration);
+            */
             
             
             
-            
-            
+            //Pode apagar ate o final do try
             usedVehicles += report.getUsedVehicles();
             pickedContainers += report.getPickedContainers();
             totalDistance += report.getTotalDistance();
