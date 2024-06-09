@@ -4,9 +4,13 @@
  */
 package menu;
 
+import com.estg.core.Institution;
+import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
+import com.estg.core.exceptions.VehicleException;
+import com.estg.pickingManagement.Vehicle;
 import http.HttpProviderImp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,6 +22,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import tp_pp.Classes.ContainerImp;
+import tp_pp.Classes.InstitutionImp;
+import tp_pp_managment.VehicleImp;
 
 /**
  *
@@ -25,10 +31,13 @@ import tp_pp.Classes.ContainerImp;
  */
 public class Menu {
 
+    private Institution inst;
+
     private BufferedReader reader;
     private static HttpProviderImp httpProvider = new HttpProviderImp();
 
-    public Menu() {
+    public Menu(Institution inst) {
+        this.inst = inst;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -306,16 +315,22 @@ public class Menu {
 
                 switch (option) {
                     case 1:
-                        //listContainers();
+                        createVehicle();
                         break;
-                    case 2:
+                    case 2: {
                         //containerMeasurements();
-                        break;
+                    }
+                    break;
+
                     case 3:
                         //containerMeasurements();
                         break;
                     case 4:
-                        //containerMeasurements();
+                        try {
+                            listVehicles();
+                        } catch (VehicleException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         break;
                     case 5:
                         exit = true;
@@ -333,9 +348,103 @@ public class Menu {
         }
     }
 
+    private void createVehicle() {
+        try {
+
+            System.out.println("Enter the vehicle capacity: ");
+            String capacitystr = reader.readLine();
+            double capacity = Double.parseDouble(capacitystr);
+
+            System.out.println("Enter the vehicle type (1.PERISHABLE_FOOD 2.NON_PERISHABLE_FOOD 3.CLOTHING 4.MEDICINE");
+
+            int option = Integer.parseInt(reader.readLine());
+
+            switch (option) {
+                case 1:
+                    System.out.println("Insert the max kms to the vehicle: ");
+                    String kmsstr = reader.readLine();
+                    double kms = Double.parseDouble(kmsstr);
+                    VehicleImp vehicle = new VehicleImp(capacity, kms);
+                    try {
+                        inst.addVehicle(vehicle);
+                        System.out.println("Added with success!");
+                    } catch (VehicleException e) {
+                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                    }
+                    break;
+                case 2:
+                    VehicleImp vehicle1 = new VehicleImp(capacity, ItemType.NON_PERISHABLE_FOOD);
+                    try {
+                        inst.addVehicle(vehicle1);
+                        System.out.println("Added with success!");
+                    } catch (VehicleException e) {
+                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    VehicleImp vehicle2 = new VehicleImp(capacity, ItemType.CLOTHING);
+                    try {
+                        inst.addVehicle(vehicle2);
+                        System.out.println("Added with success!");
+                    } catch (VehicleException e) {
+                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                    }
+                    break;
+                case 4:
+                    VehicleImp vehicle3 = new VehicleImp(capacity, ItemType.MEDICINE);
+                    try {
+                        inst.addVehicle(vehicle3);
+                        System.out.println("Added with success!");
+                    } catch (VehicleException e) {
+                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid selection. Try again!\n");
+                    break;
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.\n\n");
+        } catch (IOException e) {
+            System.out.println("Error reading input.");
+        }
+    }
+
+    public void listVehicles() throws VehicleException {
+        Vehicle[] vehicles = inst.getVehicles();
+
+        if (vehicles == null) {
+            throw new VehicleException();
+        } else {
+            System.out.println("Vehicles List: ");
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle instanceof VehicleImp) {
+                    VehicleImp v = (VehicleImp) vehicle;
+                    if (v.getSupplyType().equals(ItemType.PERISHABLE_FOOD)) {
+                        System.out.println("Capacity: " + v.getMaxCapacity() + ", Supply: " + v.getSupplyType() + ", Enabled: " + v.isEnabled() + ", Used: " + v.isUsed() + ", Kms: " + v.getKms());
+                    } else {
+                        System.out.println("Capacity: " + v.getMaxCapacity() + ", Supply: " + v.getSupplyType() + ", Enabled: " + v.isEnabled() + ", Used: " + v.isUsed());
+                    }
+                }
+
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        Menu menu = new Menu();
+        InstitutionImp inst = new InstitutionImp("ONG");
+
+        if (inst.importData("src/Files/vehicles.json")) {
+            System.out.println("Success importing program vehicles");
+        }
+
+        Menu menu = new Menu(inst);
         menu.start();
+
+        if (inst.export("src/Files/vehicles.json")) {
+            System.out.println("Success export program vehicles");
+        }
     }
 
 }

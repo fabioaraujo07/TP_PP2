@@ -96,11 +96,11 @@ public class StrategyImp implements Strategy {
                     if (load >= vehicles[i].getMaxCapacity()) {
                         int index = i;
 
-                        for (int j = i + 1; j < 10; j++) {
+                        for (int j = i + 1; j < strategies.length; j++) {
 
                             if (vehicles[j].getSupplyType() == type) {
                                 index = j;
-                                load = 0;
+                                load = 0.0;
                             }
 
                             if (j == 9) {

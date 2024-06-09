@@ -367,9 +367,18 @@ public class InstitutionImp implements com.estg.core.Institution {
         return this.numberVehicles;
     }
 
+    public void setUsedVehicles(int numberVehicles) {
+        this.numberVehicles = numberVehicles;
+    }
+
     public int getNotUsedVehicles() {
         return this.vehicles.length - this.numberVehicles;
     }
+    
+    public void setPickedContainers(int numberContainers) {
+        this.numberContainers = numberContainers;
+    }
+    
 
     @Override
     public boolean equals(Object obj) {
@@ -401,16 +410,16 @@ public class InstitutionImp implements com.estg.core.Institution {
             fileWriter.write(jsonObject.toJSONString());
             fileWriter.close();
         } catch (IOException e) {
-            
+
             return false;
         }
         return true;
     }
-    
+
     public boolean importData(String filePath) {
         JSONParser parser = new JSONParser();
 
-        try ( FileReader reader = new FileReader(filePath)) {
+        try (FileReader reader = new FileReader(filePath)) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
             JSONArray vehiclesArray = (JSONArray) jsonObject.get("Vehicles");

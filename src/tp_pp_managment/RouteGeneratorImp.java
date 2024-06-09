@@ -21,13 +21,23 @@ import com.estg.pickingManagement.Vehicle;
  */
 public class RouteGeneratorImp implements RouteGenerator {
 
+    private Route[] generators;
+
+    public RouteGeneratorImp(Route[] generators) {
+        this.generators = new Route[10];
+    }
+    
+    
+    
+    
+    
     @Override
     public Route[] generateRoutes(Institution instn, Strategy strtg, RouteValidator rv, Report report) throws PickingMapException {
 
         Vehicle[] vehicles = instn.getVehicles();
         AidBox[] aidboxes = instn.getAidBoxes();
 
-        Route[] routes = new Route[vehicles.length];
+        Route[] routes = new Route[generators.length];
 
         //Variaveis para colocar no report
         int usedVehicles = 0;
@@ -46,13 +56,18 @@ public class RouteGeneratorImp implements RouteGenerator {
             routes[i] = generatedRoutes[i];
 
             usedVehicles++;
-            pickedContainers += aidboxes.length; //Não tenho ctz desse /Cada rota pega tds os containers associados
+            pickedContainers += generatedRoutes[i].getRoute().length; //Cada rota pega todos os containers associados / Não tenho ctz desse /Cada rota pega tds os containers associados
             totalDistance += generatedRoutes[i].getTotalDistance();
             totalDuration += generatedRoutes[i].getTotalDuration();
         }
 
         //Atualiza o report com os novos dados
         try {
+            
+            
+            
+            
+            
             usedVehicles += report.getUsedVehicles();
             pickedContainers += report.getPickedContainers();
             totalDistance += report.getTotalDistance();
@@ -62,8 +77,6 @@ public class RouteGeneratorImp implements RouteGenerator {
             throw new PickingMapException("Error updating report data");
         }
 
-        //Como realmente associar com o report?
-        //Usando os metodos sets na classe report? Se sim, tem que criar esses metodos
         return routes;
     }
 

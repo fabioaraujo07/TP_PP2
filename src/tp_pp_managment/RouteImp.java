@@ -212,5 +212,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         }
         return totalDuration;
     }
+    
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+    
+    public void setTotalDuration(double totalDuration) {
+        this.totalDuration = totalDuration;
+    }
 
 }

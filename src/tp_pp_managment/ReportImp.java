@@ -18,7 +18,6 @@ import tp_pp.Classes.AidBoxImp;
 public class ReportImp implements com.estg.pickingManagement.Report {
 
     private LocalDateTime date;
-
     private Institution institution;
     private AidBox aidbox;
     private Route distance;
@@ -142,6 +141,66 @@ public class ReportImp implements com.estg.pickingManagement.Report {
     @Override
     public LocalDateTime getDate() {
         return this.date;
+    }
+
+    public void setUsedVehicles(int addUsedVehicles) {
+        try {
+            int currentUsedVehicles = this.getUsedVehicles();
+            if (this.institution instanceof InstitutionImp) {
+                InstitutionImp inst = (InstitutionImp) this.institution;
+                inst.setUsedVehicles(currentUsedVehicles + addUsedVehicles);
+            } else {
+                throw new IllegalArgumentException("Institution isn't an InstitutionImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while setting used vehicles");
+        }
+    }
+
+    public void setPickedContainers(int addPickedContainers) {
+        try {
+            int currentPickedContainers = this.getPickedContainers();
+            if (this.institution instanceof InstitutionImp) {
+                InstitutionImp inst = (InstitutionImp) this.institution;
+                inst.setPickedContainers(currentPickedContainers + addPickedContainers);
+            } else {
+                throw new IllegalArgumentException("Institution ins't an InstitutionImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while setting picked containers");
+        }
+    }
+
+    public void setTotalDistance(double addTotalDistance) {
+        try {
+            double currentTotalDistance = this.getTotalDistance();
+            if (this.distance instanceof RouteImp) {
+                RouteImp dist = (RouteImp) this.distance;
+                dist.setTotalDistance(currentTotalDistance + addTotalDistance);
+            } else {
+                throw new IllegalArgumentException("Distance is not a type of RouteImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while setting total distance");
+        }
+    }
+
+    public void setTotalDuration(double addTotalDuration) {
+        try {
+            double currentTotalDuration = this.getTotalDuration();
+            if (this.duration instanceof RouteImp) {
+                RouteImp dur = (RouteImp) this.duration;
+                dur.setTotalDuration(currentTotalDuration + addTotalDuration);
+            } else {
+                throw new IllegalArgumentException("Duration is not a type of RouteImp");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalArgumentException("Error while setting total duration");
+        }
     }
 
 }
