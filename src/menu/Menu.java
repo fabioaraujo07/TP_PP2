@@ -369,7 +369,7 @@ public class Menu {
                         inst.addVehicle(vehicle);
                         System.out.println("Added with success!");
                     } catch (VehicleException e) {
-                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                        System.out.println("Error adding vehicle: " + e.getMessage());
                     }
                     break;
                 case 2:
@@ -378,7 +378,7 @@ public class Menu {
                         inst.addVehicle(vehicle1);
                         System.out.println("Added with success!");
                     } catch (VehicleException e) {
-                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                        System.out.println("Error adding vehicle: " + e.getMessage());
                     }
                     break;
                 case 3:
@@ -387,7 +387,7 @@ public class Menu {
                         inst.addVehicle(vehicle2);
                         System.out.println("Added with success!");
                     } catch (VehicleException e) {
-                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                        System.out.println("Error adding vehicle: " + e.getMessage());
                     }
                     break;
                 case 4:
@@ -396,7 +396,7 @@ public class Menu {
                         inst.addVehicle(vehicle3);
                         System.out.println("Added with success!");
                     } catch (VehicleException e) {
-                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                        System.out.println("Error adding vehicle: " + e.getMessage());
                     }
                     break;
                 default:
@@ -455,7 +455,7 @@ public class Menu {
                             System.out.println("Removed with success!");
                         }
                     } catch (VehicleException e) {
-                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                        System.out.println("Error removing vehicle: " + e.getMessage());
                     }
                     break;
 
@@ -465,6 +465,33 @@ public class Menu {
                         if (inst instanceof InstitutionImp) {
                             InstitutionImp institu = (InstitutionImp) inst;
                             institu.removeVehicle(vehicle1);
+                            System.out.println("Removed with success!");
+                        }
+
+                    } catch (VehicleException e) {
+                        System.out.println("Error removing vehicle: " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    VehicleImp vehicle2 = new VehicleImp(capacity, ItemType.CLOTHING);
+                    try {
+                        if (inst instanceof InstitutionImp) {
+                            InstitutionImp institu = (InstitutionImp) inst;
+                            institu.removeVehicle(vehicle2);
+                            System.out.println("Removed with success!");
+                        }
+
+                    } catch (VehicleException e) {
+                        System.out.println("Error removing vehicle: " + e.getMessage());
+                    }
+                    break;
+
+                case 4:
+                    VehicleImp vehicle3 = new VehicleImp(capacity, ItemType.MEDICINE);
+                    try {
+                        if (inst instanceof InstitutionImp) {
+                            InstitutionImp institu = (InstitutionImp) inst;
+                            institu.removeVehicle(vehicle3);
                             System.out.println("Removed with success!");
                         }
 

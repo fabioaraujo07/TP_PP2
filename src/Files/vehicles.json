@@ -1,1 +1,15 @@
-{"numbervehicles":5,"Vehicles":[{"kmsForPerishableFood":1000.0,"supply":"PERISHABLE_FOOD","enabled":true,"isUsed":false,"capacity":1000.0},{"kmsForPerishableFood":0.0,"supply":"PERISHABLE_FOOD","enabled":true,"isUsed":false,"capacity":500.0},{"kmsForPerishableFood":0.0,"supply":"PERISHABLE_FOOD","enabled":true,"isUsed":false,"capacity":500.0},{"kmsForPerishableFood":0.0,"supply":"NON_PERISHABLE_FOOD","enabled":true,"isUsed":false,"capacity":12.0},{"kmsForPerishableFood":0.0,"supply":"CLOTHING","enabled":true,"isUsed":false,"capacity":1000.0}]}
+{
+    "numbervehicles": 2,
+    "Vehicles": [{
+            "kmsForPerishableFood": 0.0,
+            "supply": "PERISHABLE_FOOD",
+            "enabled": true,
+            "isUsed": false,
+            "capacity": 500.0
+        }, {
+            "supply": "CLOTHING",
+            "enabled": true,
+            "isUsed": false,
+            "capacity": 1000.0
+        }]
+}
