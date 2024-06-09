@@ -458,6 +458,20 @@ public class Menu {
                         System.out.println("Erro ao adicionar veículo: " + e.getMessage());
                     }
                     break;
+
+                case 2:
+                    VehicleImp vehicle1 = new VehicleImp(capacity, ItemType.NON_PERISHABLE_FOOD);
+                    try {
+                        if (inst instanceof InstitutionImp) {
+                            InstitutionImp institu = (InstitutionImp) inst;
+                            institu.removeVehicle(vehicle1);
+                            System.out.println("Removed with success!");
+                        }
+
+                    } catch (VehicleException e) {
+                        System.out.println("Error removing vehicle: " + e.getMessage());
+                    }
+                    break;
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.\n\n");
