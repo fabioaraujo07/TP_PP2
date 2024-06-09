@@ -22,88 +22,100 @@ import tp_pp_exceptions.StrategyException;
  */
 public class StrategyImp implements Strategy {
 
-    private Route[] routes;
-    private Vehicle[] vehicles;
-    private AidBox[] aidboxes;
-    private Container[] containers;
+    private int numberStrategies;
+    private int numberTypes;
+    private Route[] strategies;
+    private RouteValidator validated;
+    private Institution institution;
+    private ItemType[] types;
+
+    public StrategyImp(Institution institution) {
+        this.strategies = new Route[10];
+        this.institution = institution;
+        this.types = new ItemType[4];
+        this.numberStrategies = 0;
+        this.numberTypes = 0;
+    }
+
+    private int LastMeasurement(Container container) {
+        int numberMeasurement = 0;
+
+        Measurement[] measurement = container.getMeasurements();
+        for (int i = 0; i < measurement.length; i++) {
+            if (measurement != null) {
+                numberMeasurement++;
+            }
+        }
+        return numberMeasurement;
+    }
+
+    private boolean TypeAlreadyPicked(ItemType type) {
+        for (int i = 0; i < this.numberTypes; i++) {
+            if (this.types[i].equals(type)) {
+                return true;
+            }
+        }
+
+        this.types[numberTypes++] = type;
+        return false;
+    }
+
+    private boolean isEnabled(Vehicle vehicle) {
+
+        if (vehicle instanceof VehicleImp) {
+            VehicleImp v = (VehicleImp) vehicle;
+            if (v.isEnabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public Route[] generate(Institution instn, RouteValidator rv) {
 
-        int count = 0;
-        int countActiveVehicles = 0;
-        this.vehicles = instn.getVehicles();
-        this.aidboxes = instn.getAidBoxes();
-        this.routes = new Route[vehicles.length]; //O que usar para descobrir o tamanho do array de rotas?
+        Vehicle[] vehicles = instn.getVehicles();
 
-        // Cada veículo vai ter uma rota correspondente e vai ser validada
-        for (int i = 0; i < vehicles.length; i++) {
-            if (vehicles[i] instanceof VehicleImp) {
-                if (((VehicleImp) vehicles[i]).isEnabled() == true) {
-                    routes[i] = new RouteImp(vehicles[i]); //Cria uma nova rota para o veiculo
-                    countActiveVehicles++;
-                }
-            }
-            if (countActiveVehicles == 0) {
-                System.out.println("No actived vehicles available"); //Melhorar essa parte
-                return null;
-            }
-        }
+        for (int i = 0; i < strategies.length; i++) { //Mudei o 10 para strategies.length
 
-        
-        for (int i = 0; i < routes.length; i++) { 
-            for (int j = 0; j < aidboxes.length; j++) { 
-                containers = aidboxes[j].getContainers(); 
-                try {
-                    //Verifica se o aidbox é valido para a rota
-                    if (aidboxes[i] != null && rv.validate(routes[i], aidboxes[j])) {
-                        //Verifica se o aidbox pode ser add na rota
-                        if (canAddAidBoxToRoute(routes[i], aidboxes[i])) {
-                            routes[i].addAidBox(aidboxes[j]);
-                        }
+            if (!(TypeAlreadyPicked(vehicles[i].getSupplyType())) && isEnabled(vehicles[i])) {
+
+                this.strategies[numberStrategies] = new RouteImp(vehicles[i]);
+                ItemType type = vehicles[i].getSupplyType();
+                AidBox[] aidBoxes = instn.getAidBoxes();
+                double load = 0;
+                int position = 0;
+
+                do {
+
+                    if (rv.validate(strategies[numberStrategies++], aidBoxes[position])) {
+                        Container container = aidBoxes[position].getContainer(type);
+                        load += container.getMeasurements()[LastMeasurement(container)].getValue();
                     }
-                } catch (RouteException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
 
-        return routes;
-    }
+                    if (load >= vehicles[i].getMaxCapacity()) {
+                        int index = i;
 
-    
-    private boolean canAddAidBoxToRoute(Route route, AidBox aidbox) {
-        Vehicle vehicle = route.getVehicle();
+                        for (int j = i + 1; j < 10; j++) {
 
-        if (vehicle instanceof VehicleImp) {
-            VehicleImp vehicleImp = (VehicleImp) vehicle;
-            double totalWeight = 0;
-            ItemType aidboxType = null;
+                            if (vehicles[j].getSupplyType() == type) {
+                                index = j;
+                                load = 0;
+                            }
 
-            //Verificar e calcular o peso total dos containers e checkar o tipo
-            AidBox[] existingAidBoxes = route.getRoute(); //Pega as aidbox de uma rota existente
-            for (int i = 0; i < aidboxes.length; i++) {
-                AidBox existingAidBox = existingAidBoxes[i];
-                if (existingAidBoxes[i] != null) {
-                    Container[] containers = existingAidBox.getContainers(); //Pega os container da aidbox
-
-                    for (int j = 0; j < containers.length; j++) {
-                        do {
-                            totalWeight += containers[j].getCapacity(); //Soma a capacidade ao peso total do container
-                        } while (totalWeight <= containers[j].getCapacity() || j == containers.length);
-
-                        //Define o tipo, se ainda não tiver definido
-                        if (aidboxType == null) {
-                            aidboxType = containers[j].getType();
-                        } else if (!aidboxType.equals(containers[j].getType())) {
-                            return false; //O veiculo só pode carregar um tipo de item
+                            if (j == 9) {
+                                i = -1;
+                            }
                         }
+                        this.strategies[numberStrategies++] = new RouteImp(vehicles[index]);
                     }
-                }
-            }
 
+                    position++;
+                } while (aidBoxes[position] != null);
+            }
         }
-        return true;
+
+        return strategies;
     }
 
 }
