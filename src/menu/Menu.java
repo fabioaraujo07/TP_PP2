@@ -318,7 +318,7 @@ public class Menu {
                         createVehicle();
                         break;
                     case 2: {
-                        //containerMeasurements();
+                        removeVehicle();
                     }
                     break;
 
@@ -427,9 +427,44 @@ public class Menu {
                         System.out.println("Capacity: " + v.getMaxCapacity() + ", Supply: " + v.getSupplyType() + ", Enabled: " + v.isEnabled() + ", Used: " + v.isUsed());
                     }
                 }
-
             }
         }
+    }
+
+    private void removeVehicle() {
+        try {
+            listVehicles();
+            System.out.println("Enter the vehicle to remove capacity: ");
+            String capacitystr = reader.readLine();
+            double capacity = Double.parseDouble(capacitystr);
+
+            System.out.println("Enter the vehicle type (1.PERISHABLE_FOOD 2.NON_PERISHABLE_FOOD 3.CLOTHING 4.MEDICINE");
+
+            int option = Integer.parseInt(reader.readLine());
+
+            switch (option) {
+                case 1:
+                    System.out.println("Insert vehicle to remove max kms: ");
+                    String kmsstr = reader.readLine();
+                    double kms = Double.parseDouble(kmsstr);
+                    VehicleImp vehicle = new VehicleImp(capacity, kms);
+                    try {
+                        if (inst instanceof InstitutionImp) {
+                            InstitutionImp institu = (InstitutionImp) inst;
+                            institu.removeVehicle(vehicle);
+                            System.out.println("Removed with success!");
+                        }
+                    } catch (VehicleException e) {
+                        System.out.println("Erro ao adicionar veículo: " + e.getMessage());
+                    }
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.\n\n");
+        } catch (IOException | VehicleException e) {
+            System.out.println("Error reading input.");
+        }
+
     }
 
     public static void main(String[] args) {

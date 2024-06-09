@@ -374,11 +374,10 @@ public class InstitutionImp implements com.estg.core.Institution {
     public int getNotUsedVehicles() {
         return this.vehicles.length - this.numberVehicles;
     }
-    
+
     public void setPickedContainers(int numberContainers) {
         this.numberContainers = numberContainers;
     }
-    
 
     @Override
     public boolean equals(Object obj) {
@@ -399,18 +398,16 @@ public class InstitutionImp implements com.estg.core.Institution {
 
         JSONArray vehiclesArray = new JSONArray();
         for (int i = 0; i < numberVehicles; i++) {
-            try {
+            if (vehicles[i] != null) {
                 vehiclesArray.add(((VehicleImp) vehicles[i]).toJsonObj());
-            } catch (NullPointerException e) {
             }
         }
         jsonObject.put("Vehicles", vehiclesArray);
 
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(jsonObject.toJSONString());
-            fileWriter.close();
         } catch (IOException e) {
-
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -424,24 +421,50 @@ public class InstitutionImp implements com.estg.core.Institution {
 
             JSONArray vehiclesArray = (JSONArray) jsonObject.get("Vehicles");
             for (int i = 0; i < vehiclesArray.size(); i++) {
+                JSONObject vehicleJson = (JSONObject) vehiclesArray.get(i);
+                Vehicle v = VehicleImp.fromJsonObj(vehicleJson);
                 try {
-                    JSONObject vehicleJson = (JSONObject) vehiclesArray.get(i);
-                    Vehicle v = (Vehicle) VehicleImp.fromJsonObj(vehicleJson);
                     this.addVehicle(v);
                 } catch (VehicleException e) {
+                    e.printStackTrace();
                 }
             }
             return true;
 
         } catch (FileNotFoundException ex) {
-            System.out.println("File");
+            System.out.println("File not found: " + filePath);
         } catch (IOException ex) {
-            System.out.println("2");
+            System.out.println("IO Exception: " + ex.getMessage());
         } catch (ParseException ex) {
-            System.out.println("3");
+            System.out.println("Parse Exception: " + ex.getMessage());
         }
         return false;
+    }
 
+    public Vehicle removeVehicle(Vehicle v) throws VehicleException {
+        if (v == null) {
+            throw new VehicleException();
+        }
+
+        int pos;
+        try {
+            pos = findVehicle(v);
+        } catch (FindException ex) {
+            throw new VehicleException();
+        }
+
+        if (pos == -1) {
+            throw new VehicleException();
+        }
+
+        Vehicle removedVehicle = this.vehicles[pos];
+
+        for (int i = pos; i < numberVehicles - 1; i++) {
+            this.vehicles[i] = this.vehicles[i + 1];
+        }
+        this.vehicles[--numberVehicles] = null;
+
+        return removedVehicle;
     }
 
 }

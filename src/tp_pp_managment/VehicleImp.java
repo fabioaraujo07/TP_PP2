@@ -77,7 +77,9 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         jsonObject.put("supply", this.supply.name());
         jsonObject.put("enabled", this.enabled);
         jsonObject.put("isUsed", this.isUsed);
-        jsonObject.put("kmsForPerishableFood", this.kmsForPerishableFood);
+        if (this.supply.equals(ItemType.PERISHABLE_FOOD)) {
+            jsonObject.put("kmsForPerishableFood", this.kmsForPerishableFood);
+        }
         return jsonObject;
     }
 
@@ -86,12 +88,19 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         ItemType supply = ItemType.valueOf((String) jsonObject.get("supply"));
         boolean enabled = (boolean) jsonObject.get("enabled");
         boolean isUsed = (boolean) jsonObject.get("isUsed");
-        double kmsForPerishableFood = (double) jsonObject.get("kmsForPerishableFood");
 
-        VehicleImp vehicle = new VehicleImp(capacity, kmsForPerishableFood);
+        System.out.println(supply.toString());
+
+        VehicleImp vehicle;
+        if (supply == ItemType.PERISHABLE_FOOD) {
+            int kmsForPerishableFood = ((Number) jsonObject.get("kmsForPerishableFood")).intValue();
+            vehicle = new VehicleImp(capacity, kmsForPerishableFood);
+        } else {
+            vehicle = new VehicleImp(capacity, supply);
+        }
         vehicle.setEnabled(enabled);
         vehicle.setUsed(isUsed);
+
         return vehicle;
     }
-
 }

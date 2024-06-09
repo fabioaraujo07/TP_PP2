@@ -24,7 +24,6 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private Vehicle vehicle;
     private double totalDistance;
     private double totalDuration;
-    
 
     public RouteImp(Vehicle vehicle) {
         this.routes = new AidBox[10];
@@ -32,36 +31,35 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         this.vehicle = vehicle;
     }
 
-    public int findAidBox(AidBox aidbox) {
+    public int findAidBox(AidBox aidbox) throws FindException {
         for (int i = 0; i < numberAidboxes; i++) {
             if (routes[i].equals(aidbox)) {
                 return i;
             }
         }
-        return -1;
+        throw new FindException();
     }
 
     public boolean canTransport(AidBox aidbox) throws RouteException {
-    if (vehicle instanceof VehicleImp) {
-        VehicleImp v = (VehicleImp) vehicle;
-        
-        if(v.isEnabled() == false){
-            throw new RouteException("Vehicle is not enabled");
-        }
+        if (vehicle instanceof VehicleImp) {
+            VehicleImp v = (VehicleImp) vehicle;
 
-        for (int i = 0; i < aidbox.getContainers().length; i++) {
-            ItemType type = aidbox.getContainers()[i].getType();
-            if (v.getSupplyType().equals(type)) {
-                if (type.equals(ItemType.PERISHABLE_FOOD) && getTotalDistance() > v.getKms()) {
-                    throw new RouteException("Total distance exceeds limit for perishable food");
+            if (v.isEnabled() == false) {
+                throw new RouteException("Vehicle is not enabled");
+            }
+
+            for (int i = 0; i < aidbox.getContainers().length; i++) {
+                ItemType type = aidbox.getContainers()[i].getType();
+                if (v.getSupplyType().equals(type)) {
+                    if (type.equals(ItemType.PERISHABLE_FOOD) && getTotalDistance() > v.getKms()) {
+                        throw new RouteException("Total distance exceeds limit for perishable food");
+                    }
+                    return true;
                 }
-                return true;
             }
         }
+        throw new RouteException("Vehicle can't transport any of these containers");
     }
-    throw new RouteException("Vehicle can't transport any of these containers");
-}
-
 
     @Override
     public void addAidBox(AidBox aidbox) throws RouteException {
@@ -69,8 +67,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         if (aidbox == null) {
             throw new RouteException("Aidbox can't be null");
         }
-        if (findAidBox(aidbox) == -1) {
-            throw new RouteException("Aidbox already exists in the route");
+        try {
+            if (findAidBox(aidbox) == -1) {
+                throw new RouteException("Aidbox already exists in the route");
+            }
+        } catch (FindException ex) {
+            Logger.getLogger(RouteImp.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             canTransport(aidbox);
@@ -84,16 +86,27 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     @Override
     public AidBox removeAidBox(AidBox aidbox) throws RouteException {
 
-        int pos = findAidBox(aidbox);
-
         if (aidbox == null) {
             throw new RouteException("Aidbox can't be null");
         }
+
+        int pos;
+        try {
+            pos = findAidBox(aidbox);
+        } catch (FindException ex) {
+            Logger.getLogger(RouteImp.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RouteException("Error occurred while finding the aidbox");
+        }
+
         if (pos == -1) {
             throw new RouteException("Aidbox could not be found");
         }
+
         AidBox removedAidBox = this.routes[pos];
-        this.routes[pos] = this.routes[numberAidboxes - 1];
+
+        for (int i = pos; i < numberAidboxes - 1; i++) {
+            this.routes[i] = this.routes[i + 1];
+        }
         this.routes[--numberAidboxes] = null;
 
         return removedAidBox;
@@ -129,7 +142,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         } catch (RouteException e) {
             throw new RouteException("Vehicle can't transport any of these containers");
         }
-        int pos = findAidBox(aidbox);
+        int pos = 0;
+        try {
+            pos = findAidBox(aidbox);
+        } catch (FindException ex) {
+            Logger.getLogger(RouteImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.routes[pos] = aidbox1;
     }
 
@@ -154,7 +172,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
             throw new RouteException("Vehicle can't transport any of these containers");
         }
 
-        int pos = findAidBox(aidbox);
+        int pos = 0;
+        try {
+            pos = findAidBox(aidbox);
+        } catch (FindException ex) {
+            Logger.getLogger(RouteImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         for (int i = numberAidboxes; i > pos; i--) {
             routes[i] = routes[i - 1];
@@ -212,11 +235,11 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         }
         return totalDuration;
     }
-    
+
     public void setTotalDistance(double totalDistance) {
         this.totalDistance = totalDistance;
     }
-    
+
     public void setTotalDuration(double totalDuration) {
         this.totalDuration = totalDuration;
     }
