@@ -34,13 +34,13 @@ public class StrategyImp implements Strategy {
         int countActiveVehicles = 0;
         this.vehicles = instn.getVehicles();
         this.aidboxes = instn.getAidBoxes();
-        this.routes = new Route[vehicles.length];
+        this.routes = new Route[vehicles.length]; //O que usar para descobrir o tamanho do array de rotas?
 
         // Cada veículo vai ter uma rota correspondente e vai ser validada
         for (int i = 0; i < vehicles.length; i++) {
             if (vehicles[i] instanceof VehicleImp) {
                 if (((VehicleImp) vehicles[i]).isEnabled() == true) {
-                    routes[i] = new RouteImp(vehicles[i]);
+                    routes[i] = new RouteImp(vehicles[i]); //Cria uma nova rota para o veiculo
                     countActiveVehicles++;
                 }
             }
@@ -49,29 +49,18 @@ public class StrategyImp implements Strategy {
                 return null;
             }
         }
+
         
-
-        for (int i = 0; i < routes.length; i++) {
-            for (int j = 0; j < aidboxes.length; j++) {
-                containers = aidboxes[j].getContainers();
+        for (int i = 0; i < routes.length; i++) { 
+            for (int j = 0; j < aidboxes.length; j++) { 
+                containers = aidboxes[j].getContainers(); 
                 try {
-                    if (rv.validate(routes[i], aidboxes[j])) {
-                        //Faz a estrategia
-                        routes[i].addAidBox(aidboxes[j]);
-                        //Verificar se os measurements no container não utrapassa os limites                        
-                        //Se o limite não atingir o limite do container, verificar se tem mais para adicionar, sem passar o limite do container
-                        //Se percorrer todo o array e não tiver mais measurements do mesmo tipo para adicionar, o veiculo deve partir
-                        for(int k = j; k < aidboxes.length; k++) {
-                            AidBox nextAidbox = aidboxes[k];
-                            if(nextAidbox != null && rv.validate(routes[i], nextAidbox)) {
-                                routes[i].addAidBox(nextAidbox);
-                            }
+                    //Verifica se o aidbox é valido para a rota
+                    if (aidboxes[i] != null && rv.validate(routes[i], aidboxes[j])) {
+                        //Verifica se o aidbox pode ser add na rota
+                        if (canAddAidBoxToRoute(routes[i], aidboxes[i])) {
+                            routes[i].addAidBox(aidboxes[j]);
                         }
-
-                        //Verificar se o veiculo só carrega um tipo de item
-                        
-                    } else {
-                        routes[i].removeAidBox(aidboxes[j]);
                     }
                 } catch (RouteException ex) {
                     ex.printStackTrace();
@@ -81,28 +70,40 @@ public class StrategyImp implements Strategy {
 
         return routes;
     }
+
     
-    //Ainda ta incompleto
     private boolean canAddAidBoxToRoute(Route route, AidBox aidbox) {
         Vehicle vehicle = route.getVehicle();
-        
-        if(vehicle instanceof VehicleImp) {
+
+        if (vehicle instanceof VehicleImp) {
             VehicleImp vehicleImp = (VehicleImp) vehicle;
             double totalWeight = 0;
             ItemType aidboxType = null;
-            
-            
+
             //Verificar e calcular o peso total dos containers e checkar o tipo
-            //AidBox[] existingAidBoxes = 
-            for(int i = 0; i < aidboxes.length; i++) {
-                //AidBox existingAidBox = 
+            AidBox[] existingAidBoxes = route.getRoute(); //Pega as aidbox de uma rota existente
+            for (int i = 0; i < aidboxes.length; i++) {
+                AidBox existingAidBox = existingAidBoxes[i];
+                if (existingAidBoxes[i] != null) {
+                    Container[] containers = existingAidBox.getContainers(); //Pega os container da aidbox
+
+                    for (int j = 0; j < containers.length; j++) {
+                        do {
+                            totalWeight += containers[j].getCapacity(); //Soma a capacidade ao peso total do container
+                        } while (totalWeight <= containers[j].getCapacity() || j == containers.length);
+
+                        //Define o tipo, se ainda não tiver definido
+                        if (aidboxType == null) {
+                            aidboxType = containers[j].getType();
+                        } else if (!aidboxType.equals(containers[j].getType())) {
+                            return false; //O veiculo só pode carregar um tipo de item
+                        }
+                    }
+                }
             }
-            
-            
+
         }
         return true;
     }
-    
-    
 
 }
