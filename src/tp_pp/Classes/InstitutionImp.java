@@ -33,8 +33,10 @@ import tp_pp_managment.PickingMapImp;
 import tp_pp_managment.VehicleImp;
 
 /**
- *
- * @author Roger Nakauchi
+ * Implementation of the Institution interface, representing an institution with various resources like aid boxes, containers, vehicles, and picking maps.
+ * Provides functionalities to manage these resources.
+ * 
+ * @autor Fábio da Cunha, Roger Nakauchi
  */
 public class InstitutionImp implements com.estg.core.Institution {
 
@@ -50,6 +52,11 @@ public class InstitutionImp implements com.estg.core.Institution {
     private int numberPickingmaps;
     private int numberContainers;
 
+    /**
+     * Constructs an InstitutionImp with the specified name.
+     *
+     * @param name the name of the institution
+     */
     public InstitutionImp(String name) {
         this.name = name;
         this.aidboxes = new AidBoxImp[10];
@@ -62,11 +69,21 @@ public class InstitutionImp implements com.estg.core.Institution {
         this.numberVehicles = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Finds the index of the specified AidBox in the aidboxes array.
+     *
+     * @param aidBox the AidBox to find
+     * @return the index of the AidBox
+     * @throws FindException if the AidBox is not found
+     */
     public int findAidBox(AidBox aidBox) throws FindException {
         for (int i = 0; i < numberAidbox; i++) {
             if (this.aidboxes[i].equals(aidBox)) {
@@ -76,6 +93,12 @@ public class InstitutionImp implements com.estg.core.Institution {
         throw new FindException("Aidbox not found!");
     }
 
+    /**
+     * Checks if the specified AidBox contains duplicate containers of the same type.
+     *
+     * @param aidbox the AidBox to check
+     * @return true if duplicate containers are found, false otherwise
+     */
     private boolean hasDuplicateContainers(AidBox aidbox) {
         Container[] container = aidbox.getContainers();
         for (int i = 0; i < container.length; i++) {
@@ -88,6 +111,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -108,6 +134,13 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     }
 
+    /**
+     * Finds the index of the specified Container in the containers array.
+     *
+     * @param container the Container to find
+     * @return the index of the Container
+     * @throws FindException if the Container is not found
+     */
     public int findContainer(Container container) throws FindException {
         for (int i = 0; i < numberContainers; i++) {
             if (this.containers[i].equals(container)) {
@@ -117,6 +150,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         throw new FindException("Container not found!");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addMeasurement(Measurement msrmnt, Container cntnr) throws ContainerException, MeasurementException {
 
@@ -155,6 +191,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AidBox[] getAidBoxes() {
         AidBox[] copy = new AidBoxImp[numberAidbox];
@@ -166,6 +205,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         return copy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container getContainer(AidBox aidbox, ItemType it) throws ContainerException {
         if (aidbox == null) {
@@ -184,6 +226,9 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Vehicle[] getVehicles() {
         Vehicle[] copy = new VehicleImp[numberVehicles];
@@ -195,6 +240,13 @@ public class InstitutionImp implements com.estg.core.Institution {
         return copy;
     }
 
+    /**
+     * Finds the index of the specified Vehicle in the vehicles array.
+     *
+     * @param vhcl the Vehicle to find
+     * @return the index of the Vehicle
+     * @throws FindException if the Vehicle is not found
+     */
     public int findVehicle(Vehicle vhcl) throws FindException {
         for (int i = 0; i < numberVehicles; i++) {
             if (this.vehicles[i].equals(vhcl)) {
@@ -204,6 +256,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         throw new FindException("Vehicle not found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addVehicle(Vehicle vhcl) throws VehicleException {
         if (vhcl == null) {
@@ -219,6 +274,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
 
@@ -244,6 +302,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
 
@@ -269,6 +330,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PickingMap[] getPickingMaps() {
         PickingMap[] copy = new PickingMap[numberPickingmaps];
@@ -280,6 +344,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         return copy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PickingMap[] getPickingMaps(LocalDateTime ldt, LocalDateTime ldt1) {
         PickingMap[] copy = new PickingMap[numberPickingmaps];
@@ -294,6 +361,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         return copy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PickingMap getCurrentPickingMap() throws PickingMapException {
 
@@ -309,6 +379,13 @@ public class InstitutionImp implements com.estg.core.Institution {
         return currentPickingMap;
     }
 
+    /**
+     * Finds the index of the specified PickingMap in the pickingmaps array.
+     *
+     * @param pickingMap the PickingMap to find
+     * @return the index of the PickingMap
+     * @throws FindException if the PickingMap is not found
+     */
     public int findPickingMap(PickingMap pickingMap) throws FindException {
         for (int i = 0; i < numberPickingmaps; i++) {
             if (this.pickingmaps[i].equals(pickingMap)) {
@@ -318,6 +395,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         throw new FindException("Picking map not found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addPickingMap(PickingMap pm) throws PickingMapException {
 
@@ -334,6 +414,9 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -363,22 +446,48 @@ public class InstitutionImp implements com.estg.core.Institution {
         throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
     }
 
+    /**
+     * Returns the number of used vehicles.
+     *
+     * @return the number of used vehicles
+     */
     public int getUsedVehicles() {
         return this.numberVehicles;
     }
 
+    /**
+     * Sets the number of used vehicles.
+     *
+     * @param numberVehicles the number of used vehicles
+     */
     public void setUsedVehicles(int numberVehicles) {
         this.numberVehicles = numberVehicles;
     }
 
+    /**
+     * Returns the number of unused vehicles.
+     *
+     * @return the number of unused vehicles
+     */
     public int getNotUsedVehicles() {
         return this.vehicles.length - this.numberVehicles;
     }
 
+    /**
+     * Sets the number of picked containers.
+     *
+     * @param numberContainers the number of picked containers
+     */
     public void setPickedContainers(int numberContainers) {
         this.numberContainers = numberContainers;
     }
 
+    /**
+     * Checks if this InstitutionImp is equal to another object.
+     *
+     * @param obj the object to compare with
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -391,6 +500,12 @@ public class InstitutionImp implements com.estg.core.Institution {
         return this.name == inst.name;
     }
 
+    /**
+     * Exports the institution's data to a JSON file.
+     *
+     * @param filePath the file path to save the JSON data
+     * @return true if the export is successful, false otherwise
+     */
     public boolean export(String filePath) {
         JSONObject jsonObject = new JSONObject();
 
@@ -413,6 +528,12 @@ public class InstitutionImp implements com.estg.core.Institution {
         return true;
     }
 
+    /**
+     * Imports the institution's data from a JSON file.
+     *
+     * @param filePath the file path to read the JSON data
+     * @return true if the import is successful, false otherwise
+     */
     public boolean importData(String filePath) {
         JSONParser parser = new JSONParser();
 
@@ -441,25 +562,25 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
-    public Vehicle removeVehicle(Vehicle v) throws VehicleException {
-        if (v == null) {
+    public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
+        if (vehicle == null) {
             throw new VehicleException();
         }
 
-        int pos;
+        int position;
         try {
-            pos = findVehicle(v);
+            position = findVehicle(vehicle);
         } catch (FindException ex) {
             throw new VehicleException();
         }
 
-        if (pos == -1) {
+        if (position == -1) {
             throw new VehicleException();
         }
 
-        Vehicle removedVehicle = this.vehicles[pos];
+        Vehicle removedVehicle = this.vehicles[position];
 
-        for (int i = pos; i < numberVehicles - 1; i++) {
+        for (int i = position; i < numberVehicles - 1; i++) {
             this.vehicles[i] = this.vehicles[i + 1];
         }
         this.vehicles[--numberVehicles] = null;

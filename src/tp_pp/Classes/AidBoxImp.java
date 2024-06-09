@@ -23,7 +23,11 @@ import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
 
 /**
- *
+ * Implementation of the AidBox interface, representing an aid box with
+ * containers and geographic coordinates.
+ * This class handles operations related to aid boxes such as distance calculation,
+ * container management, and geographic information.
+ * 
  * @author Fábio da Cunha, Roger Nakauchi
  */
 public class AidBoxImp implements com.estg.core.AidBox {
@@ -34,6 +38,17 @@ public class AidBoxImp implements com.estg.core.AidBox {
     private GeographicCoordinates coordinates;
     private Container[] containers;
     private int numberContainers;
+    
+    /**
+     * Constructs an AidBoxImp with specified code, zone, local reference,
+     * latitude, and longitude.
+     *
+     * @param code      the code of the aid box
+     * @param zone      the zone of the aid box
+     * @param refLocal  the local reference of the aid box
+     * @param latitude  the latitude of the aid box
+     * @param longitude the longitude of the aid box
+     */
 
     public AidBoxImp(String code, String zone, String refLocal, double latitude, double longitude) {
         this.code = code;
@@ -44,6 +59,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
         this.numberContainers = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getDistance(com.estg.core.AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -75,6 +93,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
        if (aidbox == null) {
@@ -105,11 +126,21 @@ public class AidBoxImp implements com.estg.core.AidBox {
         throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GeographicCoordinates getCoordinates() {
         return this.coordinates;
     }
 
+    /**
+     * Finds the index of the specified container in this aid box.
+     *
+     * @param cntnr the container to find
+     * @return the index of the container
+     * @throws FindException if the container is not found
+     */
     public int findContainer(Container cntnr) throws FindException {
         for (int i = 0; i < this.numberContainers; i++) {
             if (this.containers[i].equals(cntnr)) {
@@ -119,6 +150,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
         throw new FindException("Container not found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addContainer(Container cntnr) throws ContainerException {// Já está pronto não mexa no meu código
         if (cntnr == null) {
@@ -145,6 +179,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container getContainer(ItemType it) {
         for (int i = 0; i < numberContainers; i++) {
@@ -155,29 +192,53 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getCode() {
         return this.code;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getZone() {
         return this.zone;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getRefLocal() {
         return this.refLocal;
     }
 
+    /**
+     * Gets the number of picked containers in this aid box.
+     *
+     * @return the number of picked containers
+     */
     public int getPickedContainers() {
         return this.numberContainers;
     }
 
+    /**
+     * Gets the number of non-picked containers in this aid box.
+     *
+     * @return the number of non-picked containers
+     */
     public int getNonPickedContainers() {
         return containers.length - this.numberContainers;
     }
 
+    /**
+     * Gets an array of containers in this aid box.
+     *
+     * @return an array of containers
+     */
     public Container[] getContainers() {
         Container[] copyContainers = new ContainerImp[numberContainers];
         for (int i = 0; i < numberContainers; i++) {
@@ -188,6 +249,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return copyContainers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -200,14 +264,29 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return this.code == aidbox.code;
     }
 
+    /**
+     * Gets the latitude of this aid box.
+     *
+     * @return the latitude
+     */
     public double getLatitude() {
         return coordinates.getLatitude();
     }
 
+    /**
+     * Gets the longitude of this aid box.
+     *
+     * @return the longitude
+     */
     public double getLongitude() {
         return coordinates.getLongitude();
     }
 
+    /**
+     * Returns a string representation of this aid box.
+     *
+     * @return a string representation of this aid box
+     */
     @Override
     public String toString() {
         String result = "Code: " + code + "\n"
