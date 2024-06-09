@@ -16,7 +16,9 @@ import com.estg.core.exceptions.PickingMapException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -86,7 +88,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
-    
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
@@ -167,20 +168,20 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public Container getContainer(AidBox aidbox, ItemType it) throws ContainerException {
-        if(aidbox == null){
+        if (aidbox == null) {
             throw new ContainerException("Aidbox doesn´t exist.");
         }
-        
+
         Container[] containers = aidbox.getContainers();
-        
-        for(int i = 0; i < containers.length; i++){
-            if(containers[i] != null && containers[i].getType().equals(it)){
+
+        for (int i = 0; i < containers.length; i++) {
+            if (containers[i] != null && containers[i].getType().equals(it)) {
                 return containers[i];
             }
         }
-        
+
         throw new ContainerException("Container with the given item type doesn't exist.");
-        
+
     }
 
     @Override
@@ -218,7 +219,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
-    
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
 
@@ -244,7 +244,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
     }
 
-    
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
 
@@ -337,7 +336,7 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
-       if (aidbox == null) {
+        if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
         JSONParser parser = new JSONParser();
@@ -353,7 +352,7 @@ public class InstitutionImp implements com.estg.core.Institution {
                         JSONObject distancesTO = (JSONObject) AB;
                         String name = (String) distancesTO.get("name");
                         if (name.equals("Base")) {
-                            return (long)distancesTO.get("distance");
+                            return (long) distancesTO.get("distance");
                         }
                     }
                 }
@@ -382,6 +381,58 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         InstitutionImp inst = (InstitutionImp) obj;
         return this.name == inst.name;
+    }
+
+    public boolean export(String filePath) {
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("numbervehicles", numberVehicles);
+
+        JSONArray vehiclesArray = new JSONArray();
+        for (int i = 0; i < numberVehicles; i++) {
+            try {
+                vehiclesArray.add(((VehicleImp) vehicles[i]).toJsonObj());
+            } catch (NullPointerException e) {
+            }
+        }
+        jsonObject.put("Vehicles", vehiclesArray);
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(jsonObject.toJSONString());
+            fileWriter.close();
+        } catch (IOException e) {
+            
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean importData(String filePath) {
+        JSONParser parser = new JSONParser();
+
+        try ( FileReader reader = new FileReader(filePath)) {
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+
+            JSONArray vehiclesArray = (JSONArray) jsonObject.get("Vehicles");
+            for (int i = 0; i < vehiclesArray.size(); i++) {
+                try {
+                    JSONObject vehicleJson = (JSONObject) vehiclesArray.get(i);
+                    Vehicle v = (Vehicle) VehicleImp.fromJsonObj(vehicleJson);
+                    this.addVehicle(v);
+                } catch (VehicleException e) {
+                }
+            }
+            return true;
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("File");
+        } catch (IOException ex) {
+            System.out.println("2");
+        } catch (ParseException ex) {
+            System.out.println("3");
+        }
+        return false;
+
     }
 
 }

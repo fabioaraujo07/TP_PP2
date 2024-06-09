@@ -5,6 +5,8 @@
 package tp_pp_managment;
 
 import com.estg.core.ItemType;
+import com.estg.pickingManagement.Vehicle;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -17,8 +19,12 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     private boolean enabled;
     private boolean isUsed;
     private double kmsForPerishableFood;
+    private Vehicle[] vehicles;
+    private int nVehicles;
 
     public VehicleImp(double capacity, ItemType supply) {
+        this.nVehicles = 0;
+        this.vehicles = new Vehicle[10];
         this.capacity = capacity;
         this.supply = supply;
         this.enabled = true;
@@ -26,6 +32,8 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     }
 
     public VehicleImp(double capacity, double kmsForPerishableFood) {
+        this.nVehicles = 0;
+        this.vehicles = new Vehicle[10];
         this.capacity = capacity;
         this.kmsForPerishableFood = kmsForPerishableFood;
         this.supply = ItemType.PERISHABLE_FOOD;
@@ -58,9 +66,32 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     public void setUsed(boolean isUsed) {
         this.isUsed = isUsed;
     }
-    
-    public double getKms(){
+
+    public double getKms() {
         return kmsForPerishableFood;
+    }
+
+    public JSONObject toJsonObj() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("capacity", this.capacity);
+        jsonObject.put("supply", this.supply.name());
+        jsonObject.put("enabled", this.enabled);
+        jsonObject.put("isUsed", this.isUsed);
+        jsonObject.put("kmsForPerishableFood", this.kmsForPerishableFood);
+        return jsonObject;
+    }
+
+    public static VehicleImp fromJsonObj(JSONObject jsonObject) {
+        double capacity = (double) jsonObject.get("capacity");
+        ItemType supply = ItemType.valueOf((String) jsonObject.get("supply"));
+        boolean enabled = (boolean) jsonObject.get("enabled");
+        boolean isUsed = (boolean) jsonObject.get("isUsed");
+        double kmsForPerishableFood = (double) jsonObject.get("kmsForPerishableFood");
+
+        VehicleImp vehicle = new VehicleImp(capacity, kmsForPerishableFood);
+        vehicle.setEnabled(enabled);
+        vehicle.setUsed(isUsed);
+        return vehicle;
     }
 
 }
