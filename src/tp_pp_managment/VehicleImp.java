@@ -157,8 +157,6 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         boolean enabled = (boolean) jsonObject.get("enabled");
         boolean isUsed = (boolean) jsonObject.get("isUsed");
 
-        System.out.println(supply.toString());
-
         VehicleImp vehicle;
         if (supply == ItemType.PERISHABLE_FOOD) {
             int kmsForPerishableFood = ((Number) jsonObject.get("kmsForPerishableFood")).intValue();

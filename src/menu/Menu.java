@@ -5,12 +5,14 @@
 package menu;
 
 import com.estg.core.AidBox;
+import com.estg.core.Container;
 import com.estg.core.Institution;
 import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
 import com.estg.core.exceptions.InstitutionException;
+import com.estg.core.exceptions.MeasurementException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.Vehicle;
 import http.HttpProviderImp;
@@ -18,6 +20,11 @@ import http.ImporterImp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -27,6 +34,7 @@ import org.json.simple.parser.ParseException;
 import tp_pp.Classes.AidBoxImp;
 import tp_pp.Classes.ContainerImp;
 import tp_pp.Classes.InstitutionImp;
+import tp_pp.Classes.MeasurementImp;
 import tp_pp_managment.VehicleImp;
 
 /**
@@ -36,6 +44,7 @@ import tp_pp_managment.VehicleImp;
 public class Menu {
 
     private Institution inst;
+    private AidBox aid;
     private static String filePath;
 
     private BufferedReader reader;
@@ -351,7 +360,7 @@ public class Menu {
         while (!exit) {
             System.out.println("=== Container Menu ===");
             System.out.println("1. List all Containers");
-            System.out.println("2. View Container's measurements");
+            System.out.println("2. Add Measurements");
             System.out.println("3. List all Measurements");
             System.out.println("4. Back");
             System.out.println("Select option: ");
@@ -360,12 +369,22 @@ public class Menu {
                 int option = Integer.parseInt(reader.readLine());
 
                 switch (option) {
-                    case 1:
-                        listContainers();
-                        break;
-                    case 2:
-                        //addMeasurements();
-                        break;
+                    case 1: {
+
+                    }
+                    break;
+
+                    case 2: {
+                        try {
+                            addMeasurements();
+                        } catch (ParseException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (MeasurementException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+
                     case 3:
                         listMeasurements();
                         break;
@@ -407,27 +426,61 @@ public class Menu {
         }
     }
 
-    private void listContainers() {
+    private void addMeasurements() throws ParseException, IOException, MeasurementException {
         try {
-            String jsonResponse = httpProvider.getAidBoxes();
-            JSONParser parser = new JSONParser();
-            JSONArray aidBoxesArray = (JSONArray) parser.parse(jsonResponse);
-
-            for (Object aidBoxObject : aidBoxesArray) {
-                JSONObject aidBox = (JSONObject) aidBoxObject;
-
-                JSONArray contentores = (JSONArray) aidBox.get("Contentores");
-                System.out.println("Contentores:");
-                for (Object contentorObject : contentores) {
-                    JSONObject contentor = (JSONObject) contentorObject;
-                    System.out.println("\tCode: " + contentor.get("codigo"));
-                    System.out.println("\tCapacity: " + contentor.get("capacidade"));
-                }
-                System.out.println("-----------------------------");
-            }
-        } catch (IOException | ParseException e) {
-            System.err.println("Error fetching aid boxes: " + e.getMessage());
+            listAidBox();
+        } catch (AidBoxException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        String jsonResponse = httpProvider.getReadings();
+        JSONParser parser = new JSONParser();
+        JSONArray measurements = (JSONArray) parser.parse(jsonResponse);
+
+        System.out.println("Enter the Container code: ");
+        String containerCode = reader.readLine();
+
+        AidBox[] aidboxes = inst.getAidBoxes();
+
+        int i = 0;
+        boolean found = false;
+        Container container = null;
+
+        while (i < aidboxes.length && !found) {
+            Container[] containers = aidboxes[i].getContainers();
+            for (int j = 0; j < containers.length && !found; j++) {
+                if (containers[j].getCode().equals(containerCode)) {
+                    container = containers[j];
+                    found = true;
+                }
+            }
+            i++;
+        }
+
+        if (container != null) {
+            for (i = 0; i < measurements.size(); i++) {
+                JSONObject measurementJson = (JSONObject) measurements.get(i);
+                String contentor = (String) measurementJson.get("contentor");
+                
+                String dateStr = (String) measurementJson.get("data");
+                Instant instant = Instant.parse(dateStr);
+                ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
+                
+                
+                LocalDateTime data = zonedDateTime.toLocalDateTime();
+                
+                long value = (long) measurementJson.get("valor");
+                Measurement m = new MeasurementImp(contentor, LocalDateTime.MAX, value);
+                try {
+                    container.addMeasurement(m);
+                } catch (MeasurementException e) {
+                    e.printStackTrace();
+                    System.out.println("Error ading measurements");
+                }
+            }
+        } else {
+            System.out.println("Container code not found");
+        }
+
     }
 
     private void showVehiclesMenu() {
@@ -636,10 +689,9 @@ public class Menu {
 
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
-        ImporterImp importer = new ImporterImp(inst, filePath);
-        ImporterImp exporter = new ImporterImp(inst, filePath);
+        ImporterImp importer = new ImporterImp(inst);
 
-        if(importer == null) {
+        if (importer == null) {
             System.out.println("No data to be imported");
         }
         try {
@@ -647,21 +699,18 @@ public class Menu {
         } catch (IOException | InstitutionException ex) {
             System.out.println("Error while importing data");
         }
-        
-        
+
         Menu menu = new Menu(inst);
         menu.start();
-        
-        
-        if(exporter == null) {
+
+        if (importer == null) {
             System.out.println("Data could not be exported");
         }
         try {
-            exporter.exportData(inst);
+            importer.exportData(inst);
         } catch (IOException | InstitutionException ex) {
             System.out.println("Error while exporting data");
         }
-        
 
     }
 

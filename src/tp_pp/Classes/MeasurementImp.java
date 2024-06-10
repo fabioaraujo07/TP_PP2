@@ -13,16 +13,18 @@ import java.time.LocalDateTime;
  * @author Fábio da Cunha, Roger Nakauchi
  */
 public class MeasurementImp implements com.estg.core.Measurement {
+    
     private LocalDateTime date;
     private double value;
-
+    private String contentor;
     /**
      * Constructs a new MeasurementImp with the specified date and value.
      * 
      * @param date the date of the measurement
      * @param value the value of the measurement
      */
-    public MeasurementImp(LocalDateTime date, double value) {
+    public MeasurementImp(String contentor,LocalDateTime date, double value) {
+        this.contentor = contentor;
         this.date = date;
         this.value = value;
     }
@@ -45,5 +47,9 @@ public class MeasurementImp implements com.estg.core.Measurement {
     @Override
     public double getValue() {
         return this.value;
+    }
+    
+    public String getcontentor(){
+        return this.contentor;
     }
 }

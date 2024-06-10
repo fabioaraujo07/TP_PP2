@@ -128,8 +128,10 @@ public class ContainerImp implements com.estg.core.Container {
             throw new MeasurementException("Measurement value is lower than zero");
         }
         try {
+            if(numberMeasurements > 0){
             if (msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
                 throw new MeasurementException("Measurement date is before than the last Measurement date");
+            }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             ex.printStackTrace();
@@ -139,7 +141,7 @@ public class ContainerImp implements com.estg.core.Container {
             try {
                 if (msrmnt.getDate().equals(measurements[i].getDate())) {
                     if (msrmnt.getValue() != measurements[i].getValue()) {
-                        throw new MeasurementException();
+                        throw new MeasurementException("Cannot add value in the same date with different values");
                     }
                     return false;
                 }

@@ -8,6 +8,9 @@ import com.estg.core.Institution;
 import com.estg.core.exceptions.InstitutionException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.parser.ParseException;
 import tp_pp.Classes.InstitutionImp;
 
 /**
@@ -17,20 +20,21 @@ import tp_pp.Classes.InstitutionImp;
 public class ImporterImp implements com.estg.io.Importer {
 
     private Institution institution;
-    private String filePath;
     
-    public ImporterImp(Institution institution, String filePath) {
+    public ImporterImp(Institution institution) {
         this.institution = institution;
-        this.filePath = filePath;
     }
 
     @Override
     public void importData(Institution instn) throws FileNotFoundException, IOException, InstitutionException {
         if (institution instanceof InstitutionImp) {
             InstitutionImp institution = (InstitutionImp) instn;
-            if (institution.importData("src/Files/vehicles.json") && institution.importData("src/Files/aidboxArray.json")) {
-                System.out.println("Success importing program");
+            try {
+                institution.importData();
+            } catch (ParseException ex) {
+                throw new InstitutionException();
             }
+            
         }
     }
     
@@ -38,10 +42,7 @@ public class ImporterImp implements com.estg.io.Importer {
     public void exportData(Institution instn) throws FileNotFoundException, IOException, InstitutionException {
         if(institution instanceof InstitutionImp) {
             InstitutionImp institution = (InstitutionImp) instn;
-            if(institution.export("src/Files/vehicles.json") && institution.export("src/Files/aidboxArray.json")) {
-                System.out.println("Success exporting program");
+            institution.export();
             }
         }
     }
-
-}

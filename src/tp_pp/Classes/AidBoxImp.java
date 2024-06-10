@@ -379,7 +379,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
             try {
                 aid.addContainer(containers);
             } catch (ContainerException e) {
-                System.out.println("Error adding container: " + e.getMessage());
+                e.printStackTrace();
             }
 
         }
