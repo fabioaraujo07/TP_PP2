@@ -1,12 +1,1 @@
-{
-    "Zona": "Pombeiro",
-    "Codigo": "CAIXF37",
-    "Latitude": 41.381961,
-    "Longitude": -8.228073,
-    "Contentores": [
-        {"codigo": "N1EI", "capacidade": 500, "type": "PERISHABLE_FOOD"},
-        {"codigo": "V116", "capacidade": 750, "type": "NON_PERISHABLE_FOOD"},
-        {"codigo": "MY6L", "capacidade": 500, "type": "CLOTHING"},
-        {"codigo": "PL7KI", "capacidade": 120, "type": "MEDICINE"}
-    ]
-}
+{"Aidboxes":[{"Zone":"Margaride","Containers":[{"code":"N7KI","type":"PERISHABLE_FOOD","capacity":600.0},{"code":"V1QL","type":"NON_PERISHABLE_FOOD","capacity":750.0},{"code":"MYE6","type":"CLOTHING","capacity":500.0},{"code":"PLIQQ","type":"MEDICINE","capacity":80.0}],"Latitude":41.361349,"_id":"664cb6c970081169a7dcba6c","Code":"CAIXF40","Longitude":-8.198204}],"numberAidbox":1}

@@ -611,12 +611,10 @@ public class Menu {
         if (inst.importData("src/Files/vehicles.json") && inst.importData("src/Files/aidboxArray.json")) {
             System.out.println("Success importing program vehicles");
         }
-
-
         Menu menu = new Menu(inst);
         menu.start();
 
-        if (inst.export("src/Files/vehicles.json")&& inst.importData("src/Files/aidboxArray.json")) {
+        if (inst.export("src/Files/vehicles.json")&& inst.export("src/Files/aidboxArray.json")) {
             System.out.println("Success export program vehicles");
         }
 

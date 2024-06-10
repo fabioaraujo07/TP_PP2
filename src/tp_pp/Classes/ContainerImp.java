@@ -187,7 +187,7 @@ public class ContainerImp implements com.estg.core.Container {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", this.code);
         jsonObject.put("capacity", this.capacity);
-        jsonObject.put("type", this.itemType);
+        jsonObject.put("type", this.itemType.name());
 
         return jsonObject;
     }

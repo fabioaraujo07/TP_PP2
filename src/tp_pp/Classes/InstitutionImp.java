@@ -599,36 +599,49 @@ public class InstitutionImp implements com.estg.core.Institution {
     public boolean export(String filePath) {
         JSONObject jsonObject = new JSONObject();
 
-        //Export Vehicles
-        jsonObject.put("numbervehicles", numberVehicles);
+        switch (filePath) {
+            case "src/Files/vehicles.json":
+                //Export Vehicles
+                jsonObject.put("numbervehicles", numberVehicles);
 
-        JSONArray vehiclesArray = new JSONArray();
-        for (int i = 0; i < numberVehicles; i++) {
-            if (vehicles[i] != null) {
-                vehiclesArray.add(((VehicleImp) vehicles[i]).toJsonObj());
-            }
+                JSONArray vehiclesArray = new JSONArray();
+                for (int i = 0; i < numberVehicles; i++) {
+                    if (vehicles[i] != null) {
+                        vehiclesArray.add(((VehicleImp) vehicles[i]).toJsonObj());
+                    }
+                }
+                jsonObject.put("Vehicles", vehiclesArray);
+
+                try (FileWriter fileWriter = new FileWriter(filePath)) {
+                    fileWriter.write(jsonObject.toJSONString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
+
+            case "src/Files/aidboxArray.json":
+                // Export Aidbox
+                jsonObject.put("numberAidbox", numberAidbox);
+
+                JSONArray aidboxArray = new JSONArray();
+                for (int i = 0; i < numberAidbox; i++) {
+                    if (aidboxes[i] != null) {
+                        aidboxArray.add(((AidBoxImp) aidboxes[i]).toJSONObj());
+                    }
+                }
+                jsonObject.put("Aidboxes", aidboxArray);
+
+                try (FileWriter fileWriter = new FileWriter(filePath)) {
+                    fileWriter.write(jsonObject.toJSONString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
+
         }
-        jsonObject.put("Vehicles", vehiclesArray);
-
-        // Export Aidbox
-        jsonObject.put("numberAidbox", numberAidbox);
-
-        JSONArray aidboxArray = new JSONArray();
-        for (int i = 0; i < numberAidbox; i++) {
-            if (aidboxes[i] != null) {
-                aidboxArray.add(((AidBoxImp) aidboxes[i]).toJSONObj());
-            }
-        }
-        jsonObject.put("Aidboxes", aidboxArray);
-
-        // Export Measurements
-        try (FileWriter fileWriter = new FileWriter(filePath)) {
-            fileWriter.write(jsonObject.toJSONString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return false;
     }
 
     /**
@@ -640,40 +653,67 @@ public class InstitutionImp implements com.estg.core.Institution {
     public boolean importData(String filePath) {
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader(filePath)) {
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+        switch (filePath) {
+            case "src/Files/vehicles.json":
+                try (FileReader reader = new FileReader(filePath)) {
+                    JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
-            JSONArray vehiclesArray = (JSONArray) jsonObject.get("Vehicles");
-            for (int i = 0; i < vehiclesArray.size(); i++) {
-                JSONObject vehicleJson = (JSONObject) vehiclesArray.get(i);
-                Vehicle v = VehicleImp.fromJsonObj(vehicleJson);
-                try {
-                    this.addVehicle(v);
-                } catch (VehicleException e) {
-                    e.printStackTrace();
+                    JSONArray vehiclesArray = (JSONArray) jsonObject.get("Vehicles");
+                    for (int i = 0; i < vehiclesArray.size(); i++) {
+                        JSONObject vehicleJson = (JSONObject) vehiclesArray.get(i);
+                        Vehicle v = VehicleImp.fromJsonObj(vehicleJson);
+                        try {
+                            this.addVehicle(v);
+                        } catch (VehicleException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    return true;
+
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File not found: " + filePath);
+                } catch (IOException ex) {
+                    System.out.println("IO Exception: " + ex.getMessage());
+                } catch (ParseException ex) {
+                    System.out.println("Parse Exception: " + ex.getMessage());
                 }
-            }
+                break;
 
-            JSONArray aidboxArray = (JSONArray) jsonObject.get("Aidboxes");
-            for (int i = 0; i < aidboxArray.size(); i++) {
-                JSONObject aidboxJson = (JSONObject) aidboxArray.get(i);
-                AidBox a = AidBoxImp.fromJsonObj(aidboxJson);
-                try {
-                    this.addAidBox(a);
-                } catch (AidBoxException e) {
-                    e.printStackTrace();
+            case "src/Files/aidboxArray.json":
+                try (FileReader reader = new FileReader(filePath)) {
+                    JSONObject jsonObject = (JSONObject) parser.parse(reader);
+
+                    JSONArray aidboxArray = (JSONArray) jsonObject.get("Aidboxes");
+                    try {
+                        if (aidboxArray == null) {
+                            throw new AidBoxException();
+                        }
+                        for (int i = 0; i < aidboxArray.size(); i++) {
+                            JSONObject aidboxJson = (JSONObject) aidboxArray.get(i);
+                            AidBox a = AidBoxImp.fromJsonObj(aidboxJson);
+                            try {
+                                this.addAidBox(a);
+                            } catch (AidBoxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (AidBoxException e) {
+                    }
+
+                    return true;
+
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File not found: " + filePath);
+                } catch (IOException ex) {
+                    System.out.println("IO Exception: " + ex.getMessage());
+                } catch (ParseException ex) {
+                    System.out.println("Parse Exception: " + ex.getMessage());
                 }
-            }
+                break;
 
-            return true;
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("File not found: " + filePath);
-        } catch (IOException ex) {
-            System.out.println("IO Exception: " + ex.getMessage());
-        } catch (ParseException ex) {
-            System.out.println("Parse Exception: " + ex.getMessage());
         }
+
         return false;
     }
 
