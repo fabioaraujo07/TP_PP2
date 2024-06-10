@@ -62,11 +62,10 @@ public class Menu {
             System.out.println("=== Welcome To Felgueiras Institution ===");
             System.out.println("1. AidBox");
             System.out.println("2. Containers");
-            System.out.println("3.Measurements");
-            System.out.println("4. Vehicles");
-            System.out.println("5. Routes");
+            System.out.println("3. Vehicles");
+            System.out.println("4. Routes");
 
-            System.out.println("6. Exit");
+            System.out.println("5. Exit");
             System.out.println("Option: ");
             try {
                 option = Integer.parseInt(reader.readLine());
@@ -75,19 +74,15 @@ public class Menu {
                     case 1:
                         showAidBoxMenu();
                         break;
-
                     case 2:
                         showContainerMenu();
                         break;
                     case 3:
-
-                        break;
-                    case 4:
                         showVehiclesMenu();
                         break;
-                    case 5:
+                    case 4:
                         break;
-                    case 6:
+                    case 5:
                         break;
                     default:
                         System.out.println("Invalid option!");
@@ -107,10 +102,11 @@ public class Menu {
         while (!exit) {
             System.out.println("=== Aibox Menu ===");
             System.out.println("1. Add Aid box");
-            System.out.println("2. List Aid Box");
-            System.out.println("3. View distances between Aid boxes");
-            System.out.println("4. View duration between Aid boxes");
-            System.out.println("5. Exit");
+            System.out.println("2. Distances between Aidboxes");
+            System.out.println("3. Duration between Aidboxes");
+            System.out.println("4. View Aid Box by Code");
+            System.out.println("5. List Aid Box");
+            System.out.println("6. Back");
             System.out.println("Select option: ");
 
             try {
@@ -125,23 +121,23 @@ public class Menu {
                         }
                     }
                     break;
-
-                    case 2: {
+                    case 2:
+                        viewDistances();
+                        break;
+                    case 3:
+                        viewDuration();
+                        break;
+                    case 4:
+                        viewAidBoxByCode();
+                        break;
+                    case 5:
                         try {
                             listAidBox();
                         } catch (AidBoxException ex) {
                             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
-                    break;
-
-                    case 3:
-                        viewDistances();
                         break;
-                    case 4:
-                        viewDuration();
-                        break;
-                    case 5:
+                    case 6:
                         exit = true;
                         break;
                     default:
@@ -274,6 +270,7 @@ public class Menu {
     }
 
     private void viewAidBoxByCode() {
+        listAidBoxhttp();
         try {
             System.out.print("Enter the Aid Box code: ");
             String code = reader.readLine();
@@ -304,6 +301,7 @@ public class Menu {
     }
 
     private void viewDistances() {
+        listAidBoxhttp();
         try {
             System.out.println("Enter the Aid Box code: ");
             String aidbox1 = reader.readLine();
@@ -330,6 +328,7 @@ public class Menu {
     }
 
     private void viewDuration() {
+        listAidBoxhttp();
         try {
             System.out.println("Enter the Aid Box code: ");
             String aidbox1 = reader.readLine();
