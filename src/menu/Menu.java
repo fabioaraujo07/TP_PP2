@@ -611,6 +611,9 @@ public class Menu {
         if (inst.importData("src/Files/vehicles.json")) {
             System.out.println("Success importing program vehicles");
         }
+//        if(inst.importAidBoxes("src/Files/aidboxes.json")){
+//            System.out.println("Success importing program aidboxes");
+//        }
 
         Menu menu = new Menu(inst);
         menu.start();
@@ -618,6 +621,10 @@ public class Menu {
         if (inst.export("src/Files/vehicles.json")) {
             System.out.println("Success export program vehicles");
         }
+//        if (inst.exportAidBoxes("src/Files/aidboxes.json")) {
+//            System.out.println("Success export program aidboxes");
+//        }
+        
     }
 
 }

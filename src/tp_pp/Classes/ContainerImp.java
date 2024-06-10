@@ -10,6 +10,7 @@ import com.estg.core.exceptions.MeasurementException;
 import java.io.IOException;
 import java.time.LocalDate;
 import tp_pp_exceptions.FindException;
+import org.json.simple.JSONObject;
 
 /**
  * Implementation of the Container interface, representing a container that

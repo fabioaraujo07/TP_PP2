@@ -21,6 +21,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Implementation of the AidBox interface, representing an aid box with
@@ -305,10 +307,6 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return result;
     }
 
-//    public JSONObject toJsonObj(){
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("id: ", this.id);
-//        jsonObject.put("code", this.code);
-//        
-//    }
+    
+
 }

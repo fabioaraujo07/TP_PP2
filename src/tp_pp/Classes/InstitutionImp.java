@@ -563,6 +563,8 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
+    
+
     public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
         if (vehicle == null) {
             throw new VehicleException();
