@@ -19,8 +19,14 @@ import java.util.logging.Logger;
 import tp_pp_exceptions.StrategyException;
 
 /**
+ * Implementation of the Strategy interface to generate routes for collecting
+ * containers from aid boxes based on the received measurements.
+ * 
+ * This class generates routes for vehicles to pick up items from aid boxes in
+ * an institution according to a specified strategy and validates them using a
+ * route validator.
  *
- * @author Roger Nakauchi
+ * @author Fábio da Cunha, Roger Nakauchi
  */
 public class StrategyImp implements Strategy {
 
@@ -31,6 +37,11 @@ public class StrategyImp implements Strategy {
     private Institution institution;
     private ItemType[] types;
 
+    /**
+     * Constructs a new StrategyImp with the specified institution.
+     * 
+     * @param institution The institution containing vehicles and aid boxes.
+     */
     public StrategyImp(Institution institution) {
         this.strategies = new Route[10];
         this.institution = institution;
@@ -39,6 +50,12 @@ public class StrategyImp implements Strategy {
         this.numberTypes = 0;
     }
 
+    /**
+     * Retrieves the number of the last measurements taken for the specified container.
+     * 
+     * @param container The container to get the number of measurements for.
+     * @return The number of measurements.
+     */
     private int lastMeasurement(Container container) {
         int numberMeasurement = 0;
 
@@ -51,6 +68,12 @@ public class StrategyImp implements Strategy {
         return numberMeasurement;
     }
 
+    /**
+     * Checks if the specified item type has already been picked.
+     * 
+     * @param type The item type to check.
+     * @return true if the type has already been picked, false otherwise.
+     */
     private boolean typeAlreadyPicked(ItemType type) {
         for (int i = 0; i < this.numberTypes; i++) {
             if (this.types[i].equals(type)) {
@@ -62,6 +85,12 @@ public class StrategyImp implements Strategy {
         return false;
     }
 
+    /**
+     * Checks if the specified vehicle is enabled.
+     * 
+     * @param vehicle The vehicle to check.
+     * @return true if the vehicle is enabled, false otherwise.
+     */
     private boolean isEnabled(Vehicle vehicle) {
 
         if (vehicle instanceof VehicleImp) {
@@ -73,6 +102,12 @@ public class StrategyImp implements Strategy {
         return false;
     }
 
+    /**
+     * Retrieves the measurement value of the last measurement for the specified container.
+     * 
+     * @param container The container to get the measurement value for.
+     * @return The measurement value of the last measurement.
+     */
     private double getContainerMeasurementValue(Container container) {
         int lastMeasurementIndex = lastMeasurement(container);
         if (lastMeasurementIndex >= 0) {
@@ -81,6 +116,12 @@ public class StrategyImp implements Strategy {
         return 0;
     }
 
+    /**
+     * Retrieves the measurement value of the container if it is full.
+     * 
+     * @param container The container to check.
+     * @return The measurement value if the container is full, 0 otherwise.
+     */
     private double takeContainer(Container container) {
         double msrmntValue = container.getMeasurements()[lastMeasurement(container)].getValue();
 
@@ -90,6 +131,12 @@ public class StrategyImp implements Strategy {
         return 0;
     }
 
+    /**
+     * Counts the number of non-null vehicles in the specified array.
+     * 
+     * @param vehicles The array of vehicles to count.
+     * @return The number of non-null vehicles.
+     */
     private int numberOfVehicles(Vehicle[] vehicles) {
         int nVehicles = 0;
 
@@ -102,6 +149,11 @@ public class StrategyImp implements Strategy {
         return nVehicles;
     }
 
+    /**
+     * Removes aid boxes from the route if they do not contain any items.
+     * 
+     * @param route The route to remove empty aid boxes from.
+     */
     private void removeEmptyAidBoxes(Route route) {
         AidBox[] aidBoxes = route.getRoute();
 
@@ -120,6 +172,13 @@ public class StrategyImp implements Strategy {
         }
     }
 
+    /**
+     * Checks if the vehicle can continue with the current load based on the total distance for perishable food.
+     * 
+     * @param vehicle The vehicle to check.
+     * @param route The route the vehicle is following.
+     * @return true if the vehicle can continue, false otherwise.
+     */
     private boolean canContinueWithCurrentLoad(Vehicle vehicle, Route route) {
         if (vehicle instanceof VehicleImp) {
             VehicleImp refrigeratedVehicle = (VehicleImp) vehicle;
@@ -131,6 +190,14 @@ public class StrategyImp implements Strategy {
         return true;
     }
 
+    /**
+     * Generates routes for vehicles to pick up items from aid boxes in the
+     * specified institution according to the provided route validator.
+     * 
+     * @param instn The institution containing vehicles and aid boxes.
+     * @param rv The route validator to validate the generated routes.
+     * @return An array of generated routes.
+     */
     @Override
     public Route[] generate(Institution instn, RouteValidator rv) {
 

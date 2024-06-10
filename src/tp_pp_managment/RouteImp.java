@@ -14,8 +14,13 @@ import java.util.logging.Logger;
 import tp_pp_exceptions.FindException;
 
 /**
+ * Implementation of the Route interface, responsible for managing aid boxes
+ * within a specific route and associated vehicle.
+ * 
+ * This class provides methods to add, remove, and manage aid boxes in a route,
+ * and calculate total distance and duration of the route.
  *
- * @author fabio
+ * @author Fábio da Cunha, Roger Nakauchi
  */
 public class RouteImp implements com.estg.pickingManagement.Route {
 
@@ -25,12 +30,24 @@ public class RouteImp implements com.estg.pickingManagement.Route {
     private double totalDistance;
     private double totalDuration;
 
+    /**
+     * Constructor to initialize the RouteImp with a specific vehicle.
+     * 
+     * @param vehicle The vehicle associated with this route.
+     */
     public RouteImp(Vehicle vehicle) {
         this.routes = new AidBox[10];
         this.numberAidboxes = 0;
         this.vehicle = vehicle;
     }
 
+    /**
+     * Finds the index of a specific aid box in the route.
+     * 
+     * @param aidbox The aid box to find.
+     * @return The index of the aid box.
+     * @throws FindException If the aid box is not found in the route.
+     */
     public int findAidBox(AidBox aidbox) throws FindException {
         for (int i = 0; i < numberAidboxes; i++) {
             if (routes[i].equals(aidbox)) {
@@ -40,6 +57,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         throw new FindException();
     }
 
+    /**
+     * Checks if the vehicle can transport the specified aid box.
+     * 
+     * @param aidbox The aid box to check.
+     * @return True if the vehicle can transport the aid box, false otherwise.
+     * @throws RouteException If the vehicle can't transport the aid box.
+     */
     public boolean canTransport(AidBox aidbox) throws RouteException {
         if (vehicle instanceof VehicleImp) {
             VehicleImp v = (VehicleImp) vehicle;
@@ -61,6 +85,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         throw new RouteException("Vehicle can't transport any of these containers");
     }
 
+    /**
+     * Adds an aid box to the route.
+     * 
+     * @param aidbox The aid box to add.
+     * @throws RouteException If the aid box can't be added to the route.
+     */
     @Override
     public void addAidBox(AidBox aidbox) throws RouteException {
 
@@ -83,6 +113,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         routes[numberAidboxes++] = aidbox;
     }
 
+    /**
+     * Removes an aid box from the route.
+     * 
+     * @param aidbox The aid box to remove.
+     * @return The removed aid box.
+     * @throws RouteException If the aid box can't be removed from the route.
+     */
     @Override
     public AidBox removeAidBox(AidBox aidbox) throws RouteException {
 
@@ -112,6 +149,12 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return removedAidBox;
     }
 
+    /**
+     * Checks if the route contains a specific aid box.
+     * 
+     * @param aidbox The aid box to check.
+     * @return True if the route contains the aid box, false otherwise.
+     */
     @Override
     public boolean containsAidBox(AidBox aidbox) {
         for (int i = 0; i < numberAidboxes; i++) {
@@ -122,6 +165,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return false;
     }
 
+    /**
+     * Replaces an aid box in the route with another aid box.
+     * 
+     * @param aidbox The aid box to replace.
+     * @param aidbox1 The new aid box to insert.
+     * @throws RouteException If the aid box can't be replaced.
+     */
     @Override
     public void replaceAidBox(AidBox aidbox, AidBox aidbox1) throws RouteException {
 
@@ -151,6 +201,13 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         this.routes[pos] = aidbox1;
     }
 
+    /**
+     * Inserts an aid box into the route after a specified aid box.
+     * 
+     * @param aidbox The aid box after which the new aid box will be inserted.
+     * @param aidbox1 The new aid box to insert.
+     * @throws RouteException If the aid box can't be inserted.
+     */
     @Override
     public void insertAfter(AidBox aidbox, AidBox aidbox1) throws RouteException {
 
@@ -187,6 +244,11 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         numberAidboxes++;
     }
 
+    /**
+     * Gets the current route (array of aid boxes).
+     * 
+     * @return A copy of the current route.
+     */
     @Override
     public AidBox[] getRoute() {
         AidBox[] copy = new AidBox[numberAidboxes];
@@ -198,11 +260,21 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return copy;
     }
 
+    /**
+     * Gets the vehicle associated with the route.
+     * 
+     * @return The vehicle associated with the route.
+     */
     @Override
     public Vehicle getVehicle() {
         return this.vehicle;
     }
 
+    /**
+     * Gets the total distance of the route.
+     * 
+     * @return The total distance of the route.
+     */
     @Override
     public double getTotalDistance() {
 
@@ -220,6 +292,11 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return totalDistance;
     }
 
+    /**
+     * Gets the total duration of the route.
+     * 
+     * @return The total duration of the route.
+     */
     @Override
     public double getTotalDuration() {
         double totalDuration = 0;
@@ -236,10 +313,20 @@ public class RouteImp implements com.estg.pickingManagement.Route {
         return totalDuration;
     }
 
+    /**
+     * Sets the total distance of the route.
+     * 
+     * @param totalDistance The total distance to set.
+     */
     public void setTotalDistance(double totalDistance) {
         this.totalDistance = totalDistance;
     }
 
+    /**
+     * Sets the total duration of the route.
+     * 
+     * @param totalDuration The total duration to set.
+     */
     public void setTotalDuration(double totalDuration) {
         this.totalDuration = totalDuration;
     }

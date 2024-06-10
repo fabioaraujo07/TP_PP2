@@ -16,32 +16,55 @@ import com.estg.pickingManagement.Strategy;
 import com.estg.pickingManagement.Vehicle;
 
 /**
+ * Implementation of RouteGenerator interface for generating routes for
+ * collecting containers from aid boxes based on a given strategy.
+ * 
+ * This class generates routes for vehicles to pick up items from aid boxes in an
+ * institution according to a specified strategy. It also updates a report with
+ * the details of the route generation process.
  *
- * @author Roger Nakauchi
+ * @author Fábio da Cunha, Roger Nakauchi
  */
 public class RouteGeneratorImp implements RouteGenerator {
 
     private Route[] generators;
 
+    /**
+     * Constructs a new RouteGeneratorImp with an initial capacity for routes.
+     */
     public RouteGeneratorImp() {
         this.generators = new Route[10];
     }
 
+    /**
+     * Generates routes for vehicles to pick up items from aid boxes in the
+     * specified institution according to the provided strategy and route validator.
+     * It also updates the provided report with the details of the generated routes.
+     * 
+     * @param instn   The institution containing vehicles and aid boxes.
+     * @param strtg   The strategy to use for generating routes.
+     * @param rv      The route validator to validate the generated routes.
+     * @param report  The report to update with details of the generated routes.
+     * @return An array of generated routes.
+     * @throws PickingMapException If there is an error in generating routes or
+     *                             updating the report.
+     */
     @Override
     public Route[] generateRoutes(Institution instn, Strategy strtg, RouteValidator rv, Report report) throws PickingMapException {
 
         Vehicle[] vehicles = instn.getVehicles();
         AidBox[] aidboxes = instn.getAidBoxes();
 
+        //Ensure the routes array is of adequate size
         Route[] routes = new Route[generators.length];
 
-        //Variaveis para colocar no report
+        //Variables for report
         int usedVehicles = 0;
         int pickedContainers = 0;
         double totalDistance = 0.0;
         double totalDuration = 0.0;
 
-        //Usar o strategy criado
+        //Use the created strategy
         Route[] generatedRoutes = strtg.generate(instn, rv);
 
         //Add as rotas geradas no array de rotas
@@ -52,12 +75,12 @@ public class RouteGeneratorImp implements RouteGenerator {
             routes[i] = generatedRoutes[i];
 
             usedVehicles++;
-            pickedContainers += generatedRoutes[i].getRoute().length; //Cada rota pega todos os containers associados / Não tenho ctz desse /Cada rota pega tds os containers associados
+            pickedContainers += generatedRoutes[i].getRoute().length; //Each route picks all associated containers
             totalDistance += generatedRoutes[i].getTotalDistance();
             totalDuration += generatedRoutes[i].getTotalDuration();
         }
 
-        //Atualiza o report com os novos dados
+        //Update the report with the new data
         try {
             if (report instanceof ReportImp) {
                 ReportImp rp = (ReportImp) report;

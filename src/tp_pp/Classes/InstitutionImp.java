@@ -563,8 +563,13 @@ public class InstitutionImp implements com.estg.core.Institution {
         return false;
     }
 
-    
-
+    /**
+    * Removes the specified vehicle from the institution's vehicle list.
+    * 
+    * @param vehicle The vehicle to be removed.
+    * @return The removed vehicle.
+    * @throws VehicleException If the vehicle is null, not found, or cannot be removed.
+    */
     public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
         if (vehicle == null) {
             throw new VehicleException();

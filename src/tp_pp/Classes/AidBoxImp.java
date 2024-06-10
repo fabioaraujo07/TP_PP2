@@ -63,7 +63,11 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the distance between this aid box and the institution base.
+     *
+     * @param aidbox the other aid box
+     * @return the distance between an aid box and the institution base
+     * @throws AidBoxException if an error occurs during the distance retrieval
      */
     @Override
     public double getDistance(com.estg.core.AidBox aidbox) throws AidBoxException {
@@ -97,7 +101,11 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the duration to travel between this aid box and the institution base.
+     *
+     * @param aidbox the other aid box
+     * @return the duration to travel between an aid box and the institution base
+     * @throws AidBoxException if an error occurs during the duration retrieval
      */
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
@@ -130,7 +138,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the geographic coordinates of this aid box
+     * 
+     * @return the geographic coordinates
      */
     @Override
     public GeographicCoordinates getCoordinates() {
@@ -154,7 +164,11 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a container to this aid box
+     * 
+     * @param cntnr the container to add
+     * @return true if the container is successfully added, false otherwise
+     * @throws ContainerException if an error occurs while adding the container
      */
     @Override
     public boolean addContainer(Container cntnr) throws ContainerException {// Já está pronto não mexa no meu código
@@ -183,7 +197,10 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves a container of the specified item type from this aid box
+     * 
+     * @param it the item type to retrieve
+     * @return the container of the specified item type, or null if not found
      */
     @Override
     public Container getContainer(ItemType it) {
@@ -196,7 +213,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the code of this aid box
+     * 
+     * @return the code of this aid box
      */
     @Override
     public String getCode() {
@@ -204,7 +223,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the zone of this aid box
+     * 
+     * @return the zone of this aid box
      */
     @Override
     public String getZone() {
@@ -212,7 +233,9 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the local reference of this aid box
+     * 
+     * @return the local reference of this aid box
      */
     @Override
     public String getRefLocal() {
@@ -253,7 +276,10 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks if this aid box is equal to another object
+     * 
+     * @param obj the object to compare
+     * @return true if the objects are equal, false otherwise
      */
     @Override
     public boolean equals(Object obj) {
