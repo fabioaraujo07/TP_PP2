@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp.Classes;
 
@@ -11,12 +16,22 @@ import org.json.simple.JSONObject;
  * Implementation of the Measurement interface, representing a measurement with
  * a specific date and value.
  *
- * @author Fábio da Cunha, Roger Nakauchi
  */
 public class MeasurementImp implements com.estg.core.Measurement {
 
+    /**
+     * The date and time when the measurement was taken.
+     */
     private LocalDateTime date;
+
+    /**
+     * The value of the measurement.
+     */
     private double value;
+
+    /**
+     * The identifier of the container associated with the measurement.
+     */
     private String contentor;
 
     /**
@@ -75,5 +90,3 @@ public class MeasurementImp implements com.estg.core.Measurement {
         }
     }
 }
-
-

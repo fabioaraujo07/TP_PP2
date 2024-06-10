@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp;
 
@@ -21,7 +26,6 @@ import tp_pp.Classes.InstitutionImp;
 
 /**
  *
- * @author fabio
  */
 public class TP_PP {
 

@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp.Classes;
 
@@ -41,20 +46,62 @@ import tp_pp.Classes.MeasurementImp;
  * various resources like aid boxes, containers, vehicles, and picking maps.
  * Provides functionalities to manage these resources.
  *
- * @autor Fábio da Cunha, Roger Nakauchi
  */
 public class InstitutionImp implements com.estg.core.Institution {
 
+    /**
+     * The name of the institution.
+     */
     private String name;
+
+    /**
+     * The array of containers owned by the institution.
+     */
     private Container[] containers;
+
+    /**
+     * The array of aid boxes managed by the institution.
+     */
     private AidBox[] aidboxes;
+
+    /**
+     * The array of measurements associated with the institution.
+     */
     private Measurement[] measurements;
+
+    /**
+     * The array of vehicles owned by the institution.
+     */
     private Vehicle[] vehicles;
+
+    /**
+     * The array of picking maps used by the institution.
+     */
     private PickingMap[] pickingmaps;
+
+    /**
+     * The number of aid boxes currently managed by the institution.
+     */
     private int numberAidbox;
+
+    /**
+     * The number of measurements currently associated with the institution.
+     */
     private int numberMeasurements;
+
+    /**
+     * The number of vehicles currently owned by the institution.
+     */
     private int numberVehicles;
+
+    /**
+     * The number of picking maps currently used by the institution.
+     */
     private int numberPickingmaps;
+
+    /**
+     * The number of containers currently owned by the institution.
+     */
     private int numberContainers;
 
     /**

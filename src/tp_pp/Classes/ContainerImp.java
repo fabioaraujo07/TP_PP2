@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp.Classes;
 
@@ -19,14 +24,32 @@ import tp_pp_managment.VehicleImp;
  * holds measurements of a specific item type. This class handles operations
  * related to containers such as adding and retrieving measurements.
  *
- * @autor Fábio da Cunha, Roger Nakauchi
  */
 public class ContainerImp implements com.estg.core.Container {
 
+    /**
+     * The unique code identifying the container.
+     */
     private String code;
+
+    /**
+     * The capacity of the container.
+     */
     private double capacity;
+
+    /**
+     * The type of item the container holds.
+     */
     private ItemType itemType;
+
+    /**
+     * The array of measurements stored in the container.
+     */
     private Measurement[] measurements;
+
+    /**
+     * The number of measurements currently stored in the container.
+     */
     private int numberMeasurements;
 
     /**

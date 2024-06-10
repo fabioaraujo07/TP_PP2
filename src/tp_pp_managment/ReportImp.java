@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp_managment;
 
@@ -14,25 +19,43 @@ import tp_pp.Classes.AidBoxImp;
 /**
  * Implementation of the Report interface for managing and generating reports
  * related to the institution's logistics operations.
- * 
- * This class stores and provides access to various metrics such as the number
- * of used vehicles, picked containers, total distance, total duration, etc.
- * It also allows setting these metrics after computing the results.
  *
- * @author Fábio da Cunha, Roger Nakauchi
+ * This class stores and provides access to various metrics such as the number
+ * of used vehicles, picked containers, total distance, total duration, etc. It
+ * also allows setting these metrics after computing the results.
+ *
  */
 public class ReportImp implements com.estg.pickingManagement.Report {
 
+    /**
+     * The date and time when the report was generated.
+     */
     private LocalDateTime date;
+
+    /**
+     * The institution associated with the report.
+     */
     private Institution institution;
+
+    /**
+     * The aid box associated with the report.
+     */
     private AidBox aidbox;
+
+    /**
+     * The total distance covered, as represented by a Route object.
+     */
     private Route distance;
+
+    /**
+     * The total duration of the operations, as represented by a Route object.
+     */
     private Route duration;
 
     /**
      * Constructor to initialize the ReportImp with the specified date,
      * institution, and container.
-     * 
+     *
      * @param date The date of the report.
      * @param institution The institution associated with the report.
      * @param container The container (aidbox) related to the report.
@@ -45,9 +68,10 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the number of used vehicles in the institution.
-     * 
+     *
      * @return The number of used vehicles.
-     * @throws IllegalArgumentException If the institution is null or not of type InstitutionImp.
+     * @throws IllegalArgumentException If the institution is null or not of
+     * type InstitutionImp.
      */
     @Override
     public int getUsedVehicles() throws IllegalArgumentException {
@@ -69,9 +93,10 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the number of picked containers in the institution.
-     * 
+     *
      * @return The number of picked containers.
-     * @throws IllegalArgumentException If the container is null or not of type AidboxImp.
+     * @throws IllegalArgumentException If the container is null or not of type
+     * AidboxImp.
      */
     @Override
     public int getPickedContainers() {
@@ -93,9 +118,10 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the total distance covered in the routes.
-     * 
+     *
      * @return The total distance.
-     * @throws IllegalArgumentException If the distance route is null or not of type RouteImp.
+     * @throws IllegalArgumentException If the distance route is null or not of
+     * type RouteImp.
      */
     @Override
     public double getTotalDistance() {
@@ -117,9 +143,10 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the total duration of the routes.
-     * 
+     *
      * @return The total duration.
-     * @throws IllegalArgumentException If the duration route is null or not of type RouteImp.
+     * @throws IllegalArgumentException If the duration route is null or not of
+     * type RouteImp.
      */
     @Override
     public double getTotalDuration() {
@@ -141,9 +168,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the number of non-picked containers in the institution.
-     * 
-     * @return The number of non-picked containers, or -1 if the container is null.
-     * @throws IllegalArgumentException If the container is not of type AidboxImp.
+     *
+     * @return The number of non-picked containers, or -1 if the container is
+     * null.
+     * @throws IllegalArgumentException If the container is not of type
+     * AidboxImp.
      */
     @Override
     public int getNonPickedContainers() {
@@ -165,9 +194,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the number of not used vehicles in the institution.
-     * 
-     * @return The number of not used vehicles, or -1 if the institution is null.
-     * @throws IllegalArgumentException If the institution is not of type InstitutionImp.
+     *
+     * @return The number of not used vehicles, or -1 if the institution is
+     * null.
+     * @throws IllegalArgumentException If the institution is not of type
+     * InstitutionImp.
      */
     @Override
     public int getNotUsedVehicles() {
@@ -190,7 +221,7 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Gets the date of the report.
-     * 
+     *
      * @return The date of the report.
      */
     @Override
@@ -200,9 +231,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Sets the number of used vehicles in the institution.
-     * 
-     * @param addUsedVehicles The number of vehicles to add to the current count of used vehicles.
-     * @throws IllegalArgumentException If the institution is not of type InstitutionImp or any error occurs while setting the used vehicles.
+     *
+     * @param addUsedVehicles The number of vehicles to add to the current count
+     * of used vehicles.
+     * @throws IllegalArgumentException If the institution is not of type
+     * InstitutionImp or any error occurs while setting the used vehicles.
      */
     public void setUsedVehicles(int addUsedVehicles) {
         try {
@@ -221,9 +254,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Sets the number of picked containers in the institution.
-     * 
-     * @param addPickedContainers The number of containers to add to the current count of picked containers.
-     * @throws IllegalArgumentException If the institution is not of type InstitutionImp or any error occurs while setting the picked containers.
+     *
+     * @param addPickedContainers The number of containers to add to the current
+     * count of picked containers.
+     * @throws IllegalArgumentException If the institution is not of type
+     * InstitutionImp or any error occurs while setting the picked containers.
      */
     public void setPickedContainers(int addPickedContainers) {
         try {
@@ -242,9 +277,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Sets the total distance covered in the routes.
-     * 
-     * @param addTotalDistance The distance to add to the current total distance.
-     * @throws IllegalArgumentException If the distance route is not of type RouteImp or any error occurs while setting the total distance.
+     *
+     * @param addTotalDistance The distance to add to the current total
+     * distance.
+     * @throws IllegalArgumentException If the distance route is not of type
+     * RouteImp or any error occurs while setting the total distance.
      */
     public void setTotalDistance(double addTotalDistance) {
         try {
@@ -263,9 +300,11 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     /**
      * Sets the total duration of the routes.
-     * 
-     * @param addTotalDuration The duration to add to the current total duration.
-     * @throws IllegalArgumentException If the duration route is not of type RouteImp or any error occurs while setting the total duration.
+     *
+     * @param addTotalDuration The duration to add to the current total
+     * duration.
+     * @throws IllegalArgumentException If the duration route is not of type
+     * RouteImp or any error occurs while setting the total duration.
      */
     public void setTotalDuration(double addTotalDuration) {
         try {

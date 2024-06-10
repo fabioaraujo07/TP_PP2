@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp_managment;
 
@@ -21,25 +26,50 @@ import tp_pp_exceptions.StrategyException;
 /**
  * Implementation of the Strategy interface to generate routes for collecting
  * containers from aid boxes based on the received measurements.
- * 
+ *
  * This class generates routes for vehicles to pick up items from aid boxes in
  * an institution according to a specified strategy and validates them using a
  * route validator.
  *
- * @author Fábio da Cunha, Roger Nakauchi
  */
 public class StrategyImp implements Strategy {
 
+    /**
+     * The number of strategies.
+     */
     private int numberStrategies;
+
+    /**
+     * The number of item types considered in the strategy.
+     */
     private int numberTypes;
+
+    /**
+     * An array of Route objects representing the generated strategies for route
+     * planning.
+     */
     private Route[] strategies;
+
+    /**
+     * An instance of RouteValidator used to validate the generated routes.
+     */
     private RouteValidator validated;
+
+    /**
+     * An instance of Institution representing the institution for which the
+     * strategies are generated.
+     */
     private Institution institution;
+
+    /**
+     * An array of ItemType objects representing the types of items considered
+     * in the strategies.
+     */
     private ItemType[] types;
 
     /**
      * Constructs a new StrategyImp with the specified institution.
-     * 
+     *
      * @param institution The institution containing vehicles and aid boxes.
      */
     public StrategyImp(Institution institution) {
@@ -51,8 +81,9 @@ public class StrategyImp implements Strategy {
     }
 
     /**
-     * Retrieves the number of the last measurements taken for the specified container.
-     * 
+     * Retrieves the number of the last measurements taken for the specified
+     * container.
+     *
      * @param container The container to get the number of measurements for.
      * @return The number of measurements.
      */
@@ -70,7 +101,7 @@ public class StrategyImp implements Strategy {
 
     /**
      * Checks if the specified item type has already been picked.
-     * 
+     *
      * @param type The item type to check.
      * @return true if the type has already been picked, false otherwise.
      */
@@ -87,7 +118,7 @@ public class StrategyImp implements Strategy {
 
     /**
      * Checks if the specified vehicle is enabled.
-     * 
+     *
      * @param vehicle The vehicle to check.
      * @return true if the vehicle is enabled, false otherwise.
      */
@@ -103,8 +134,9 @@ public class StrategyImp implements Strategy {
     }
 
     /**
-     * Retrieves the measurement value of the last measurement for the specified container.
-     * 
+     * Retrieves the measurement value of the last measurement for the specified
+     * container.
+     *
      * @param container The container to get the measurement value for.
      * @return The measurement value of the last measurement.
      */
@@ -118,7 +150,7 @@ public class StrategyImp implements Strategy {
 
     /**
      * Retrieves the measurement value of the container if it is full.
-     * 
+     *
      * @param container The container to check.
      * @return The measurement value if the container is full, 0 otherwise.
      */
@@ -133,7 +165,7 @@ public class StrategyImp implements Strategy {
 
     /**
      * Counts the number of non-null vehicles in the specified array.
-     * 
+     *
      * @param vehicles The array of vehicles to count.
      * @return The number of non-null vehicles.
      */
@@ -151,7 +183,7 @@ public class StrategyImp implements Strategy {
 
     /**
      * Removes aid boxes from the route if they do not contain any items.
-     * 
+     *
      * @param route The route to remove empty aid boxes from.
      */
     private void removeEmptyAidBoxes(Route route) {
@@ -173,8 +205,9 @@ public class StrategyImp implements Strategy {
     }
 
     /**
-     * Checks if the vehicle can continue with the current load based on the total distance for perishable food.
-     * 
+     * Checks if the vehicle can continue with the current load based on the
+     * total distance for perishable food.
+     *
      * @param vehicle The vehicle to check.
      * @param route The route the vehicle is following.
      * @return true if the vehicle can continue, false otherwise.
@@ -193,7 +226,7 @@ public class StrategyImp implements Strategy {
     /**
      * Generates routes for vehicles to pick up items from aid boxes in the
      * specified institution according to the provided route validator.
-     * 
+     *
      * @param instn The institution containing vehicles and aid boxes.
      * @param rv The route validator to validate the generated routes.
      * @return An array of generated routes.
