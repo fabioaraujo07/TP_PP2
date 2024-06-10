@@ -16,10 +16,11 @@ import tp_pp.Classes.InstitutionImp;
  */
 public class ImporterImp implements com.estg.io.Importer {
 
-    private Institution institution = new InstitutionImp("Felgueiras");
+    private Institution institution;
     private String filePath;
-
-    public ImporterImp(String filePath) {
+    
+    public ImporterImp(Institution institution, String filePath) {
+        this.institution = institution;
         this.filePath = filePath;
     }
 

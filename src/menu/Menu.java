@@ -10,6 +10,7 @@ import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
 import com.estg.core.exceptions.ContainerException;
+import com.estg.core.exceptions.InstitutionException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.Vehicle;
 import http.HttpProviderImp;
@@ -635,12 +636,18 @@ public class Menu {
 
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
-        ImporterImp importer = new ImporterImp(filePath);
+        ImporterImp importer = new ImporterImp(inst, filePath);
 
         if(importer == null) {
             System.out.println("No data to be imported");
         }
-        //importer.importData();
+        try {
+            importer.importData(inst);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstitutionException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Menu menu = new Menu(inst);
         menu.start();
         
