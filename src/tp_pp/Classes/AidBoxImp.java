@@ -101,10 +101,12 @@ public class AidBoxImp implements com.estg.core.AidBox {
     }
 
     /**
-     * Retrieves the duration to travel between this aid box and the institution base.
+     * Retrieves the duration to travel between this aid box and the institution
+     * base.
      *
      * @param aidbox the other aid box
-     * @return the duration to travel between an aid box and the institution base
+     * @return the duration to travel between an aid box and the institution
+     * base
      * @throws AidBoxException if an error occurs during the duration retrieval
      */
     @Override
@@ -139,7 +141,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Retrieves the geographic coordinates of this aid box
-     * 
+     *
      * @return the geographic coordinates
      */
     @Override
@@ -165,7 +167,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Adds a container to this aid box
-     * 
+     *
      * @param cntnr the container to add
      * @return true if the container is successfully added, false otherwise
      * @throws ContainerException if an error occurs while adding the container
@@ -198,7 +200,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Retrieves a container of the specified item type from this aid box
-     * 
+     *
      * @param it the item type to retrieve
      * @return the container of the specified item type, or null if not found
      */
@@ -214,7 +216,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Retrieves the code of this aid box
-     * 
+     *
      * @return the code of this aid box
      */
     @Override
@@ -224,7 +226,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Retrieves the zone of this aid box
-     * 
+     *
      * @return the zone of this aid box
      */
     @Override
@@ -234,7 +236,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Retrieves the local reference of this aid box
-     * 
+     *
      * @return the local reference of this aid box
      */
     @Override
@@ -277,7 +279,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
     /**
      * Checks if this aid box is equal to another object
-     * 
+     *
      * @param obj the object to compare
      * @return true if the objects are equal, false otherwise
      */
@@ -338,8 +340,8 @@ public class AidBoxImp implements com.estg.core.AidBox {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put("_id", this.id);
-        jsonObject.put("Codigo", this.code);
-        jsonObject.put("Zona", this.zone);
+        jsonObject.put("Code", this.code);
+        jsonObject.put("Zone", this.zone);
         jsonObject.put("Latitude", this.coordinates.getLatitude());
         jsonObject.put("Longitude", this.coordinates.getLongitude());
 
@@ -356,17 +358,30 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
         return jsonObject;
     }
-    
+
     public static AidBoxImp fromJsonObj(JSONObject jsonObject) {
-        
-        
-        AidBoxImp vehicle;
-        
 
-        return vehicle;
+        String id = (String) jsonObject.get("_id");
+        String code = (String) jsonObject.get("Code");
+        String zone = (String) jsonObject.get("Zone");
+        double latitude = (double) jsonObject.get("Latitude");
+        double longitude = (double) jsonObject.get("Longitude");
+
+        AidBoxImp aid = new AidBoxImp(id, code, zone, zone, latitude, longitude);
+
+        JSONArray containersArray = (JSONArray) jsonObject.get("Containers");
+        for (Object container : containersArray) {
+            JSONObject containerJson = (JSONObject) container;
+            ContainerImp containers = ContainerImp.fromJsonObj(containerJson);
+            try {
+                aid.addContainer(containers);
+            } catch (ContainerException e) {
+                System.out.println("Error adding container: " + e.getMessage());
+            }
+
+        }
+
+        return aid;
     }
-
-
-    
 
 }

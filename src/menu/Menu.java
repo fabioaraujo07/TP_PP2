@@ -165,7 +165,7 @@ public class Menu {
     private void addAidBox() throws ContainerException {
         try {
             listAidBoxhttp();
-           System.out.print("Enter the Aid Box code: ");
+            System.out.print("Enter the Aid Box code: ");
             String code = reader.readLine();
 
             String jsonResponse = httpProvider.getAidBoxesCode(code);
@@ -608,23 +608,18 @@ public class Menu {
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
 
-        if (inst.importData("src/Files/vehicles.json")) {
+        if (inst.importData("src/Files/vehicles.json") && inst.importData("src/Files/aidboxArray.json")) {
             System.out.println("Success importing program vehicles");
         }
-//        if(inst.importAid("src/Files/aidboxes.json")){
-//            System.out.println("Success importing program aidboxes");
-//        }
+
 
         Menu menu = new Menu(inst);
         menu.start();
 
-        if (inst.export("src/Files/vehicles.json")) {
+        if (inst.export("src/Files/vehicles.json")&& inst.importData("src/Files/aidboxArray.json")) {
             System.out.println("Success export program vehicles");
         }
-//        if (inst.exportAid("src/Files/aidboxes.json")) {
-//            System.out.println("Success export program aidboxes");
-//        }
-        
+
     }
 
 }

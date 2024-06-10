@@ -659,10 +659,10 @@ public class InstitutionImp implements com.estg.core.Institution {
             JSONArray aidboxArray = (JSONArray) jsonObject.get("Aidboxes");
             for (int i = 0; i < aidboxArray.size(); i++) {
                 JSONObject aidboxJson = (JSONObject) aidboxArray.get(i);
-                AidBox a = AidBoxImp.(aidboxJson);
+                AidBox a = AidBoxImp.fromJsonObj(aidboxJson);
                 try {
-                    this.addVehicle(v);
-                } catch (VehicleException e) {
+                    this.addAidBox(a);
+                } catch (AidBoxException e) {
                     e.printStackTrace();
                 }
             }

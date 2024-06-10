@@ -194,9 +194,9 @@ public class ContainerImp implements com.estg.core.Container {
 
     public static ContainerImp fromJsonObj(JSONObject jsonObject) {
         try {
-            String code = (String) jsonObject.get("codigo");
+            String code = (String) jsonObject.get("code");
 
-            Object capacityObj = jsonObject.get("capacidade");
+            Object capacityObj = jsonObject.get("capacity");
             double capacity;
             if (capacityObj instanceof Long) {
                 capacity = ((Long) capacityObj).doubleValue();
