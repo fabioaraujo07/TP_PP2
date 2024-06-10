@@ -643,8 +643,6 @@ public class InstitutionImp implements com.estg.core.Institution {
     /**
      * Exports the institution's data to a JSON file.
      *
-     * @param filePath the file path to save the JSON data
-     * @return true if the export is successful, false otherwise
      */
     public void export() throws IOException {
         // Export Vehicles
@@ -682,9 +680,6 @@ public class InstitutionImp implements com.estg.core.Institution {
 
     /**
      * Imports the institution's data from a JSON file.
-     *
-     * @param filePath the file path to read the JSON data
-     * @return true if the import is successful, false otherwise
      */
     public void importData() throws FileNotFoundException, IOException, ParseException {
         JSONParser parser = new JSONParser();

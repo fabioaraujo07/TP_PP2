@@ -458,6 +458,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Fetches and lists all containers within the aid boxes from the provider.
+     * For each container, the details include the container code and capacity.
+     */
     private void listContainers() {
         try {
             String jsonResponse = httpProvider.getAidBoxes();
