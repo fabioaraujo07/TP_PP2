@@ -43,7 +43,10 @@ import tp_pp.Classes.MeasurementImp;
 import tp_pp_managment.VehicleImp;
 
 /**
- *
+ * The Menu class provides a user interface for managing an institution's aid
+ * boxes, containers, measurements, and vehicles. It allows users to add, list,
+ * and view details about these entities. The class also handles importing and
+ * exporting data for the institution.
  */
 public class Menu {
 
@@ -54,11 +57,20 @@ public class Menu {
     private BufferedReader reader;
     private static HttpProviderImp httpProvider = new HttpProviderImp();
 
+    /**
+     * Constructor for the Menu class.
+     *
+     * @param inst the institution to be managed.
+     */
     public Menu(Institution inst) {
         this.inst = inst;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    /**
+     * Starts the main menu interface and handles user input for different
+     * options.
+     */
     public void start() {
         int option = 0;
 
@@ -66,9 +78,11 @@ public class Menu {
             System.out.println("=== Welcome To Felgueiras Institution ===");
             System.out.println("1. AidBox");
             System.out.println("2. Containers");
-            System.out.println("3. Vehicles");
-            System.out.println("4. Routes");
-            System.out.println("5. Exit");
+            System.out.println("3. Measurements");
+            System.out.println("4. Vehicles");
+            System.out.println("5. Routes");
+
+            System.out.println("6. Exit");
             System.out.println("Option: ");
             try {
                 option = Integer.parseInt(reader.readLine());
@@ -100,6 +114,10 @@ public class Menu {
         } while (option != 5);
     }
 
+    /**
+     * Displays the aid box management menu and handles user input for different
+     * options.
+     */
     public void showAidBoxMenu() {
         boolean exit = false;
         while (!exit) {
@@ -156,6 +174,12 @@ public class Menu {
         }
     }
 
+    /**
+     * Lists all aid boxes and prints their details to the console.
+     *
+     * @return an array of AidBox objects.
+     * @throws AidBoxException if there is an error listing aid boxes.
+     */
     private AidBox[] listAidBox() throws AidBoxException {
 
         AidBox[] aidboxes = inst.getAidBoxes();
@@ -173,6 +197,13 @@ public class Menu {
         }
     }
 
+    /**
+     * Adds a new aid box by fetching data from an HTTP provider and adding it
+     * to the institution.
+     *
+     * @throws ContainerException if there is an error adding a container to the
+     * aid box.
+     */
     private void addAidBox() throws ContainerException {
         try {
             listAidBoxhttp();
@@ -244,6 +275,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Lists all aid boxes fetched from an HTTP provider and prints their
+     * details to the console.
+     */
     private void listAidBoxhttp() {
         try {
             String jsonResponse = httpProvider.getAidBoxes();
@@ -272,6 +307,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user to enter an Aid Box code and displays details about the
+     * specified Aid Box. The details include the ID, Code, Zone, Latitude,
+     * Longitude, and Containers within the Aid Box.
+     */
     private void viewAidBoxByCode() {
         listAidBoxhttp();
         try {
@@ -303,6 +343,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user to enter two Aid Box codes and displays the distance
+     * between them.
+     */
     private void viewDistances() {
         listAidBoxhttp();
         try {
@@ -330,6 +374,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user to enter two Aid Box codes and displays the duration
+     * between them.
+     */
     private void viewDuration() {
         listAidBoxhttp();
         try {
@@ -357,6 +405,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Displays the container menu and handles user input for various container
+     * operations. The options include listing all containers, adding
+     * measurements, listing all measurements, and exiting.
+     */
     public void showContainerMenu() {
         boolean exit = false;
         while (!exit) {
@@ -371,10 +424,9 @@ public class Menu {
                 int option = Integer.parseInt(reader.readLine());
 
                 switch (option) {
-                    case 1: {
+                    case 1:
                         listContainers();
-                    }
-                    break;
+                        break;
 
                     case 2: {
                         try {
@@ -429,8 +481,10 @@ public class Menu {
         }
     }
 
-    
-
+    /**
+     * Fetches and lists all measurements from the provider. The details of each
+     * measurement include the container code, date, and value.
+     */
     private void listMeasurements() {
         try {
             String jsonResponse = httpProvider.getReadings();
@@ -453,6 +507,13 @@ public class Menu {
         }
     }
 
+    /**
+     * Adds measurements to the specified container based on the user input.
+     *
+     * @throws ParseException if there is an error parsing the input data
+     * @throws IOException if there is an error reading the input
+     * @throws MeasurementException if there is an error adding the measurement
+     */
     private void addMeasurements() throws ParseException, IOException, MeasurementException {
         try {
             listAidBox();
@@ -511,6 +572,10 @@ public class Menu {
 
     }
 
+    /**
+     * Displays the vehicle management menu and handles user input for various
+     * operations related to vehicles.
+     */
     private void showVehiclesMenu() {
         boolean exit = false;
         while (!exit) {
@@ -555,6 +620,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user to add a new vehicle and handles the process of creating
+     * and adding the vehicle to the institution.
+     */
     private void addVehicle() {
         try {
 
@@ -618,6 +687,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Lists all the vehicles associated with the institution.
+     *
+     * @throws VehicleException if there are no vehicles found.
+     */
     public void listVehicles() throws VehicleException {
         Vehicle[] vehicles = inst.getVehicles();
 
@@ -638,6 +712,9 @@ public class Menu {
         }
     }
 
+    /**
+     * Prompts the user to remove a vehicle based on user input.
+     */
     private void removeVehicle() {
         try {
             listVehicles();
@@ -715,6 +792,11 @@ public class Menu {
 
     }
 
+    /**
+     * Main method to run the menu application.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
         ImporterImp importer = new ImporterImp(inst);
