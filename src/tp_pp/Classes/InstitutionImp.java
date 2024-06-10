@@ -31,6 +31,7 @@ import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
 import tp_pp_managment.PickingMapImp;
 import tp_pp_managment.VehicleImp;
+import tp_pp.Classes.MeasurementImp;
 
 /**
  * Implementation of the Institution interface, representing an institution with
@@ -597,9 +598,8 @@ public class InstitutionImp implements com.estg.core.Institution {
      */
     public boolean export(String filePath) {
         JSONObject jsonObject = new JSONObject();
-        
+
         //Export Vehicles
-        
         jsonObject.put("numbervehicles", numberVehicles);
 
         JSONArray vehiclesArray = new JSONArray();
@@ -611,7 +611,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         jsonObject.put("Vehicles", vehiclesArray);
 
         // Export Aidbox
-        
         jsonObject.put("numberAidbox", numberAidbox);
 
         JSONArray aidboxArray = new JSONArray();
@@ -621,9 +620,8 @@ public class InstitutionImp implements com.estg.core.Institution {
             }
         }
         jsonObject.put("Aidboxes", aidboxArray);
-        
-        // Export Measurements
 
+        // Export Measurements
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(jsonObject.toJSONString());
         } catch (IOException e) {
@@ -655,7 +653,7 @@ public class InstitutionImp implements com.estg.core.Institution {
                     e.printStackTrace();
                 }
             }
-            
+
             JSONArray aidboxArray = (JSONArray) jsonObject.get("Aidboxes");
             for (int i = 0; i < aidboxArray.size(); i++) {
                 JSONObject aidboxJson = (JSONObject) aidboxArray.get(i);
@@ -666,9 +664,8 @@ public class InstitutionImp implements com.estg.core.Institution {
                     e.printStackTrace();
                 }
             }
-            
+
             return true;
-            
 
         } catch (FileNotFoundException ex) {
             System.out.println("File not found: " + filePath);
@@ -688,7 +685,6 @@ public class InstitutionImp implements com.estg.core.Institution {
      * @throws VehicleException If the vehicle is null, not found, or cannot be
      * removed.
      */
-
     public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
         if (vehicle == null) {
             throw new VehicleException();

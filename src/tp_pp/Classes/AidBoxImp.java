@@ -23,6 +23,7 @@ import org.json.simple.parser.ParseException;
 import tp_pp_exceptions.FindException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import http.HttpProviderImp;
 
 /**
  * Implementation of the AidBox interface, representing an aid box with
@@ -41,6 +42,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
     private GeographicCoordinates coordinates;
     private Container[] containers;
     private int numberContainers;
+    private static HttpProviderImp httpProvider = new HttpProviderImp();
 
     /**
      * Constructs an AidBoxImp with specified code, zone, local reference,
@@ -74,11 +76,13 @@ public class AidBoxImp implements com.estg.core.AidBox {
         if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
-        JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("Files/Distances.json")) {
-            JSONArray distanceArray = (JSONArray) parser.parse(reader);
+        
+        try {
+            String jsonResponse = httpProvider.getAidBoxes();
+            JSONParser parser = new JSONParser();
+            JSONArray aidboxes = (JSONArray) parser.parse(jsonResponse);
 
-            for (Object o : distanceArray) {
+            for (Object o : aidboxes) {
                 JSONObject distancesObject = (JSONObject) o;
                 String from = (String) distancesObject.get("from");
                 if (from.equals(this.code)) {
@@ -97,7 +101,6 @@ public class AidBoxImp implements com.estg.core.AidBox {
             e.printStackTrace();
         }
         throw new AidBoxException("Aid box does not exist: " + aidbox.getCode());
-
     }
 
     /**
