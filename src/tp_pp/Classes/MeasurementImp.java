@@ -28,7 +28,9 @@ public class MeasurementImp implements com.estg.core.Measurement {
     }
     
     /**
-     * {@inheritDoc}
+     * Retrieves the date of the measurement.
+     * 
+     * @return the date of the measurement
      */
     @Override
     public LocalDateTime getDate() {
@@ -36,7 +38,9 @@ public class MeasurementImp implements com.estg.core.Measurement {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the value of the measurement.
+     * 
+     * @return the value of the measurement
      */
     @Override
     public double getValue() {

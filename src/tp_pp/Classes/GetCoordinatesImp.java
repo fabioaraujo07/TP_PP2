@@ -27,7 +27,9 @@ public class GetCoordinatesImp implements com.estg.core.GeographicCoordinates{
     }
     
     /**
-     * {@inheritDoc}
+     * Retrieves the latitude of this location.
+     *
+     * @return the latitude of this location
      */
     @Override
     public double getLatitude() {
@@ -35,7 +37,9 @@ public class GetCoordinatesImp implements com.estg.core.GeographicCoordinates{
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the longitude of this location.
+     *
+     * @return the longitude of this location
      */
     @Override
     public double getLongitude() {
