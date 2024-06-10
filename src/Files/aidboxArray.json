@@ -3,18 +3,30 @@
             "Zone": "Margaride",
             "Containers": [{
                     "code": "N7KI",
+                    "Measurements": [{
+                            "contentor": "N7KI",
+                            "date": "+999999999-12-31T23:59:59.999999999",
+                            "value": 485.0
+                        }],
+                    "numberMeasurements": 1,
                     "type": "PERISHABLE_FOOD",
                     "capacity": 600.0
                 }, {
                     "code": "V1QL",
+                    "Measurements": [],
+                    "numberMeasurements": 0,
                     "type": "NON_PERISHABLE_FOOD",
                     "capacity": 750.0
                 }, {
                     "code": "MYE6",
+                    "Measurements": [],
+                    "numberMeasurements": 0,
                     "type": "CLOTHING",
                     "capacity": 500.0
                 }, {
                     "code": "PLIQQ",
+                    "Measurements": [],
+                    "numberMeasurements": 0,
                     "type": "MEDICINE",
                     "capacity": 80.0
                 }],

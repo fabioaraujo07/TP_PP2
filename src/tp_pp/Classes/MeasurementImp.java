@@ -5,33 +5,35 @@
 package tp_pp.Classes;
 
 import java.time.LocalDateTime;
+import org.json.simple.JSONObject;
 
 /**
- * Implementation of the Measurement interface, representing a measurement 
- * with a specific date and value.
+ * Implementation of the Measurement interface, representing a measurement with
+ * a specific date and value.
  *
  * @author Fábio da Cunha, Roger Nakauchi
  */
 public class MeasurementImp implements com.estg.core.Measurement {
-    
+
     private LocalDateTime date;
     private double value;
     private String contentor;
+
     /**
      * Constructs a new MeasurementImp with the specified date and value.
-     * 
+     *
      * @param date the date of the measurement
      * @param value the value of the measurement
      */
-    public MeasurementImp(String contentor,LocalDateTime date, double value) {
+    public MeasurementImp(String contentor, LocalDateTime date, double value) {
         this.contentor = contentor;
         this.date = date;
         this.value = value;
     }
-    
+
     /**
      * Retrieves the date of the measurement.
-     * 
+     *
      * @return the date of the measurement
      */
     @Override
@@ -41,15 +43,37 @@ public class MeasurementImp implements com.estg.core.Measurement {
 
     /**
      * Retrieves the value of the measurement.
-     * 
+     *
      * @return the value of the measurement
      */
     @Override
     public double getValue() {
         return this.value;
     }
-    
-    public String getcontentor(){
+
+    public String getcontentor() {
         return this.contentor;
     }
+
+    public JSONObject toJsonObj() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("contentor", this.contentor);
+        jsonObject.put("date", this.date.toString());
+        jsonObject.put("value", this.value);
+        return jsonObject;
+    }
+
+    public static MeasurementImp fromJsonObj(JSONObject jsonObject) {
+        try {
+            String contentor = (String) jsonObject.get("contentor");
+            String dateString = (String) jsonObject.get("date");
+            LocalDateTime date = LocalDateTime.parse(dateString);
+            double value = ((Number) jsonObject.get("value")).doubleValue();
+            return new MeasurementImp(contentor, date, value);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid Measurement data in JSON: " + jsonObject.toJSONString(), e);
+        }
+    }
 }
+
+

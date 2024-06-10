@@ -9,6 +9,7 @@ import com.estg.core.Measurement;
 import com.estg.core.exceptions.MeasurementException;
 import java.io.IOException;
 import java.time.LocalDate;
+import org.json.simple.JSONArray;
 import tp_pp_exceptions.FindException;
 import org.json.simple.JSONObject;
 import tp_pp_managment.VehicleImp;
@@ -93,7 +94,8 @@ public class ContainerImp implements com.estg.core.Container {
      * Retrieves measurements stored in this container for the specified date.
      *
      * @param ld the date for which measurements should be retrieved
-     * @return an array of measurements stored in this container for the specified date
+     * @return an array of measurements stored in this container for the
+     * specified date
      */
     @Override
     public Measurement[] getMeasurements(LocalDate ld) {
@@ -117,7 +119,8 @@ public class ContainerImp implements com.estg.core.Container {
      *
      * @param msrmnt the measurement to add
      * @return true if the measurement is successfully added, false otherwise
-     * @throws MeasurementException if an error occurs while adding the measurement
+     * @throws MeasurementException if an error occurs while adding the
+     * measurement
      */
     @Override
     public boolean addMeasurement(Measurement msrmnt) throws MeasurementException {
@@ -128,10 +131,10 @@ public class ContainerImp implements com.estg.core.Container {
             throw new MeasurementException("Measurement value is lower than zero");
         }
         try {
-            if(numberMeasurements > 0){
-            if (msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
-                throw new MeasurementException("Measurement date is before than the last Measurement date");
-            }
+            if (numberMeasurements > 0) {
+                if (msrmnt.getDate().isBefore(measurements[numberMeasurements - 1].getDate())) {
+                    throw new MeasurementException("Measurement date is before than the last Measurement date");
+                }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             ex.printStackTrace();
@@ -190,8 +193,21 @@ public class ContainerImp implements com.estg.core.Container {
         jsonObject.put("code", this.code);
         jsonObject.put("capacity", this.capacity);
         jsonObject.put("type", this.itemType.name());
+        jsonObject.put("numberMeasurements", numberMeasurements);
+
+        JSONArray measurementsArray = new JSONArray();
+        for (Measurement measurement : measurements) {
+            if (measurement != null) {
+                if (measurement instanceof MeasurementImp) {
+                    MeasurementImp m = (MeasurementImp) measurement;
+                    measurementsArray.add(m.toJsonObj());
+                }
+            }
+        }
+        jsonObject.put("Measurements", measurementsArray);
 
         return jsonObject;
+
     }
 
     public static ContainerImp fromJsonObj(JSONObject jsonObject) {
@@ -212,9 +228,26 @@ public class ContainerImp implements com.estg.core.Container {
                 throw new IllegalArgumentException("ItemType is missing");
             }
 
+            ContainerImp cont = new ContainerImp(code, capacity, typeStr);
 
-            return new ContainerImp(code, capacity, typeStr);
+            JSONArray measurementsArray = (JSONArray) jsonObject.get("Measurements");
+            if (measurementsArray != null) {
+                for (int i = 0; i < measurementsArray.size(); i++) {
+                    JSONObject measurementJson = (JSONObject) measurementsArray.get(i);
+                    MeasurementImp measurements = MeasurementImp.fromJsonObj(measurementJson);
+                    try {
+                        cont.addMeasurement(measurements);
+                    } catch (MeasurementException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            return cont;
+
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("Invalid Container data in JSON: " + jsonObject.toJSONString(), e);
         }
     }
