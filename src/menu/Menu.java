@@ -4,6 +4,7 @@
  */
 package menu;
 
+import com.estg.core.AidBox;
 import com.estg.core.Institution;
 import com.estg.core.ItemType;
 import com.estg.core.Measurement;
@@ -21,6 +22,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import tp_pp.Classes.AidBoxImp;
 import tp_pp.Classes.ContainerImp;
 import tp_pp.Classes.InstitutionImp;
 import tp_pp_managment.VehicleImp;
@@ -45,11 +47,11 @@ public class Menu {
         int option = 0;
 
         do {
-            System.out.println("=== Menu ===");
+            System.out.println("=== Welcome To Felgueiras Institution ===");
             System.out.println("1. AidBox");
             System.out.println("2. Containers");
-            System.out.println("3. Vehicles");
-            System.out.println("4. Institution");
+            System.out.println("3.Measurements");
+            System.out.println("4. Vehicles");
             System.out.println("5. Routes");
 
             System.out.println("6. Exit");
@@ -92,8 +94,8 @@ public class Menu {
         boolean exit = false;
         while (!exit) {
             System.out.println("=== Aibox Menu ===");
-            System.out.println("1. List all Aid box");
-            System.out.println("2. View Aid box by ID");
+            System.out.println("1. Add Aid box");
+            System.out.println("2. List Aid Box");
             System.out.println("3. View distances between Aid boxes");
             System.out.println("4. View duration between Aid boxes");
             System.out.println("5. Exit");
@@ -103,12 +105,24 @@ public class Menu {
                 int option = Integer.parseInt(reader.readLine());
 
                 switch (option) {
-                    case 1:
-                        listAidBox();
-                        break;
-                    case 2:
-                        viewAidBoxByCode();
-                        break;
+                    case 1: {
+                        try {
+                            addAidBox();
+                        } catch (ContainerException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+
+                    case 2: {
+                        try {
+                            listAidBox();
+                        } catch (AidBoxException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+
                     case 3:
                         viewDistances();
                         break;
@@ -131,7 +145,95 @@ public class Menu {
         }
     }
 
-    private void listAidBox() {
+    private AidBox[] listAidBox() throws AidBoxException {
+
+        AidBox[] aidboxes = inst.getAidBoxes();
+
+        if (aidboxes == null) {
+            throw new AidBoxException();
+        } else {
+            System.out.println("AidboxList: ");
+            for (AidBox aidbox : aidboxes) {
+                if (aidbox != null) {
+                    System.out.println(aidbox);
+                }
+            }
+            return aidboxes;
+        }
+    }
+
+    private void addAidBox() throws ContainerException {
+        try {
+            listAidBoxhttp();
+           System.out.print("Enter the Aid Box code: ");
+            String code = reader.readLine();
+
+            String jsonResponse = httpProvider.getAidBoxesCode(code);
+            JSONParser parser = new JSONParser();
+            JSONObject aidbox = (JSONObject) parser.parse(jsonResponse);
+            
+            String id = (String) aidbox.get("_id");
+            String code1 = (String) aidbox.get("Codigo");
+            String zone = (String) aidbox.get("Zona");
+            double latitude = (double) aidbox.get("Latitude");
+            double longitude = (double) aidbox.get("Longitude");
+
+            AidBoxImp aid = new AidBoxImp(id, code1, zone, zone, latitude, longitude);
+
+            JSONArray contentoresArray = (JSONArray) aidbox.get("Contentores");
+            for (Object contentorObject : contentoresArray) {
+                JSONObject contentor = (JSONObject) contentorObject;
+                String containerCode = (String) contentor.get("codigo");
+                int capacity = ((Long) contentor.get("capacidade")).intValue();
+
+                System.out.println("Select the item type for container " + containerCode + ":");
+                System.out.println("1. PERISHABLE_FOOD");
+                System.out.println("2. NON_PERISHABLE_FOOD");
+                System.out.println("3. CLOTHING");
+                System.out.println("4. MEDICINE");
+
+                int option = Integer.parseInt(reader.readLine());
+
+                ItemType itemType;
+                switch (option) {
+                    case 1:
+                        itemType = ItemType.PERISHABLE_FOOD;
+                        break;
+                    case 2:
+                        itemType = ItemType.NON_PERISHABLE_FOOD;
+                        break;
+                    case 3:
+                        itemType = ItemType.CLOTHING;
+                        break;
+                    case 4:
+                        itemType = ItemType.MEDICINE;
+                        break;
+                    default:
+                        System.out.println("Invalid selection. Defaulting to NON_PERISHABLE_FOOD.");
+                        itemType = ItemType.NON_PERISHABLE_FOOD;
+                        break;
+                }
+
+                ContainerImp container = new ContainerImp(containerCode, capacity, itemType);
+                try {
+                    aid.addContainer(container);
+                } catch (ContainerException ex) {
+                    System.out.println("Error adding container: " + ex.getMessage());
+                }
+            }
+
+            try {
+                inst.addAidBox(aid);
+                System.out.println("Added with success!");
+            } catch (AidBoxException ex) {
+                System.out.println("Error adding aid box: " + ex.getMessage());
+            }
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching aid boxes: " + e.getMessage());
+        }
+    }
+
+    private void listAidBoxhttp() {
         try {
             String jsonResponse = httpProvider.getAidBoxes();
             JSONParser parser = new JSONParser();
@@ -303,11 +405,10 @@ public class Menu {
         boolean exit = false;
         while (!exit) {
             System.out.println("=== Vehicle Menu ===");
-            System.out.println("1. Create");
+            System.out.println("1. Add");
             System.out.println("2. Remove");
-            System.out.println("3. Update");
-            System.out.println("4. List");
-            System.out.println("5. Back");
+            System.out.println("3. List");
+            System.out.println("4. Back");
             System.out.println("Select option: ");
 
             try {
@@ -315,24 +416,20 @@ public class Menu {
 
                 switch (option) {
                     case 1:
-                        createVehicle();
+                        addVehicle();
                         break;
                     case 2: {
                         removeVehicle();
                     }
                     break;
-
                     case 3:
-                        //containerMeasurements();
-                        break;
-                    case 4:
                         try {
                             listVehicles();
                         } catch (VehicleException ex) {
                             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         break;
-                    case 5:
+                    case 4:
                         exit = true;
                         break;
                     default:
@@ -348,7 +445,7 @@ public class Menu {
         }
     }
 
-    private void createVehicle() {
+    private void addVehicle() {
         try {
 
             System.out.println("Enter the vehicle capacity: ");

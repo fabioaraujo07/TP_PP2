@@ -160,7 +160,7 @@ public class ContainerImp implements com.estg.core.Container {
      */
     @Override
     public String toString() {
-        return "code=" + code + ", capacity=" + capacity;
+        return "code= " + code + ", capacity= " + capacity + ", type= " + getType();
     }
 
 }

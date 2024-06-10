@@ -31,15 +31,17 @@ public class TP_PP {
     public static void main(String[] args) throws AidBoxException {
        try{
            HttpProviderImp http = new HttpProviderImp();
-           AidBox a1 = new AidBoxImp("CAIXF33", "Praia", "uisfai", 0, 0);
-           AidBox a2 = new AidBoxImp("Base", "Praia", "uisfai", 0, 0);
+           AidBox a1 = new AidBoxImp("id","CAIXF33", "Praia", "uisfai", 0, 0);
+           AidBox a2 = new AidBoxImp("id","Base", "Praia", "uisfai", 0, 0);
            Institution i1 = new InstitutionImp("Base");
            
-           System.out.println(i1.getDistance(a1));
+           System.out.println(http.getAidBoxes());
            
-           System.out.println(a1.getDuration(a2));
-           String aidboxes = http.getDistancesAidbox("CAIXF37", "Base");
-           System.out.println("Aidboxes: " + aidboxes);
+//           System.out.println(i1.getDistance(a1));
+//           
+//           System.out.println(a1.getDuration(a2));
+//           String aidboxes = http.getDistancesAidbox("CAIXF37", "Base");
+//           System.out.println("Aidboxes: " + aidboxes);
        }catch(IOException | ParseException e){
            e.printStackTrace();
        }

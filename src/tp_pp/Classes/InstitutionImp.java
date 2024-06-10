@@ -33,9 +33,10 @@ import tp_pp_managment.PickingMapImp;
 import tp_pp_managment.VehicleImp;
 
 /**
- * Implementation of the Institution interface, representing an institution with various resources like aid boxes, containers, vehicles, and picking maps.
+ * Implementation of the Institution interface, representing an institution with
+ * various resources like aid boxes, containers, vehicles, and picking maps.
  * Provides functionalities to manage these resources.
- * 
+ *
  * @autor Fábio da Cunha, Roger Nakauchi
  */
 public class InstitutionImp implements com.estg.core.Institution {
@@ -94,16 +95,17 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * Checks if the specified AidBox contains duplicate containers of the same type.
+     * Checks if the specified AidBox contains duplicate containers of the same
+     * type.
      *
      * @param aidbox the AidBox to check
      * @return true if duplicate containers are found, false otherwise
      */
     private boolean hasDuplicateContainers(AidBox aidbox) {
-        Container[] container = aidbox.getContainers();
-        for (int i = 0; i < container.length; i++) {
-            for (int j = i + 1; j < container.length; i++) {
-                if (container[i].getType().equals(container[j].getType())) {
+        Container[] containers = aidbox.getContainers();
+        for (int i = 0; i < containers.length; i++) {
+            for (int j = i + 1; j < containers.length; j++) {
+                if (i != j && containers[i].getType().equals(containers[j].getType())) {
                     return true;
                 }
             }
@@ -124,14 +126,13 @@ public class InstitutionImp implements com.estg.core.Institution {
                 return false;
             }
         } catch (FindException ex) {
-            Logger.getLogger(InstitutionImp.class.getName()).log(Level.SEVERE, null, ex);
+            if (hasDuplicateContainers(aidbox)) {
+                throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
+            }
+            this.aidboxes[numberAidbox++] = aidbox;
+            return true;
         }
-        if (hasDuplicateContainers(aidbox)) {
-            throw new AidBoxException("AidBox contains duplicate containers of a certain waste type");
-        }
-        this.aidboxes[numberAidbox++] = aidbox;
-        return true;
-
+        return false;
     }
 
     /**

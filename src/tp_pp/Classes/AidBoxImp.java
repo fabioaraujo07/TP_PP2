@@ -24,33 +24,34 @@ import tp_pp_exceptions.FindException;
 
 /**
  * Implementation of the AidBox interface, representing an aid box with
- * containers and geographic coordinates.
- * This class handles operations related to aid boxes such as distance calculation,
- * container management, and geographic information.
- * 
+ * containers and geographic coordinates. This class handles operations related
+ * to aid boxes such as distance calculation, container management, and
+ * geographic information.
+ *
  * @author Fábio da Cunha, Roger Nakauchi
  */
 public class AidBoxImp implements com.estg.core.AidBox {
 
+    private String id;
     private String code;
     private String zone;
     private String refLocal;
     private GeographicCoordinates coordinates;
     private Container[] containers;
     private int numberContainers;
-    
+
     /**
      * Constructs an AidBoxImp with specified code, zone, local reference,
      * latitude, and longitude.
      *
-     * @param code      the code of the aid box
-     * @param zone      the zone of the aid box
-     * @param refLocal  the local reference of the aid box
-     * @param latitude  the latitude of the aid box
+     * @param code the code of the aid box
+     * @param zone the zone of the aid box
+     * @param refLocal the local reference of the aid box
+     * @param latitude the latitude of the aid box
      * @param longitude the longitude of the aid box
      */
-
-    public AidBoxImp(String code, String zone, String refLocal, double latitude, double longitude) {
+    public AidBoxImp(String id, String code, String zone, String refLocal, double latitude, double longitude) {
+        this.id = id;
         this.code = code;
         this.zone = zone;
         this.refLocal = refLocal;
@@ -81,7 +82,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
                         String name = (String) distancesTO.get("name");
                         if (name.equals(aidbox.getCode())) {
-                            return (long)distancesTO.get("distance");
+                            return (long) distancesTO.get("distance");
                         }
                     }
                 }
@@ -98,7 +99,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
      */
     @Override
     public double getDuration(com.estg.core.AidBox aidbox) throws AidBoxException {
-       if (aidbox == null) {
+        if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
         JSONParser parser = new JSONParser();
@@ -115,7 +116,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
 
                         String name = (String) distancesTO.get("name");
                         if (name.equals(aidbox.getCode())) {
-                            return (long)distancesTO.get("duration");
+                            return (long) distancesTO.get("duration");
                         }
                     }
                 }
@@ -163,20 +164,20 @@ public class AidBoxImp implements com.estg.core.AidBox {
                 return false;
             }
         } catch (FindException ex) {
-            Logger.getLogger(AidBoxImp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (this.numberContainers == this.containers.length) {
-            throw new ContainerException("Max capacity hitted");
-        }
-
-        for (int i = 0; 1 < numberContainers; i++) {
-            if (containers[i].getType().equals(cntnr.getType())) {
-                throw new ContainerException("AidBox already have a container from a given type");
+            if (this.numberContainers == this.containers.length) {
+                throw new ContainerException("Max capacity hitted");
             }
-        }
 
-        this.containers[numberContainers++] = cntnr;
-        return true;
+            for (int i = 0; i < numberContainers; i++) {
+                if (containers[i].getType().equals(cntnr.getType()) && containers[i].getCode().equals(cntnr.getCode())) {
+                    throw new ContainerException("AidBox already have a container from a given type");
+                }
+            }
+
+            this.containers[numberContainers++] = cntnr;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -304,4 +305,10 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return result;
     }
 
+//    public JSONObject toJsonObj(){
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("id: ", this.id);
+//        jsonObject.put("code", this.code);
+//        
+//    }
 }
