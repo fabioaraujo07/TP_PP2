@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp.Classes;
 
@@ -31,17 +36,47 @@ import http.HttpProviderImp;
  * to aid boxes such as distance calculation, container management, and
  * geographic information.
  *
- * @author Fábio da Cunha, Roger Nakauchi
  */
 public class AidBoxImp implements com.estg.core.AidBox {
 
+    /**
+     * Unique identifier for the aid box.
+     */
     private String id;
+
+    /**
+     * Code representing the aid box.
+     */
     private String code;
+
+    /**
+     * Zone in which the aid box is located.
+     */
     private String zone;
+
+    /**
+     * Reference location for the aid box.
+     */
     private String refLocal;
+
+    /**
+     * Geographic coordinates of the aid box.
+     */
     private GeographicCoordinates coordinates;
+
+    /**
+     * Array of containers associated with the aid box.
+     */
     private Container[] containers;
+
+    /**
+     * Number of containers in the aid box.
+     */
     private int numberContainers;
+
+    /**
+     * HTTP provider for making requests to external services.
+     */
     private static HttpProviderImp httpProvider = new HttpProviderImp();
 
     /**
@@ -76,7 +111,7 @@ public class AidBoxImp implements com.estg.core.AidBox {
         if (aidbox == null) {
             throw new AidBoxException("O aidbox não existe");
         }
-        
+
         try {
             String jsonResponse = httpProvider.getAidBoxes();
             JSONParser parser = new JSONParser();

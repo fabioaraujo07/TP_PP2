@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp_managment;
 
@@ -16,23 +21,41 @@ import tp_pp_exceptions.FindException;
 /**
  * Implementation of the Route interface, responsible for managing aid boxes
  * within a specific route and associated vehicle.
- * 
+ *
  * This class provides methods to add, remove, and manage aid boxes in a route,
  * and calculate total distance and duration of the route.
  *
- * @author Fábio da Cunha, Roger Nakauchi
  */
 public class RouteImp implements com.estg.pickingManagement.Route {
 
+    /**
+     * An array of AidBox objects representing the aid boxes in the route.
+     */
     private AidBox[] routes;
+
+    /**
+     * The number of aid boxes in the route.
+     */
     private int numberAidboxes;
+
+    /**
+     * The vehicle associated with the route.
+     */
     private Vehicle vehicle;
+
+    /**
+     * The total distance of the route.
+     */
     private double totalDistance;
+
+    /**
+     * The total duration of the route.
+     */
     private double totalDuration;
 
     /**
      * Constructor to initialize the RouteImp with a specific vehicle.
-     * 
+     *
      * @param vehicle The vehicle associated with this route.
      */
     public RouteImp(Vehicle vehicle) {
@@ -43,7 +66,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Finds the index of a specific aid box in the route.
-     * 
+     *
      * @param aidbox The aid box to find.
      * @return The index of the aid box.
      * @throws FindException If the aid box is not found in the route.
@@ -59,7 +82,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Checks if the vehicle can transport the specified aid box.
-     * 
+     *
      * @param aidbox The aid box to check.
      * @return True if the vehicle can transport the aid box, false otherwise.
      * @throws RouteException If the vehicle can't transport the aid box.
@@ -87,7 +110,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Adds an aid box to the route.
-     * 
+     *
      * @param aidbox The aid box to add.
      * @throws RouteException If the aid box can't be added to the route.
      */
@@ -115,7 +138,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Removes an aid box from the route.
-     * 
+     *
      * @param aidbox The aid box to remove.
      * @return The removed aid box.
      * @throws RouteException If the aid box can't be removed from the route.
@@ -151,7 +174,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Checks if the route contains a specific aid box.
-     * 
+     *
      * @param aidbox The aid box to check.
      * @return True if the route contains the aid box, false otherwise.
      */
@@ -167,7 +190,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Replaces an aid box in the route with another aid box.
-     * 
+     *
      * @param aidbox The aid box to replace.
      * @param aidbox1 The new aid box to insert.
      * @throws RouteException If the aid box can't be replaced.
@@ -203,7 +226,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Inserts an aid box into the route after a specified aid box.
-     * 
+     *
      * @param aidbox The aid box after which the new aid box will be inserted.
      * @param aidbox1 The new aid box to insert.
      * @throws RouteException If the aid box can't be inserted.
@@ -246,7 +269,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Gets the current route (array of aid boxes).
-     * 
+     *
      * @return A copy of the current route.
      */
     @Override
@@ -262,7 +285,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Gets the vehicle associated with the route.
-     * 
+     *
      * @return The vehicle associated with the route.
      */
     @Override
@@ -272,7 +295,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Gets the total distance of the route.
-     * 
+     *
      * @return The total distance of the route.
      */
     @Override
@@ -294,7 +317,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Gets the total duration of the route.
-     * 
+     *
      * @return The total duration of the route.
      */
     @Override
@@ -315,7 +338,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Sets the total distance of the route.
-     * 
+     *
      * @param totalDistance The total distance to set.
      */
     public void setTotalDistance(double totalDistance) {
@@ -324,7 +347,7 @@ public class RouteImp implements com.estg.pickingManagement.Route {
 
     /**
      * Sets the total duration of the route.
-     * 
+     *
      * @param totalDuration The total duration to set.
      */
     public void setTotalDuration(double totalDuration) {

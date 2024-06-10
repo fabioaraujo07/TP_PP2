@@ -1,6 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Nome: Roger Nakauchi
+ * Número: 8210005
+ * Turna: LSIRCT1
+ *
+ * Nome: Fábio da Cunha
+ * Número: 8210619
+ * Turna: LSIRCT1
  */
 package tp_pp_managment;
 
@@ -11,27 +16,54 @@ import org.json.simple.JSONObject;
 /**
  * Implementation of the Vehicle interface, representing a vehicle with specific
  * characteristics such as capacity, supply type, and other attributes.
- * 
+ *
  * This class provides methods to get and set various attributes of the vehicle,
  * convert the vehicle to and from JSON format, and check equality with another
  * vehicle.
  *
- * @author Fábio da Cunha, Roger Nakauchi
  */
 public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
+    /**
+     * The maximum capacity of the vehicle.
+     */
     private double capacity;
+
+    /**
+     * The type of supply the vehicle carries.
+     */
     private ItemType supply;
+
+    /**
+     * A flag indicating if the vehicle is enabled or not.
+     */
     private boolean enabled;
+
+    /**
+     * A flag indicating if the vehicle is currently in use or not.
+     */
     private boolean isUsed;
+
+    /**
+     * The maximum number of kilometers the vehicle can travel with perishable
+     * food.
+     */
     private double kmsForPerishableFood;
+
+    /**
+     * An array of Vehicle objects representing the vehicles.
+     */
     private Vehicle[] vehicles;
+
+    /**
+     * The number of vehicles.
+     */
     private int nVehicles;
 
     /**
      * Constructor to initialize the VehicleImp with a specific capacity and
      * supply type.
-     * 
+     *
      * @param capacity The maximum capacity of the vehicle.
      * @param supply The type of supply the vehicle can carry.
      */
@@ -47,10 +79,10 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     /**
      * Constructor to initialize the VehicleImp with a specific capacity and
      * kilometers limit for perishable food.
-     * 
+     *
      * @param capacity The maximum capacity of the vehicle.
      * @param kmsForPerishableFood The maximum kilometers the vehicle can travel
-     *                             when carrying perishable food.
+     * when carrying perishable food.
      */
     public VehicleImp(double capacity, double kmsForPerishableFood) {
         this.nVehicles = 0;
@@ -64,7 +96,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Checks if the vehicle is enabled.
-     * 
+     *
      * @return True if the vehicle is enabled, false otherwise.
      */
     public boolean isEnabled() {
@@ -73,7 +105,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Sets the enabled status of the vehicle.
-     * 
+     *
      * @param enabled The new enabled status of the vehicle.
      */
     public void setEnabled(boolean enabled) {
@@ -82,7 +114,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Gets the type of supply the vehicle can carry.
-     * 
+     *
      * @return The type of supply.
      */
     @Override
@@ -92,7 +124,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Gets the maximum capacity of the vehicle.
-     * 
+     *
      * @return The maximum capacity.
      */
     @Override
@@ -102,7 +134,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Checks if the vehicle is currently in use.
-     * 
+     *
      * @return True if the vehicle is in use, false otherwise.
      */
     public boolean isUsed() {
@@ -111,7 +143,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Sets the used status of the vehicle.
-     * 
+     *
      * @param isUsed The new used status of the vehicle.
      */
     public void setUsed(boolean isUsed) {
@@ -121,7 +153,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
     /**
      * Gets the maximum kilometers the vehicle can travel when carrying
      * perishable food.
-     * 
+     *
      * @return The maximum kilometers for perishable food.
      */
     public double getKms() {
@@ -130,7 +162,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Converts the vehicle to a JSON object.
-     * 
+     *
      * @return The JSON representation of the vehicle.
      */
     public JSONObject toJsonObj() {
@@ -147,7 +179,7 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Creates a VehicleImp instance from a JSON object.
-     * 
+     *
      * @param jsonObject The JSON object representing the vehicle.
      * @return The created VehicleImp instance.
      */
@@ -172,11 +204,11 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
 
     /**
      * Checks if this vehicle is equal to another object.
-     * 
+     *
      * @param obj The object to compare with.
      * @return True if the vehicles are equal, false otherwise.
      */
-     @Override
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -187,5 +219,5 @@ public class VehicleImp implements com.estg.pickingManagement.Vehicle {
         VehicleImp v = (VehicleImp) obj;
         return this.capacity == v.capacity && this.supply == v.supply && this.kmsForPerishableFood == v.kmsForPerishableFood;
     }
-    
+
 }
