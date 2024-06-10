@@ -637,24 +637,31 @@ public class Menu {
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
         ImporterImp importer = new ImporterImp(inst, filePath);
+        ImporterImp exporter = new ImporterImp(inst, filePath);
 
         if(importer == null) {
             System.out.println("No data to be imported");
         }
         try {
             importer.importData(inst);
-        } catch (IOException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstitutionException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | InstitutionException ex) {
+            System.out.println("Error while importing data");
         }
+        
+        
         Menu menu = new Menu(inst);
         menu.start();
         
-
-        if (inst.export("src/Files/vehicles.json") && inst.export("src/Files/aidboxArray.json")) {
-            System.out.println("Success export program vehicles");
+        
+        if(exporter == null) {
+            System.out.println("Data could not be exported");
         }
+        try {
+            exporter.exportData(inst);
+        } catch (IOException | InstitutionException ex) {
+            System.out.println("Error while exporting data");
+        }
+        
 
     }
 

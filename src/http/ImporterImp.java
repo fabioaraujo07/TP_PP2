@@ -29,7 +29,17 @@ public class ImporterImp implements com.estg.io.Importer {
         if (institution instanceof InstitutionImp) {
             InstitutionImp institution = (InstitutionImp) instn;
             if (institution.importData("src/Files/vehicles.json") && institution.importData("src/Files/aidboxArray.json")) {
-                System.out.println("Success importing program vehicles");
+                System.out.println("Success importing program");
+            }
+        }
+    }
+    
+    
+    public void exportData(Institution instn) throws FileNotFoundException, IOException, InstitutionException {
+        if(institution instanceof InstitutionImp) {
+            InstitutionImp institution = (InstitutionImp) instn;
+            if(institution.export("src/Files/vehicles.json") && institution.export("src/Files/aidboxArray.json")) {
+                System.out.println("Success exporting program");
             }
         }
     }
