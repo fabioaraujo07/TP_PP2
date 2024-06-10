@@ -44,7 +44,9 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the code of this container.
+     *
+     * @return the code of this container
      */
     @Override
     public String getCode() {
@@ -52,7 +54,9 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the capacity of this container.
+     *
+     * @return the capacity of this container
      */
     @Override
     public double getCapacity() {
@@ -60,7 +64,9 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the type of this container.
+     *
+     * @return the type of this container
      */
     @Override
     public ItemType getType() {
@@ -68,7 +74,9 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves all measurements stored in this container.
+     *
+     * @return an array of all measurements stored in this container
      */
     @Override
     public Measurement[] getMeasurements() {
@@ -82,7 +90,10 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves measurements stored in this container for the specified date.
+     *
+     * @param ld the date for which measurements should be retrieved
+     * @return an array of measurements stored in this container for the specified date
      */
     @Override
     public Measurement[] getMeasurements(LocalDate ld) {
@@ -102,7 +113,11 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a measurement to this container.
+     *
+     * @param msrmnt the measurement to add
+     * @return true if the measurement is successfully added, false otherwise
+     * @throws MeasurementException if an error occurs while adding the measurement
      */
     @Override
     public boolean addMeasurement(Measurement msrmnt) throws MeasurementException {
@@ -141,7 +156,10 @@ public class ContainerImp implements com.estg.core.Container {
     }
 
     /**
-     * {@inheritDoc}
+     * Checks if this container is equal to another object.
+     *
+     * @param obj the object to compare
+     * @return true if the objects are equal, false otherwise
      */
     @Override
     public boolean equals(Object obj) {

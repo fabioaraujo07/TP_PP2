@@ -15,11 +15,24 @@ import java.util.logging.Logger;
 import tp_pp.Classes.AidBoxImp;
 
 /**
+ * Implementation of the RouteValidator interface, responsible for validating
+ * routes based on aid boxes.
+ * 
+ * This class provides a method to validate a route by checking if it contains
+ * a specific aid box. If the aid box is not already in the route, it attempts
+ * to add it. If the addition fails, the validation returns false.
  *
  * @author Roger Nakauchi
  */
 public class RouteValidatorImp implements RouteValidator {
 
+    /**
+     * Validates a route by checking if it contains a specific aid box.
+     * 
+     * @param route The route to validate.
+     * @param aidbox The aid box to check for in the route.
+     * @return True if the route is valid, false otherwise.
+     */
     @Override
     public boolean validate(Route route, AidBox aidbox) {
 

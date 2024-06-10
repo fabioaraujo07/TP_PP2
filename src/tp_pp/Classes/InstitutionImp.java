@@ -71,7 +71,9 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the name of the institution.
+     *
+     * @return the name of the institution
      */
     @Override
     public String getName() {
@@ -114,7 +116,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds an AidBox to the institution.
+     *
+     * This method adds an AidBox to the institution's resources.
+     *
+     * @param aidbox the AidBox to add
+     * @return true if the AidBox is added successfully, false otherwise
+     * @throws AidBoxException if the AidBox is null or already exists in the
+     * institution
      */
     @Override
     public boolean addAidBox(AidBox aidbox) throws AidBoxException {
@@ -152,7 +161,17 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a measurement to a container.
+     *
+     * This method adds a measurement to a specified container in the
+     * institution.
+     *
+     * @param msrmnt the measurement to add
+     * @param cntnr the container to add the measurement to
+     * @return true if the measurement is added successfully, false otherwise
+     * @throws ContainerException if the container is null or not found
+     * @throws MeasurementException if the measurement is null, has a negative
+     * value, or exceeds the container's capacity
      */
     @Override
     public boolean addMeasurement(Measurement msrmnt, Container cntnr) throws ContainerException, MeasurementException {
@@ -193,7 +212,9 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the list of AidBoxes in the institution.
+     *
+     * @return an array of AidBoxes in the institution
      */
     @Override
     public AidBox[] getAidBoxes() {
@@ -207,7 +228,16 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the container with the specified item type from the given AidBox.
+     *
+     * This method retrieves a container with the specified item type from the
+     * given AidBox.
+     *
+     * @param aidbox the AidBox to search for the container
+     * @param it the item type to search for
+     * @return the container with the specified item type
+     * @throws ContainerException if the AidBox is null or the container with
+     * the given item type doesn't exist
      */
     @Override
     public Container getContainer(AidBox aidbox, ItemType it) throws ContainerException {
@@ -228,7 +258,9 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the list of vehicles in the institution.
+     *
+     * @return an array of vehicles in the institution
      */
     @Override
     public Vehicle[] getVehicles() {
@@ -258,7 +290,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a vehicle to the institution.
+     *
+     * This method adds a vehicle to the institution. If the vehicle already
+     * exists, it returns false.
+     *
+     * @param vhcl the Vehicle to add
+     * @return true if the vehicle is successfully added, false otherwise
+     * @throws VehicleException if the Vehicle is null or already exists
      */
     @Override
     public boolean addVehicle(Vehicle vhcl) throws VehicleException {
@@ -276,7 +315,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Disables the specified vehicle.
+     *
+     * This method disables the specified vehicle. If the vehicle is already
+     * disabled, it throws a VehicleException.
+     *
+     * @param vhcl the Vehicle to disable
+     * @throws VehicleException if the Vehicle is null, not found, or already
+     * disabled
      */
     @Override
     public void disableVehicle(Vehicle vhcl) throws VehicleException {
@@ -304,7 +350,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Enables the specified vehicle.
+     *
+     * This method enables the specified vehicle. If the vehicle is already
+     * enabled, it throws a VehicleException.
+     *
+     * @param vhcl the Vehicle to disable
+     * @throws VehicleException if the Vehicle is null, not found, or already
+     * disabled
      */
     @Override
     public void enableVehicle(Vehicle vhcl) throws VehicleException {
@@ -332,7 +385,13 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves all the picking maps stored in the institution.
+     *
+     * This method retrieves all the picking maps stored in the institution and
+     * returns them in an array.
+     *
+     * @return an array containing all the picking maps stored in the
+     * institution
      */
     @Override
     public PickingMap[] getPickingMaps() {
@@ -346,7 +405,15 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves all the picking maps within a specified time range.
+     *
+     * This method retrieves all the picking maps stored in the institution that
+     * fall within the specified time range and returns them in an array.
+     *
+     * @param ldt the start of the time range
+     * @param ldt1 the end of the time range
+     * @return an array containing all the picking maps within the specified
+     * time range
      */
     @Override
     public PickingMap[] getPickingMaps(LocalDateTime ldt, LocalDateTime ldt1) {
@@ -363,7 +430,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the current picking map.
+     *
+     * This method retrieves the current picking map stored in the institution,
+     * which is the one with the latest date.
+     *
+     * @return the current picking map
+     * @throws PickingMapException if there are no picking maps in the
+     * institution
      */
     @Override
     public PickingMap getCurrentPickingMap() throws PickingMapException {
@@ -397,7 +471,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Adds a picking map to the institution.
+     *
+     * This method adds a picking map to the institution. If the picking map is
+     * already present, it throws a PickingMapException.
+     *
+     * @param pm the PickingMap to add
+     * @return true if the adding is successful, false otherwise
+     * @throws PickingMapException if the PickingMap is null or already exists
      */
     @Override
     public boolean addPickingMap(PickingMap pm) throws PickingMapException {
@@ -416,7 +497,14 @@ public class InstitutionImp implements com.estg.core.Institution {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the distance from the specified aidbox to the base.
+     *
+     * This method calculates and returns the distance from the specified aidbox
+     * to the base.
+     *
+     * @param aidbox the AidBox for which to calculate the distance
+     * @return the distance from the aidbox to the base
+     * @throws AidBoxException if the specified AidBox does not exist
      */
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
@@ -591,6 +679,15 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         return false;
     }
+
+    /**
+     * Removes the specified vehicle from the institution's vehicle list.
+     *
+     * @param vehicle The vehicle to be removed.
+     * @return The removed vehicle.
+     * @throws VehicleException If the vehicle is null, not found, or cannot be
+     * removed.
+     */
 
     public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
         if (vehicle == null) {

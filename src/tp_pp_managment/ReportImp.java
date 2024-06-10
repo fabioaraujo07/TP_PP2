@@ -12,8 +12,14 @@ import com.estg.pickingManagement.Route;
 import tp_pp.Classes.AidBoxImp;
 
 /**
+ * Implementation of the Report interface for managing and generating reports
+ * related to the institution's logistics operations.
+ * 
+ * This class stores and provides access to various metrics such as the number
+ * of used vehicles, picked containers, total distance, total duration, etc.
+ * It also allows setting these metrics after computing the results.
  *
- * @author fabio
+ * @author Fábio da Cunha, Roger Nakauchi
  */
 public class ReportImp implements com.estg.pickingManagement.Report {
 
@@ -23,12 +29,26 @@ public class ReportImp implements com.estg.pickingManagement.Report {
     private Route distance;
     private Route duration;
 
+    /**
+     * Constructor to initialize the ReportImp with the specified date,
+     * institution, and container.
+     * 
+     * @param date The date of the report.
+     * @param institution The institution associated with the report.
+     * @param container The container (aidbox) related to the report.
+     */
     public ReportImp(LocalDateTime date, Institution institution, AidBox container) {
         this.date = date;
         this.institution = institution;
         this.aidbox = container;
     }
 
+    /**
+     * Gets the number of used vehicles in the institution.
+     * 
+     * @return The number of used vehicles.
+     * @throws IllegalArgumentException If the institution is null or not of type InstitutionImp.
+     */
     @Override
     public int getUsedVehicles() throws IllegalArgumentException {
         if (this.institution == null) {
@@ -47,6 +67,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Gets the number of picked containers in the institution.
+     * 
+     * @return The number of picked containers.
+     * @throws IllegalArgumentException If the container is null or not of type AidboxImp.
+     */
     @Override
     public int getPickedContainers() {
         if (this.aidbox == null) {
@@ -65,6 +91,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Gets the total distance covered in the routes.
+     * 
+     * @return The total distance.
+     * @throws IllegalArgumentException If the distance route is null or not of type RouteImp.
+     */
     @Override
     public double getTotalDistance() {
         if (this.distance == null) {
@@ -83,6 +115,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Gets the total duration of the routes.
+     * 
+     * @return The total duration.
+     * @throws IllegalArgumentException If the duration route is null or not of type RouteImp.
+     */
     @Override
     public double getTotalDuration() {
         if (this.duration == null) {
@@ -101,6 +139,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Gets the number of non-picked containers in the institution.
+     * 
+     * @return The number of non-picked containers, or -1 if the container is null.
+     * @throws IllegalArgumentException If the container is not of type AidboxImp.
+     */
     @Override
     public int getNonPickedContainers() {
         if (this.aidbox == null) {
@@ -119,6 +163,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Gets the number of not used vehicles in the institution.
+     * 
+     * @return The number of not used vehicles, or -1 if the institution is null.
+     * @throws IllegalArgumentException If the institution is not of type InstitutionImp.
+     */
     @Override
     public int getNotUsedVehicles() {
         if (this.institution == null) {
@@ -138,11 +188,22 @@ public class ReportImp implements com.estg.pickingManagement.Report {
 
     }
 
+    /**
+     * Gets the date of the report.
+     * 
+     * @return The date of the report.
+     */
     @Override
     public LocalDateTime getDate() {
         return this.date;
     }
 
+    /**
+     * Sets the number of used vehicles in the institution.
+     * 
+     * @param addUsedVehicles The number of vehicles to add to the current count of used vehicles.
+     * @throws IllegalArgumentException If the institution is not of type InstitutionImp or any error occurs while setting the used vehicles.
+     */
     public void setUsedVehicles(int addUsedVehicles) {
         try {
             int currentUsedVehicles = this.getUsedVehicles();
@@ -158,6 +219,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Sets the number of picked containers in the institution.
+     * 
+     * @param addPickedContainers The number of containers to add to the current count of picked containers.
+     * @throws IllegalArgumentException If the institution is not of type InstitutionImp or any error occurs while setting the picked containers.
+     */
     public void setPickedContainers(int addPickedContainers) {
         try {
             int currentPickedContainers = this.getPickedContainers();
@@ -173,6 +240,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Sets the total distance covered in the routes.
+     * 
+     * @param addTotalDistance The distance to add to the current total distance.
+     * @throws IllegalArgumentException If the distance route is not of type RouteImp or any error occurs while setting the total distance.
+     */
     public void setTotalDistance(double addTotalDistance) {
         try {
             double currentTotalDistance = this.getTotalDistance();
@@ -188,6 +261,12 @@ public class ReportImp implements com.estg.pickingManagement.Report {
         }
     }
 
+    /**
+     * Sets the total duration of the routes.
+     * 
+     * @param addTotalDuration The duration to add to the current total duration.
+     * @throws IllegalArgumentException If the duration route is not of type RouteImp or any error occurs while setting the total duration.
+     */
     public void setTotalDuration(double addTotalDuration) {
         try {
             double currentTotalDuration = this.getTotalDuration();
