@@ -509,7 +509,9 @@ public class InstitutionImp implements com.estg.core.Institution {
      */
     public boolean export(String filePath) {
         JSONObject jsonObject = new JSONObject();
-
+        
+        //Export Vehicles
+        
         jsonObject.put("numbervehicles", numberVehicles);
 
         JSONArray vehiclesArray = new JSONArray();
@@ -519,6 +521,20 @@ public class InstitutionImp implements com.estg.core.Institution {
             }
         }
         jsonObject.put("Vehicles", vehiclesArray);
+
+        // Export Aidbox
+        
+        jsonObject.put("numberAidbox", numberAidbox);
+
+        JSONArray aidboxArray = new JSONArray();
+        for (int i = 0; i < numberAidbox; i++) {
+            if (aidboxes[i] != null) {
+                aidboxArray.add(((AidBoxImp) aidboxes[i]).toJSONObj());
+            }
+        }
+        jsonObject.put("Aidboxes", aidboxArray);
+        
+        // Export Measurements
 
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(jsonObject.toJSONString());
@@ -551,7 +567,20 @@ public class InstitutionImp implements com.estg.core.Institution {
                     e.printStackTrace();
                 }
             }
+            
+            JSONArray aidboxArray = (JSONArray) jsonObject.get("Aidboxes");
+            for (int i = 0; i < aidboxArray.size(); i++) {
+                JSONObject aidboxJson = (JSONObject) aidboxArray.get(i);
+                AidBox a = AidBoxImp.(aidboxJson);
+                try {
+                    this.addVehicle(v);
+                } catch (VehicleException e) {
+                    e.printStackTrace();
+                }
+            }
+            
             return true;
+            
 
         } catch (FileNotFoundException ex) {
             System.out.println("File not found: " + filePath);
@@ -562,8 +591,6 @@ public class InstitutionImp implements com.estg.core.Institution {
         }
         return false;
     }
-
-    
 
     public Vehicle removeVehicle(Vehicle vehicle) throws VehicleException {
         if (vehicle == null) {

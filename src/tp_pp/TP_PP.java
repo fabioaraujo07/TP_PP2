@@ -35,7 +35,7 @@ public class TP_PP {
            AidBox a2 = new AidBoxImp("id","Base", "Praia", "uisfai", 0, 0);
            Institution i1 = new InstitutionImp("Base");
            
-           System.out.println(http.getAidBoxes());
+           System.out.println(http.getAidBoxesCode("CAIXF40"));
            
 //           System.out.println(i1.getDistance(a1));
 //           

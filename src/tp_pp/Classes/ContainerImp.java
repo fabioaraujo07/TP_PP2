@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import tp_pp_exceptions.FindException;
 import org.json.simple.JSONObject;
+import tp_pp_managment.VehicleImp;
 
 /**
  * Implementation of the Container interface, representing a container that
@@ -164,4 +165,37 @@ public class ContainerImp implements com.estg.core.Container {
         return "code= " + code + ", capacity= " + capacity + ", type= " + getType();
     }
 
+    public JSONObject toJsonObj() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", this.code);
+        jsonObject.put("capacity", this.capacity);
+        jsonObject.put("type", this.itemType);
+
+        return jsonObject;
+    }
+
+    public static ContainerImp fromJsonObj(JSONObject jsonObject) {
+        try {
+            String code = (String) jsonObject.get("codigo");
+
+            Object capacityObj = jsonObject.get("capacidade");
+            double capacity;
+            if (capacityObj instanceof Long) {
+                capacity = ((Long) capacityObj).doubleValue();
+            } else {
+                capacity = (Double) capacityObj;
+            }
+
+            ItemType typeStr = ItemType.valueOf((String) jsonObject.get("type"));
+
+            if (typeStr == null) {
+                throw new IllegalArgumentException("ItemType is missing");
+            }
+
+
+            return new ContainerImp(code, capacity, typeStr);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid Container data in JSON: " + jsonObject.toJSONString(), e);
+        }
+    }
 }

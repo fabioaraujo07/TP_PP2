@@ -1,0 +1,12 @@
+{
+    "Zona": "Pombeiro",
+    "Codigo": "CAIXF37",
+    "Latitude": 41.381961,
+    "Longitude": -8.228073,
+    "Contentores": [
+        {"codigo": "N1EI", "capacidade": 500, "type": "PERISHABLE_FOOD"},
+        {"codigo": "V116", "capacidade": 750, "type": "NON_PERISHABLE_FOOD"},
+        {"codigo": "MY6L", "capacidade": 500, "type": "CLOTHING"},
+        {"codigo": "PL7KI", "capacidade": 120, "type": "MEDICINE"}
+    ]
+}

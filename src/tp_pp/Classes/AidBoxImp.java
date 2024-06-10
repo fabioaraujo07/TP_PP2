@@ -307,6 +307,40 @@ public class AidBoxImp implements com.estg.core.AidBox {
         return result;
     }
 
+    public JSONObject toJSONObj() {
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("_id", this.id);
+        jsonObject.put("Codigo", this.code);
+        jsonObject.put("Zona", this.zone);
+        jsonObject.put("Latitude", this.coordinates.getLatitude());
+        jsonObject.put("Longitude", this.coordinates.getLongitude());
+
+        JSONArray containersArray = new JSONArray();
+        for (Container container : this.containers) {
+            if (container != null) {
+                if (container instanceof ContainerImp) {
+                    ContainerImp c = (ContainerImp) container;
+                    containersArray.add(c.toJsonObj());
+                }
+            }
+        }
+        jsonObject.put("Containers", containersArray);
+
+        return jsonObject;
+    }
+    
+    public static AidBoxImp fromJsonObj(JSONObject jsonObject) {
+        
+        
+        AidBoxImp vehicle;
+        
+
+        return vehicle;
+    }
+
+
     
 
 }

@@ -68,10 +68,10 @@ public class Menu {
                         showContainerMenu();
                         break;
                     case 3:
-                        showVehiclesMenu();
+                        
                         break;
                     case 4:
-
+                        showVehiclesMenu();
                         break;
                     case 5:
                         break;
@@ -611,7 +611,7 @@ public class Menu {
         if (inst.importData("src/Files/vehicles.json")) {
             System.out.println("Success importing program vehicles");
         }
-//        if(inst.importAidBoxes("src/Files/aidboxes.json")){
+//        if(inst.importAid("src/Files/aidboxes.json")){
 //            System.out.println("Success importing program aidboxes");
 //        }
 
@@ -621,7 +621,7 @@ public class Menu {
         if (inst.export("src/Files/vehicles.json")) {
             System.out.println("Success export program vehicles");
         }
-//        if (inst.exportAidBoxes("src/Files/aidboxes.json")) {
+//        if (inst.exportAid("src/Files/aidboxes.json")) {
 //            System.out.println("Success export program aidboxes");
 //        }
         
