@@ -460,21 +460,22 @@ public class Menu {
             for (i = 0; i < measurements.size(); i++) {
                 JSONObject measurementJson = (JSONObject) measurements.get(i);
                 String contentor = (String) measurementJson.get("contentor");
-                
-                String dateStr = (String) measurementJson.get("data");
-                Instant instant = Instant.parse(dateStr);
-                ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
-                
-                
-                LocalDateTime data = zonedDateTime.toLocalDateTime();
-                
-                long value = (long) measurementJson.get("valor");
-                Measurement m = new MeasurementImp(contentor, LocalDateTime.MAX, value);
-                try {
-                    container.addMeasurement(m);
-                } catch (MeasurementException e) {
-                    e.printStackTrace();
-                    System.out.println("Error ading measurements");
+
+                if (contentor.equals(containerCode)) {
+                    String dateStr = (String) measurementJson.get("data");
+                    Instant instant = Instant.parse(dateStr);
+                    ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
+
+                    LocalDateTime data = zonedDateTime.toLocalDateTime();
+
+                    long value = (long) measurementJson.get("valor");
+                    Measurement m = new MeasurementImp(contentor, LocalDateTime.MAX, value);
+                    try {
+                        container.addMeasurement(m);
+                    } catch (MeasurementException e) {
+                        e.printStackTrace();
+                        System.out.println("Error ading measurements");
+                    }
                 }
             }
         } else {
