@@ -68,7 +68,6 @@ public class Menu {
             System.out.println("2. Containers");
             System.out.println("3. Vehicles");
             System.out.println("4. Routes");
-
             System.out.println("5. Exit");
             System.out.println("Option: ");
             try {
@@ -98,7 +97,7 @@ public class Menu {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
             }
-        } while (option != 6);
+        } while (option != 5);
     }
 
     public void showAidBoxMenu() {
@@ -121,7 +120,7 @@ public class Menu {
                         try {
                             addAidBox();
                         } catch (ContainerException ex) {
-                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                            ex.printStackTrace();
                         }
                     }
                     break;
@@ -138,7 +137,7 @@ public class Menu {
                         try {
                             listAidBox();
                         } catch (AidBoxException ex) {
-                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                            ex.printStackTrace();
                         }
                         break;
                     case 6:
@@ -373,7 +372,7 @@ public class Menu {
 
                 switch (option) {
                     case 1: {
-
+                        listContainers();
                     }
                     break;
 
@@ -381,9 +380,9 @@ public class Menu {
                         try {
                             addMeasurements();
                         } catch (ParseException ex) {
-                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                            ex.printStackTrace();
                         } catch (MeasurementException ex) {
-                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                            ex.printStackTrace();
                         }
                     }
                     break;
@@ -406,6 +405,31 @@ public class Menu {
             }
         }
     }
+
+    private void listContainers() {
+        try {
+            String jsonResponse = httpProvider.getAidBoxes();
+            JSONParser parser = new JSONParser();
+            JSONArray aidBoxesArray = (JSONArray) parser.parse(jsonResponse);
+
+            for (Object aidBoxObject : aidBoxesArray) {
+                JSONObject aidBox = (JSONObject) aidBoxObject;
+
+                JSONArray contentores = (JSONArray) aidBox.get("Contentores");
+                System.out.println("Contentores:");
+                for (Object contentorObject : contentores) {
+                    JSONObject contentor = (JSONObject) contentorObject;
+                    System.out.println("\tCode: " + contentor.get("codigo"));
+                    System.out.println("\tCapacity: " + contentor.get("capacidade"));
+                }
+                System.out.println("-----------------------------");
+            }
+        } catch (IOException | ParseException e) {
+            System.err.println("Error fetching aid boxes: " + e.getMessage());
+        }
+    }
+
+    
 
     private void listMeasurements() {
         try {
