@@ -208,7 +208,15 @@ public class ContainerImp implements com.estg.core.Container {
      */
     @Override
     public String toString() {
-        return "code= " + code + ", capacity= " + capacity + ", type= " + getType();
+        String result = "code= " + code + ", capacity= " + capacity + ", type= " + getType()
+                + "measurements: ";
+
+        for (int i = 0; i < numberMeasurements; i++) {
+            if (measurements[i] != null) {
+                result += measurements[i].toString() + "\n";
+            }
+        }
+        return result;
     }
 
     public JSONObject toJsonObj() {

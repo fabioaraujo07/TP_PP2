@@ -66,10 +66,20 @@ public class MeasurementImp implements com.estg.core.Measurement {
         return this.value;
     }
 
-    public String getcontentor() {
+    /**
+     * Gets the contentor.
+     *
+     * @return the contentor.
+     */
+    public String getContentor() {
         return this.contentor;
     }
 
+    /**
+     * Converts this MeasurementImp object to a JSON object.
+     *
+     * @return a JSONObject representing this MeasurementImp.
+     */
     public JSONObject toJsonObj() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("contentor", this.contentor);
@@ -78,6 +88,14 @@ public class MeasurementImp implements com.estg.core.Measurement {
         return jsonObject;
     }
 
+    /**
+     * Creates a MeasurementImp object from a JSON object.
+     *
+     * @param jsonObject the JSON object containing measurement data.
+     * @return a MeasurementImp object.
+     * @throws IllegalArgumentException if the JSON object contains invalid
+     * data.
+     */
     public static MeasurementImp fromJsonObj(JSONObject jsonObject) {
         try {
             String contentor = (String) jsonObject.get("contentor");
@@ -88,5 +106,15 @@ public class MeasurementImp implements com.estg.core.Measurement {
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid Measurement data in JSON: " + jsonObject.toJSONString(), e);
         }
+    }
+
+    /**
+     * Returns a string representation of this MeasurementImp.
+     *
+     * @return a string representation of this MeasurementImp.
+     */
+    @Override
+    public String toString() {
+        return "Measurements{" + "date=" + date + ", value=" + value + ", contentor=" + contentor + '}';
     }
 }
