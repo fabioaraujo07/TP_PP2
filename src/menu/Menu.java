@@ -13,6 +13,7 @@ import com.estg.core.exceptions.ContainerException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.Vehicle;
 import http.HttpProviderImp;
+import http.ImporterImp;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import tp_pp_managment.VehicleImp;
 public class Menu {
 
     private Institution inst;
+    private static String filePath;
 
     private BufferedReader reader;
     private static HttpProviderImp httpProvider = new HttpProviderImp();
@@ -68,7 +70,7 @@ public class Menu {
                         showContainerMenu();
                         break;
                     case 3:
-                        
+
                         break;
                     case 4:
                         showVehiclesMenu();
@@ -171,7 +173,7 @@ public class Menu {
             String jsonResponse = httpProvider.getAidBoxesCode(code);
             JSONParser parser = new JSONParser();
             JSONObject aidbox = (JSONObject) parser.parse(jsonResponse);
-            
+
             String id = (String) aidbox.get("_id");
             String code1 = (String) aidbox.get("Codigo");
             String zone = (String) aidbox.get("Zona");
@@ -349,7 +351,8 @@ public class Menu {
             System.out.println("=== Container Menu ===");
             System.out.println("1. List all Containers");
             System.out.println("2. View Container's measurements");
-            System.out.println("3. Back");
+            System.out.println("3. List all Measurements");
+            System.out.println("4. Back");
             System.out.println("Select option: ");
 
             try {
@@ -363,6 +366,9 @@ public class Menu {
                         //addMeasurements();
                         break;
                     case 3:
+                        listMeasurements();
+                        break;
+                    case 4:
                         exit = true;
                         break;
                     default:
@@ -375,6 +381,28 @@ public class Menu {
             } catch (IOException e) {
                 System.out.println("Error reading input.");
             }
+        }
+    }
+
+    private void listMeasurements() {
+        try {
+            String jsonResponse = httpProvider.getReadings();
+            JSONParser parser = new JSONParser();
+            JSONArray readingsArray = (JSONArray) parser.parse(jsonResponse);
+
+            for (Object readingObject : readingsArray) {
+                JSONObject reading = (JSONObject) readingObject;
+                String contentor = (String) reading.get("contentor");
+                String data = (String) reading.get("data");
+                long valor = (long) reading.get("valor");
+
+                System.out.println("Code: " + contentor);
+                System.out.println("Date: " + data);
+                System.out.println("Value: " + valor);
+                System.out.println("-----------------------------");
+            }
+        } catch (IOException | ParseException e) {
+            System.out.println("Error fetching readings: " + e.getMessage());
         }
     }
 
@@ -607,14 +635,17 @@ public class Menu {
 
     public static void main(String[] args) {
         InstitutionImp inst = new InstitutionImp("ONG");
+        ImporterImp importer = new ImporterImp(filePath);
 
-        if (inst.importData("src/Files/vehicles.json") && inst.importData("src/Files/aidboxArray.json")) {
-            System.out.println("Success importing program vehicles");
+        if(importer == null) {
+            System.out.println("No data to be imported");
         }
+        //importer.importData();
         Menu menu = new Menu(inst);
         menu.start();
+        
 
-        if (inst.export("src/Files/vehicles.json")&& inst.export("src/Files/aidboxArray.json")) {
+        if (inst.export("src/Files/vehicles.json") && inst.export("src/Files/aidboxArray.json")) {
             System.out.println("Success export program vehicles");
         }
 
